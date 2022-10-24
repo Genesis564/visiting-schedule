@@ -1,7 +1,9 @@
 package com.okei.visitingschedule.entity.schedule;
 
+import com.okei.visitingschedule.entity.Role;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Schedule {
@@ -12,8 +14,8 @@ public class Schedule {
 
     private String date;
 
-    @ElementCollection(targetClass = Status.class,fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_status",joinColumns = @JoinColumn(name = "schedule_id"))
+    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_status", joinColumns = @JoinColumn(name = "schedule_id"))
     @Enumerated(EnumType.STRING)
     private Set<Status> status;
 
@@ -28,6 +30,23 @@ public class Schedule {
     @OneToOne
     @JoinColumn(name = "academic_discipline_id")
     private AcademicDiscipline academicDiscipline;
+
+    @ElementCollection(targetClass = VisitingCriteria.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_criteria", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<VisitingCriteria> criteria;
+
+    public Schedule(String date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline) {
+        this.date = date;
+        this.status = status;
+        this.studyGroup = studyGroup;
+        this.position = position;
+        this.academicDiscipline = academicDiscipline;
+        this.criteria = new HashSet<>(Arrays.asList(VisitingCriteria.values()));
+    }
+
+    public Schedule() {
+    }
 
     public AcademicDiscipline getAcademicDiscipline() {
         return academicDiscipline;

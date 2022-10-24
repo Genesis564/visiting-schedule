@@ -38,7 +38,7 @@ public class RegistrationController {
             model.put("message","User exists!");
             return "registration";
         }
-        userServices.addUser(userRequestDTO.getUsername(), userRequestDTO.getPassword(),Collections.singleton(Role.ADMIN));
+        userServices.addUser(userRequestDTO.getUsername(), userRequestDTO.getPassword(),Collections.singleton(Role.USER));
         return "redirect:/login";
 
     }
