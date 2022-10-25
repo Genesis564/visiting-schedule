@@ -1,5 +1,11 @@
 package com.okei.visitingschedule.controllers.adminControllers;
 
+import com.okei.visitingschedule.dto.AcademicDisciplineRequestDto;
+import com.okei.visitingschedule.dto.PositionRequestDto;
+import com.okei.visitingschedule.dto.StudyGroupRequestDto;
+import com.okei.visitingschedule.dto.UserRequestDTO;
+import com.okei.visitingschedule.entity.Role;
+import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
 import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.entity.schedule.Status;
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Controller
@@ -53,4 +60,52 @@ public class ScheduleController {
     public String addSchedule(){
         return "createSchedule";
     }
+
+    @GetMapping("/admin/schedule/add/create-study-group")
+    public String addStudyGroup(){
+        return "createStudyGroup";
+    }
+    @PostMapping("/admin/schedule/add/create-study-group")
+    public String createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+        StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
+        if (studyGroupFromDb != null){
+//            model.put("message","Study group exists!");
+            return "/admin/schedule/add/create-study-group";
+        }
+        studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
+        return "redirect:/admin/schedule/add";
+    }
+
+    @GetMapping("/admin/schedule/add/create-position")
+    public String addPosition(){
+        return "createPosition";
+    }
+
+    @PostMapping("/admin/schedule/add/create-position")
+    public String createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
+        Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
+        if (positionFromDb != null){
+//            model.put("message","Position exists!");
+            return "/admin/schedule/add/create-position";
+        }
+        positionServices.addPosition(positionRequestDto.getPositionName());
+        return "redirect:/admin/schedule/add";
+    }
+
+    @GetMapping("/admin/schedule/add/create-discipline")
+    public String addDiscipline(){
+        return "createDiscipline";
+    }
+
+    @PostMapping("/admin/schedule/add/create-discipline")
+    public String createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+        AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
+        if (disciplineFromDb != null){
+//            model.put("message","Discipline exists!");
+            return "/admin/schedule/add/create-discipline";
+        }
+        academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
+        return "redirect:/admin/schedule/add";
+    }
+
 }

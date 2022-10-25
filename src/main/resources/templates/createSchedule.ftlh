@@ -1,21 +1,24 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <form action="/admin/schedule/add" method="post">
+
         <div><label>Date : <input type="text" name="scheduleDate"></label></div>
 
         <div>
             <select>
+                <option value="" selected disabled hidden>Status</option>
                 <#list statuses as status>
                     <option value="${status}">${status}</option>
                 </#list>
             </select>
 
         </div>
+
         <div>
             <select>
+                <option value="" selected disabled hidden>Study group</option>
                 <#list studyGroups as studyGroup>
-                    <option value="${studyGroup}">${studyGroup}</option>
+                    <option value="${studyGroup.groupName!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
             <form action="/admin/schedule/add/create-study-group" method="get">
@@ -25,8 +28,9 @@
         </div>
         <div>
             <select>
+                <option value="" selected disabled hidden>Position</option>
                 <#list positions as position>
-                    <option value="${position}">${position}</option>
+                    <option value="${position.positionName!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
             </select>
             <form action="/admin/schedule/add/create-position" method="get">
@@ -36,8 +40,9 @@
         </div>
         <div>
             <select>
+                <option value="" selected disabled hidden>Discipline</option>
                 <#list academicDisciplins as academicDiscipline>
-                    <option value="${academicDiscipline}">${academicDiscipline}</option>
+                    <option value="${academicDiscipline.disciplineName!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
             <form action="/admin/schedule/add/create-discipline" method="get">
@@ -51,7 +56,7 @@
 <#--                <label>${criteria}</label>-->
 <#--            </div>-->
 <#--        </#list>-->
-
+    <form action="/admin/schedule/add" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Save</button>
     </form>

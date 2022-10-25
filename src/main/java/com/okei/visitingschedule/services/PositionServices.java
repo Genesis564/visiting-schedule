@@ -22,6 +22,14 @@ public class PositionServices {
         positionRepo.save(position);
     }
 
+    public Position findByPositionName(String positionName){
+        return positionRepo.findByPositionName(positionName);
+    }
+
+    public void addPosition(String positionName){
+        positionRepo.save(new Position(positionName));
+    }
+
     public List<Position> findAll(){
         return (List<Position>) positionRepo.findAll();
     }

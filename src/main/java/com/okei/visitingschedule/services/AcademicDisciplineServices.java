@@ -18,6 +18,14 @@ public class AcademicDisciplineServices {
         this.academicDisciplineRepo = academicDisciplineRepo;
     }
 
+    public AcademicDiscipline findByDisciplineName(String disciplineName){
+        return academicDisciplineRepo.findByDisciplineName(disciplineName);
+    }
+
+    public void addDiscipline(String disciplineName){
+        academicDisciplineRepo.save(new AcademicDiscipline(disciplineName));
+    }
+
     public void save(AcademicDiscipline academicDiscipline){
         academicDisciplineRepo.save(academicDiscipline);
     }

@@ -21,6 +21,13 @@ public class StudyGroupServices {
     public void save(StudyGroup studyGroup){
         studyGroupRepo.save(studyGroup);
     }
+    public StudyGroup findByGroupName(String groupName){
+        return studyGroupRepo.findByGroupName(groupName);
+    }
+
+    public void addStudyGroup (String groupName){
+        studyGroupRepo.save(new StudyGroup(groupName));
+    }
 
     public List<StudyGroup> findAll(){
         return (List<StudyGroup>) studyGroupRepo.findAll();
