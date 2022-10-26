@@ -6,10 +6,7 @@ import com.okei.visitingschedule.dto.StudyGroupRequestDto;
 import com.okei.visitingschedule.dto.UserRequestDTO;
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
-import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
-import com.okei.visitingschedule.entity.schedule.Position;
-import com.okei.visitingschedule.entity.schedule.Status;
-import com.okei.visitingschedule.entity.schedule.StudyGroup;
+import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.services.AcademicDisciplineServices;
 import com.okei.visitingschedule.services.PositionServices;
 import com.okei.visitingschedule.services.ScheduleServices;
@@ -24,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 public class ScheduleController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
@@ -40,8 +38,7 @@ public class ScheduleController {
 
 
     @GetMapping("/admin/schedule/add")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String createSchedule(Map<String, Object> model){
+    public String addSchedule(Map<String, Object> model){
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
         Iterable<Position> positions = positionServices.findAll();
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
@@ -51,14 +48,14 @@ public class ScheduleController {
         model.put("studyGroups", studyGroups);
         model.put("positions", positions);
         model.put("academicDisciplins", academicDisciplines);
-//        model.put("criteries", Criteria);
-        return "createSchedule";
+        model.put("criteries", VisitingCriteria.values());
+        return "main";
     }
 
     @PostMapping("/admin/schedule/add")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String addSchedule(){
-        return "createSchedule";
+    public String createSchedule(){
+        return "main";
     }
 
     @GetMapping("/admin/schedule/add/create-study-group")

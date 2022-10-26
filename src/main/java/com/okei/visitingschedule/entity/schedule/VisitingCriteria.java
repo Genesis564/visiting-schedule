@@ -5,6 +5,7 @@ public enum VisitingCriteria {
     CRITERIA2("Another criteria");
 
     private String critariaName;
+    private int score;
 
     VisitingCriteria(String critariaName) {
         this.critariaName = critariaName;
@@ -12,6 +13,14 @@ public enum VisitingCriteria {
 
     public String getCritariaName() {
         return critariaName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override
