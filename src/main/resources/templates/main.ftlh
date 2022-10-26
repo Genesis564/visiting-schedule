@@ -1,9 +1,7 @@
 <#import "parts/common.ftlh" as c>
-<#import "parts/login.ftlh" as l>
 
 <@c.page>
     <div>
-        <@l.logout />
         <form action="/admin/registration" method="get">
             <input type="submit" value="Add new User">
             <input type="hidden" name="_csrf" value="${_csrf.token}">

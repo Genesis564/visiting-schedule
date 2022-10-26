@@ -2,7 +2,7 @@ package com.okei.visitingschedule.dto;
 
 import java.io.Serializable;
 
-public class UserRequestDTO implements Serializable {
+public class UserRequestDTO{
 
     private String username;
     private String password;
