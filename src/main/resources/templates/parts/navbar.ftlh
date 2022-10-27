@@ -14,27 +14,31 @@
                     <a class="nav-link" aria-current="page" href="/admin">Home</a>
                 </li>
                 <#if isAdmin>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/user-list">User list</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/user-list">User list</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Create
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/admin/registration">Create user</a></li>
+                            <li><a class="dropdown-item" href="/admin/schedule/add">Create schedule</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Create values for directories</a></li>
+                        </ul>
+                    </li>
                 </#if>
             </ul>
-            <div class="navbar-text mr-3">
+            <div class="navbar-text me-2">
                 ${name}
             </div>
-            <div>
+            <#if know>
                 <@l.logout />
-            </div>
+            </#if>
         </div>
     </div>
 </nav>

@@ -49,13 +49,13 @@ public class ScheduleController {
         model.put("positions", positions);
         model.put("academicDisciplins", academicDisciplines);
         model.put("criteries", VisitingCriteria.values());
-        return "main";
+        return "createSchedule";
     }
 
     @PostMapping("/admin/schedule/add")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String createSchedule(){
-        return "main";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/schedule/add/create-study-group")
