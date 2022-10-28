@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.okei.visitingschedule.entity.schedule.StudyGroup} entity
  */
-public class StudyGroupRequestDto implements Serializable {
+public class StudyGroupRequestDto{
     private final String groupName;
 
     public StudyGroupRequestDto(String groupName) {

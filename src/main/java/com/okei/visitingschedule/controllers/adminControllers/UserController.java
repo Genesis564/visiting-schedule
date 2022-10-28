@@ -24,16 +24,15 @@ public class UserController {
     public String userList(Map<String, Object> model){
         Iterable<User> users = userServices.findAll();
         model.put("users", users);
+        model.put("roles", Role.values());
         return "userList";
     }
     @GetMapping("{user}")
-    public  String userEditForm(@PathVariable User user,Map<String, Object> model){
+    public  void userEditForm(@PathVariable User user,Map<String, Object> model){
 //        Set<String> roles = Arrays.stream(Role.values())
 //                .map(Role::name)
 //                .collect(Collectors.toSet());
         model.put("user", user);
-        model.put("roles", Role.values());
-        return "userEdit";
     }
 
     @PostMapping
@@ -56,6 +55,6 @@ public class UserController {
             }
         }
         userServices.save(user);
-        return "redirect:/admin";
+        return "redirect:/admin/user-list";
     }
 }

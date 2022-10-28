@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/createObject.ftlh" as cr>
 
 <@c.page>
     <div>
@@ -26,10 +27,7 @@
                     <option value="${studyGroup.groupName!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
-            <form action="/admin/schedule/add/create-study-group" method="get">
-                <button class="btn btn-outline-secondary" type="submit">Add new value</button>
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-            </form>
+            <@cr.create "/admin/schedule/add/create-study-group","study group","groupName"/>
         </div>
 
         <div class="input-group mb-3">
@@ -39,10 +37,7 @@
                     <option value="${position.positionName!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
             </select>
-            <form action="/admin/schedule/add/create-position" method="get">
-                <button class="btn btn-outline-secondary" type="submit">Add new value</button>
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-            </form>
+            <@cr.create "/admin/schedule/add/create-position","position","positionName"/>
         </div>
 
         <div class="input-group mb-3">
@@ -52,10 +47,7 @@
                     <option value="${academicDiscipline.disciplineName!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
-            <form action="/admin/schedule/add/create-discipline" method="get">
-                <button class="btn btn-outline-secondary" type="submit">Add new value</button>
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-            </form>
+            <@cr.create "/admin/schedule/add/create-discipline","discipline","disciplineName"/>
         </div>
 
         <div class="mb-3">

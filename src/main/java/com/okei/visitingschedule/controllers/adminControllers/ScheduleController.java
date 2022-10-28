@@ -58,48 +58,37 @@ public class ScheduleController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/schedule/add/create-study-group")
-    public String addStudyGroup(){
-        return "createStudyGroup";
-    }
+
     @PostMapping("/admin/schedule/add/create-study-group")
     public String createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return "/admin/schedule/add/create-study-group";
+            return "redirect:/admin/schedule/add";
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
         return "redirect:/admin/schedule/add";
     }
 
-    @GetMapping("/admin/schedule/add/create-position")
-    public String addPosition(){
-        return "createPosition";
-    }
 
     @PostMapping("/admin/schedule/add/create-position")
     public String createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         if (positionFromDb != null){
 //            model.put("message","Position exists!");
-            return "/admin/schedule/add/create-position";
+            return "redirect:/admin/schedule/add";
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
         return "redirect:/admin/schedule/add";
     }
 
-    @GetMapping("/admin/schedule/add/create-discipline")
-    public String addDiscipline(){
-        return "createDiscipline";
-    }
 
     @PostMapping("/admin/schedule/add/create-discipline")
     public String createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return "/admin/schedule/add/create-discipline";
+            return "redirect:/admin/schedule/add";
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
         return "redirect:/admin/schedule/add";

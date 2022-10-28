@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 
-public class ScheduleRequestDto implements Serializable {
+public class ScheduleRequestDto{
     private final String date;
     private final Set<Status> status;
     private final Long studyGroupId;
