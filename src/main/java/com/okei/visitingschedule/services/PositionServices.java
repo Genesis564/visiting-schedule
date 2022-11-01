@@ -1,9 +1,7 @@
 package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.schedule.Position;
-import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.repos.PositionRepo;
-import com.okei.visitingschedule.repos.StudyGroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package com.okei.visitingschedule.entity.schedule;
 
-import com.okei.visitingschedule.entity.Role;
+import com.okei.visitingschedule.entity.User;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 public class Schedule {
@@ -12,64 +11,58 @@ public class Schedule {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String date;
-
-    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_status", joinColumns = @JoinColumn(name = "schedule_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Status> status;
+    @OneToOne
+    @JoinColumn(name = "visiter_user_id")
+    private User visitorUser;
+    @OneToOne
+    @JoinColumn(name = "visited_user_id")
+    private User visitedUser;
+    private String visitingWeek;
 
     @OneToOne
-    @JoinColumn(name = "study_group_id")
-    private StudyGroup studyGroup;
+    @JoinColumn(name = "visiting_id")
+    private Visiting visiting;
 
-    @OneToOne
-    @JoinColumn(name = "position_id")
-    private Position position;
 
-    @OneToOne
-    @JoinColumn(name = "academic_discipline_id")
-    private AcademicDiscipline academicDiscipline;
-
-    @ElementCollection(targetClass = VisitingCriteria.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_criteria", joinColumns = @JoinColumn(name = "schedule_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<VisitingCriteria> criteria;
-
-    public Schedule(String date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline) {
-        this.date = date;
-        this.status = status;
-        this.studyGroup = studyGroup;
-        this.position = position;
-        this.academicDiscipline = academicDiscipline;
-        this.criteria = new HashSet<>(Arrays.asList(VisitingCriteria.values()));
+    public Schedule(User visitorUser, User visitedUser, String visitingWeek, Visiting visiting) {
+        this.visitorUser = visitorUser;
+        this.visitedUser = visitedUser;
+        this.visitingWeek = visitingWeek;
+        this.visiting = visiting;
     }
 
     public Schedule() {
     }
 
-    public AcademicDiscipline getAcademicDiscipline() {
-        return academicDiscipline;
+    public Visiting getVisiting() {
+        return visiting;
     }
 
-    public void setAcademicDiscipline(AcademicDiscipline academicDiscipline) {
-        this.academicDiscipline = academicDiscipline;
+    public void setVisiting(Visiting visiting) {
+        this.visiting = visiting;
+    }
+    public String getVisitingWeek() {
+        return visitingWeek;
     }
 
-    public void setStudyGroup(StudyGroup studyGroup) {
-        this.studyGroup = studyGroup;
+    public void setVisitingWeek(String visitingWeek) {
+        this.visitingWeek = visitingWeek;
     }
 
-    public Position getPosition() {
-        return position;
+    public User getVisitorUser() {
+        return visitorUser;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setVisitorUser(User visiterUser) {
+        this.visitorUser = visiterUser;
     }
 
-    public StudyGroup getStudyGroup() {
-        return studyGroup;
+    public User getVisitedUser() {
+        return visitedUser;
+    }
+
+    public void setVisitedUser(User visitedUser) {
+        this.visitedUser = visitedUser;
     }
 
     public Long getId() {

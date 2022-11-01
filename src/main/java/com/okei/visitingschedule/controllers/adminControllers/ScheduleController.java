@@ -16,12 +16,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collections;
 import java.util.Map;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
+@RequestMapping("/admin/schedule")
 public class ScheduleController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
@@ -37,8 +39,8 @@ public class ScheduleController {
     }
 
 
-    @GetMapping("/admin/schedule/add")
-    public String addSchedule(Map<String, Object> model){
+    @GetMapping("/add/visiting")
+    public String addVisiting(Map<String, Object> model){
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
         Iterable<Position> positions = positionServices.findAll();
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
@@ -52,46 +54,44 @@ public class ScheduleController {
         return "createSchedule";
     }
 
-    @PostMapping("/admin/schedule/add")
+    @PostMapping("/add/visiting")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String createSchedule(){
         return "redirect:/admin";
     }
 
 
-    @PostMapping("/admin/schedule/add/create-study-group")
-    public String createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+    @PostMapping("/add/create-study-group")
+    public void createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return "redirect:/admin/schedule/add";
+            return;
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
-        return "redirect:/admin/schedule/add";
     }
 
 
-    @PostMapping("/admin/schedule/add/create-position")
-    public String createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
+    @PostMapping("/add/create-position")
+    public void createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
-        if (positionFromDb != null){
-//            model.put("message","Position exists!");
-            return "redirect:/admin/schedule/add";
+        //            model.put("message","Position exists!");
+        if (positionFromDb != null) {
+            return;
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-        return "redirect:/admin/schedule/add";
+
     }
 
 
-    @PostMapping("/admin/schedule/add/create-discipline")
-    public String createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+    @PostMapping("/add/create-discipline")
+    public void createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return "redirect:/admin/schedule/add";
+            return;
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
-        return "redirect:/admin/schedule/add";
     }
 
 }

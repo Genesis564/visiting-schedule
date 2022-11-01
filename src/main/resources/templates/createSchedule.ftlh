@@ -89,7 +89,7 @@
         </div>
 
 
-        <form action="/admin/schedule/add" method="post">
+        <form action="/admin/schedule/add/visiting" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <button class="btn btn-outline-primary btn-lg" type="submit">Save</button>
         </form>

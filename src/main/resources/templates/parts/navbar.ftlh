@@ -24,7 +24,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/admin/registration">Create user</a></li>
-                            <li><a class="dropdown-item" href="/admin/schedule/add">Create schedule</a></li>
+                            <li><a class="dropdown-item" href="/admin/schedule/add/visiting">Create visiting</a></li>
                         </ul>
                     </li>
                 </#if>
