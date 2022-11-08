@@ -10,7 +10,7 @@ scp -i ~/.ssh/id_rsa \
 
 echo 'Restart server...'
 
-ssh -i ~/.ssh/id_rsa su@192.168.147.73 << EOF
+ssh -tt -i ~/.ssh/id_rsa su@192.168.147.73 << EOF
 pgrep java | xargs kill -9
 nohup java -jar hibernate-test-1.0-SNAPSHOT.jar > log.txt &
 EOF
