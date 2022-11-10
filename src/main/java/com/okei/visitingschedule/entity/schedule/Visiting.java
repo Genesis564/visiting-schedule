@@ -1,5 +1,9 @@
 package com.okei.visitingschedule.entity.schedule;
 
+import com.okei.visitingschedule.repos.VisitingCriteriaRepo;
+import com.okei.visitingschedule.services.VisitingCriteriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -17,30 +21,34 @@ public class Visiting {
     @Enumerated(EnumType.STRING)
     private Set<Status> status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "study_group_id")
     private StudyGroup studyGroup;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "academic_discipline_id")
     private AcademicDiscipline academicDiscipline;
 
-    @ElementCollection(targetClass = VisitingCriteria.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "visiting_criteria", joinColumns = @JoinColumn(name = "visiting_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<VisitingCriteria> criteria;
+    @OneToMany
+    @JoinColumn(name = "criteria_Id")
+    private List<VisitingCriteria> criteria;
 
-    public Visiting(String date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline) {
+
+    public List<VisitingCriteria> getCriteria() {
+        return criteria;
+    }
+
+    public Visiting(String date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,VisitingCriteriaService visitingCriteriaService) {
         this.date = date;
         this.status = status;
         this.studyGroup = studyGroup;
         this.position = position;
         this.academicDiscipline = academicDiscipline;
-        this.criteria = new HashSet<>(Arrays.asList(VisitingCriteria.values()));
+        this.criteria = visitingCriteriaService.findAll();
     }
 
     public Visiting() {

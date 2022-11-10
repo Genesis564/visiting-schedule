@@ -11,10 +11,10 @@ public class Schedule {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "visiter_user_id")
     private User visitorUser;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "visited_user_id")
     private User visitedUser;
     private String visitingWeek;
