@@ -6,5 +6,5 @@ import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VisitingCriteriaRepo extends JpaRepository<VisitingCriteria, Long> {
-    VisitingCriteria findByCritariaName(String criteriaName);
+    VisitingCriteria findByCriteriaName(String criteriaName);
 }

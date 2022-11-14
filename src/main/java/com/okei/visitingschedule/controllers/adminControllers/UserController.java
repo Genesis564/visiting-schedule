@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping
     public String userSave(
             @RequestParam String username,
-            @RequestParam Map<String ,String > form,
+            @RequestParam Map<String ,String> form,
             @RequestParam("userId") User user
     ) {
         user.setUsername(username);

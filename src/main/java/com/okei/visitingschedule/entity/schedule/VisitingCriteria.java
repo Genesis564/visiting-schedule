@@ -9,9 +9,12 @@ public class VisitingCriteria {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String critariaName;
+    private String criteriaName;
+    @Column(length = 9999)
     private String valueOfOnePoint;
+    @Column(length = 9999)
     private String valueOfTwoPoint;
+    @Column(length = 9999)
     private String valueOfThreePoint;
     private int score;
 
@@ -27,19 +30,19 @@ public class VisitingCriteria {
         this.id = id;
     }
 
-    public VisitingCriteria(String critariaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
-        this.critariaName = critariaName;
+    public VisitingCriteria(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
+        this.criteriaName = criteriaName;
         this.valueOfOnePoint = valueOfOnePoint;
         this.valueOfTwoPoint = valueOfTwoPoint;
         this.valueOfThreePoint = valueOfThreePoint;
     }
 
-    public String getCritariaName() {
-        return critariaName;
+    public String getCriteriaName() {
+        return criteriaName;
     }
 
-    public void setCritariaName(String critariaName) {
-        this.critariaName = critariaName;
+    public void setCriteriaName(String critariaName) {
+        this.criteriaName = critariaName;
     }
 
     public void setValueOfOnePoint(String valueOfOnePoint) {
@@ -76,6 +79,6 @@ public class VisitingCriteria {
 
     @Override
     public String toString() {
-        return critariaName;
+        return criteriaName;
     }
 }

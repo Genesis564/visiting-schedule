@@ -1,8 +1,6 @@
 package com.okei.visitingschedule.entity.schedule;
 
-import com.okei.visitingschedule.repos.VisitingCriteriaRepo;
 import com.okei.visitingschedule.services.VisitingCriteriaService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.*;
@@ -14,7 +12,7 @@ public class Visiting {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String date;
+    private Date date;
 
     @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "visiting_status", joinColumns = @JoinColumn(name = "visiting_id"))
@@ -37,18 +35,22 @@ public class Visiting {
     @JoinColumn(name = "criteria_Id")
     private List<VisitingCriteria> criteria;
 
+    @OneToMany
+    @JoinColumn(name = "criteria_score_id")
+    private List<CriteriaScore> criteriaScore;
+
 
     public List<VisitingCriteria> getCriteria() {
         return criteria;
     }
 
-    public Visiting(String date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,VisitingCriteriaService visitingCriteriaService) {
+    public Visiting(Date date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,List<VisitingCriteria> criteria, List<CriteriaScore> criteriaScore) {
         this.date = date;
         this.status = status;
         this.studyGroup = studyGroup;
         this.position = position;
         this.academicDiscipline = academicDiscipline;
-        this.criteria = visitingCriteriaService.findAll();
+        this.criteria = criteria;
     }
 
     public Visiting() {

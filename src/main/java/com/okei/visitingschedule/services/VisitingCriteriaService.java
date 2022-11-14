@@ -26,7 +26,7 @@ public class VisitingCriteriaService {
         visitingCriteriaRepo.save(visitingCriteria);
     }
     public VisitingCriteria findByCriteriaName(String criteriaName){
-        return visitingCriteriaRepo.findByCritariaName(criteriaName);
+        return visitingCriteriaRepo.findByCriteriaName(criteriaName);
     }
 
     public List<VisitingCriteria> findAll(){

@@ -1,18 +1,17 @@
 package com.okei.visitingschedule.controllers.adminControllers;
 
 import com.okei.visitingschedule.dto.*;
-import com.okei.visitingschedule.entity.Role;
-import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
+import com.okei.visitingschedule.repos.CriteriaScoreRepo;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Collections;
 import java.util.Map;
 
 @Controller
@@ -21,17 +20,19 @@ import java.util.Map;
 public class ScheduleController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
-    private final ScheduleServices scheduleServices;
+    private final VisitingServices visitingServices;
+    private final CriteriaScoreRepo criteriaScoreRepo;
     private final StudyGroupServices studyGroupServices;
     private final VisitingCriteriaService visitingCriteriaService;
 
     @Autowired
-    public ScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, ScheduleServices scheduleServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService) {
+    public ScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, VisitingServices visitingServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService, CriteriaScoreRepo criteriaScoreRepo) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
-        this.scheduleServices = scheduleServices;
+        this.visitingServices = visitingServices;
         this.studyGroupServices = studyGroupServices;
         this.visitingCriteriaService = visitingCriteriaService;
+        this.criteriaScoreRepo = criteriaScoreRepo;
     }
 
 
@@ -53,42 +54,45 @@ public class ScheduleController {
 
     @PostMapping("/add/visiting")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String createSchedule(){
+    public String createSchedule(VisitingRequestDTO visitingRequestDTO, Map<String,Object> model){
+        System.out.println("Some text");
         return "redirect:/admin";
     }
 
 
     @PostMapping("/add/create-study-group")
-    public void createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+    public String  createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return;
+            return "redirect:/admin/schedule/add/visiting";
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
+        return "redirect:/admin/schedule/add/visiting";
     }
 
 
     @PostMapping("/add/create-position")
-    public void createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
+    public String  createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         //            model.put("message","Position exists!");
         if (positionFromDb != null) {
-            return;
+            return "redirect:/admin/schedule/add/visiting";
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-
+        return "redirect:/admin/schedule/add/visiting";
     }
 
 
     @PostMapping("/add/create-discipline")
-    public void createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+    public String  createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return;
+            return "redirect:/admin/schedule/add/visiting";
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
+        return "redirect:/admin/schedule/add/visiting";
     }
 
     @PostMapping("/add/create-visiting-criteria")
