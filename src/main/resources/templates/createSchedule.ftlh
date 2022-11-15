@@ -5,13 +5,13 @@
     <div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Date</span>
-            <input type="text" class="form-control" name="scheduleDate">
+            <span class="input-group-text" id="basic-addon1">Дата</span>
+            <input type="date" class="form-control" name="visitingDate" id="visitingDate">
         </div>
 
         <div class="mb-3">
-            <select class="form-select" aria-label="Default select example">
-                <option selected disabled hidden>Status</option>
+            <select class="form-select" aria-label="Default select example" onchange="selectedStatus(this);">
+                <option selected disabled hidden>Статус</option>
                 <#list statuses as status>
                     <option value="${status}">${status}</option>
                 </#list>
@@ -21,7 +21,7 @@
         <div class="input-group mb-3">
             <select class="form-select" id="studyGroupsSelect" aria-label="Default select example"
                     onchange="selectedGroup(this);">
-                <option value="" selected disabled hidden>Study group</option>
+                <option value="" selected disabled hidden>Группа</option>
                 <#list studyGroups as studyGroup>
                     <option value="${studyGroup.id!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
@@ -32,7 +32,7 @@
         <div class="input-group mb-3">
             <select class="form-select" id="positionsSelect" aria-label="Default select example"
                     onchange="selectedPosition(this);">
-                <option value="" selected disabled hidden>Position</option>
+                <option value="" selected disabled hidden>Должность посетившего занятия</option>
                 <#list positions as position>
                     <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
@@ -43,7 +43,7 @@
         <div class="input-group mb-3">
             <select class="form-select" id="academicDisciplinsSelect" aria-label="Default select example"
                     onchange="selectedDiscipline(this);">
-                <option value="" selected disabled hidden>Discipline</option>
+                <option value="" selected disabled hidden>Учебная дисциплина</option>
                 <#list academicDisciplins as academicDiscipline>
                     <option value="${academicDiscipline.id!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
@@ -79,6 +79,7 @@
 
         <div class="mb-3">
             <#assign
+            currentScore = 0
             maxScore = 0
             >
             <#list criteries as criteria>
@@ -89,8 +90,7 @@
             <div class="container text-left">
                 <table class="table table-sm table-borderless">
                     <caption>
-                        <label for="recipient-name" class="col-form-label">Общий балл: (Максимальный
-                            балл ${maxScore})</label>
+                        <label for="recipient-name" class="col-form-label" id="scoreInfo"></label>
                     </caption>
                     <thead>
                     <tr>
@@ -116,24 +116,28 @@
                                             <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
                                                    id="${criteria.criteriaName}"
-                                                   value="1">
+                                                   value="1" onchange="selectValueOfCriteria();">
                                         </td>
                                     </tr>
                                     <tr>
                                         <th scope="row">2</th>
                                         <td>${criteria.valueOfTwoPoint}</td>
-                                        <td><input class="form-check-input" type="radio"
+                                        <td>
+                                            <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
                                                    id="${criteria.criteriaName}"
-                                                   value="2"></td>
+                                                   value="2" onchange="selectValueOfCriteria();">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th scope="row">3</th>
                                         <td>${criteria.valueOfThreePoint}</td>
-                                        <td><input class="form-check-input" type="radio"
+                                        <td>
+                                            <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
                                                    id="${criteria.criteriaName}"
-                                                   value="3"></td>
+                                                   value="3" onchange="selectValueOfCriteria();">
+                                        </td>
                                     </tr>
                                 </#list>
                                 </tbody>
@@ -154,12 +158,34 @@
     </div>
     <script>
 
+        let currentScore;
         let groupId;
         let positionId;
         let disciplineId;
+        let status;
         let criteriaScore = [];
+        let criteria = [];
+
+        document.addEventListener("DOMContentLoaded",() =>{
+            document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
+            document.getElementById("visitingDate").valueAsDate = new Date();
+        })
+
+        function selectValueOfCriteria(){
+            currentScore = 0
+            <#list criteries as criteria>
+            if(document.querySelector('input[name="${criteria.criteriaName}"]:checked')!=null){
+                currentScore = (+currentScore) + (+document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
+            }
+            </#list>
+            document.getElementById("scoreInfo").innerHTML = "Общий балл: "+ currentScore +"   (Максимальный балл ${maxScore})";
+        }
 
 
+
+        function selectedStatus(sel) {
+            status = sel.value;
+        }
 
         function selectedGroup(sel) {
             groupId = sel.value;
@@ -178,11 +204,15 @@
             let visitingRequestDTO = new FormData(submitForm);
             <#list criteries as criteria>
             criteriaScore.push(document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
+            criteria.push(${criteria.id});
             </#list>
             visitingRequestDTO.append("studyGroupId", groupId)
             visitingRequestDTO.append("positionId", positionId)
             visitingRequestDTO.append("academicDisciplineId", disciplineId)
             visitingRequestDTO.append("criteriaScoreIds", criteriaScore)
+            visitingRequestDTO.append("status", status)
+            visitingRequestDTO.append("date", document.getElementById('visitingDate').value)
+            visitingRequestDTO.append("criterionIds", criteria)
 
             let response = await fetch('/admin/schedule/add/visiting', {
                 method: 'POST',
