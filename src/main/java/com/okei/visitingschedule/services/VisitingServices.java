@@ -1,27 +1,26 @@
 package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.schedule.*;
-import com.okei.visitingschedule.repos.ScheduleRepo;
+import com.okei.visitingschedule.repos.VisitingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class VisitingServices {
 
-    private final ScheduleRepo scheduleRepo;
+    private final VisitingRepo visitingRepo;
     @Autowired
-    public VisitingServices(ScheduleRepo scheduleRepo) {
-        this.scheduleRepo = scheduleRepo;
+    public VisitingServices(VisitingRepo visitingRepo) {
+        this.visitingRepo = visitingRepo;
     }
 
     public void addVisiting(Date date, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,
                             List<VisitingCriteria> criteria,List<CriteriaScore> criteriaScore){
-        scheduleRepo.save(new Visiting(date, Collections.singleton(Status.PLANNED),studyGroup,position,academicDiscipline,criteria,criteriaScore));
+//        visitingRepo.save(new Visiting());
     }
 
     public List<CriteriaScore> fillCriteriaScore(List<VisitingCriteria> visitingCriteria){
@@ -32,10 +31,10 @@ public class VisitingServices {
         return criteriaScores;
     }
     public void save(Visiting visiting){
-        scheduleRepo.save(visiting);
+        visitingRepo.save(visiting);
     }
 
     public List<Visiting> findAll(){
-        return (List<Visiting>) scheduleRepo.findAll();
+        return (List<Visiting>) visitingRepo.findAll();
     }
 }

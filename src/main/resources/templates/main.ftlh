@@ -1,7 +1,7 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-    <div>Users</div>
+    <div>Пользователи (Позже эта страница будет удалена, а пока она полезна)</div>
     <#list users as user>
         <div>
             <b>${user.id}</b>

@@ -28,7 +28,7 @@ public class UserController {
         return "userList";
     }
     @GetMapping("{user}")
-    public  void userEditForm(@PathVariable User user,Map<String, Object> model){
+    public void userEditForm(@PathVariable User user,Map<String, Object> model){
 //        Set<String> roles = Arrays.stream(Role.values())
 //                .map(Role::name)
 //                .collect(Collectors.toSet());

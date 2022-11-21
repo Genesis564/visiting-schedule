@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Visiting schedule</a>
+        <a class="navbar-brand" href="/">Расписание посещений</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,20 +11,23 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/admin">Home</a>
+                    <a class="nav-link" aria-current="page" href="/admin">Домашняя страница</a>
                 </li>
                 <#if isAdmin>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/user-list">User list</a>
+                        <a class="nav-link" href="/admin/user-list">Список пользователей</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/schedule/">Расписание</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            Create
+                            Создать
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/admin/registration">Create user</a></li>
-                            <li><a class="dropdown-item" href="/admin/schedule/add/visiting">Create visiting</a></li>
+                            <li><a class="dropdown-item" href="/admin/registration">Добавить пользователя</a></li>
+                            <li><a class="dropdown-item" href="/admin/schedule/add/">Добавить посещение</a></li>
                         </ul>
                     </li>
                 </#if>

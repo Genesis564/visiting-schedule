@@ -1,5 +1,6 @@
 package com.okei.visitingschedule.dto;
 
+import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Status;
 
 import java.io.Serializable;
@@ -8,64 +9,40 @@ import java.util.Set;
 
 
 public class ScheduleRequestDto{
-    private final String date;
-    private final Set<Status> status;
-    private final Long studyGroupId;
-    private final Long positionId;
-    private final Long academicDisciplineId;
 
-    public ScheduleRequestDto(String date, Set<Status> status, Long studyGroupId, Long positionId, Long academicDisciplineId) {
-        this.date = date;
-        this.status = status;
-        this.studyGroupId = studyGroupId;
-        this.positionId = positionId;
-        this.academicDisciplineId = academicDisciplineId;
+    private User visitorUser;
+    private User visitedUser;
+    private String visitingWeek;
+
+
+    public ScheduleRequestDto( User visitorUser, User visitedUser, String visitingWeek) {
+        this.visitorUser = visitorUser;
+        this.visitedUser = visitedUser;
+        this.visitingWeek = visitingWeek;
     }
 
-    public String getDate() {
-        return date;
+
+    public User getVisitorUser() {
+        return visitorUser;
     }
 
-    public Set<Status> getStatus() {
-        return status;
+    public void setVisitorUser(User visitorUser) {
+        this.visitorUser = visitorUser;
     }
 
-    public Long getStudyGroupId() {
-        return studyGroupId;
+    public User getVisitedUser() {
+        return visitedUser;
     }
 
-    public Long getPositionId() {
-        return positionId;
+    public void setVisitedUser(User visitedUser) {
+        this.visitedUser = visitedUser;
     }
 
-    public Long getAcademicDisciplineId() {
-        return academicDisciplineId;
+    public String getVisitingWeek() {
+        return visitingWeek;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ScheduleRequestDto entity = (ScheduleRequestDto) o;
-        return Objects.equals(this.date, entity.date) &&
-                Objects.equals(this.status, entity.status) &&
-                Objects.equals(this.studyGroupId, entity.studyGroupId) &&
-                Objects.equals(this.positionId, entity.positionId) &&
-                Objects.equals(this.academicDisciplineId, entity.academicDisciplineId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, status, studyGroupId, positionId, academicDisciplineId);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "date = " + date + ", " +
-                "status = " + status + ", " +
-                "studyGroupId = " + studyGroupId + ", " +
-                "positionId = " + positionId + ", " +
-                "academicDisciplineId = " + academicDisciplineId + ")";
+    public void setVisitingWeek(String visitingWeek) {
+        this.visitingWeek = visitingWeek;
     }
 }

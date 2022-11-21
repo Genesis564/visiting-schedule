@@ -11,13 +11,14 @@ public class Visiting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+    @Column(length = 9999)
+    private String purposeOfTheVisit;
 
+    private int numberOfStudents;
+    @Column(length = 9999)
+    private String lessonTopic;
+    private String PurposeOfTheLesson;
     private Date date;
-
-    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "visiting_status", joinColumns = @JoinColumn(name = "visiting_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Status> status;
 
     @ManyToOne
     @JoinColumn(name = "study_group_id")
@@ -39,22 +40,33 @@ public class Visiting {
     @JoinColumn(name = "criteria_score_id")
     private List<CriteriaScore> criteriaScore;
 
+    @OneToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
+
+
+    public Visiting(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, Date date,StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline, List<VisitingCriteria> criteria, List<CriteriaScore> criteriaScore, Schedule schedule) {
+        this.purposeOfTheVisit = purposeOfTheVisit;
+        this.numberOfStudents = numberOfStudents;
+        this.lessonTopic = lessonTopic;
+        PurposeOfTheLesson = purposeOfTheLesson;
+        this.date = date;
+
+        this.studyGroup = studyGroup;
+        this.position = position;
+        this.academicDiscipline = academicDiscipline;
+        this.criteria = criteria;
+        this.criteriaScore = criteriaScore;
+        this.schedule = schedule;
+    }
+
+    public Visiting() {
+    }
 
     public List<VisitingCriteria> getCriteria() {
         return criteria;
     }
 
-    public Visiting(Date date, Set<Status> status, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,List<VisitingCriteria> criteria, List<CriteriaScore> criteriaScore) {
-        this.date = date;
-        this.status = status;
-        this.studyGroup = studyGroup;
-        this.position = position;
-        this.academicDiscipline = academicDiscipline;
-        this.criteria = criteria;
-    }
-
-    public Visiting() {
-    }
 
     public AcademicDiscipline getAcademicDiscipline() {
         return academicDiscipline;

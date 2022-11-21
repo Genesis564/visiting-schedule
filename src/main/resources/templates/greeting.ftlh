@@ -2,6 +2,6 @@
 <#include "parts/security.ftlh">
 
 <@c.page>
-    <h5>Hello, ${name}</h5>
+    <h5>Привет, ${name}</h5>
     <div>Это начальная страница</div>
 </@c.page>
