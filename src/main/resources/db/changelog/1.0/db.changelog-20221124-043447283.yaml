@@ -1,0 +1,393 @@
+databaseChangeLog:
+- changeSet:
+    id: 1669264593462-1
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 1
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: hibernate_sequence
+        startValue: 1
+- changeSet:
+    id: 1669264593462-2
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: academic_discipline_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: discipline_name
+            type: VARCHAR(255)
+        tableName: academic_discipline
+- changeSet:
+    id: 1669264593462-3
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: criteria_score_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: score
+            type: INTEGER
+        - column:
+            name: criteria_score_id
+            type: BIGINT
+        tableName: criteria_score
+- changeSet:
+    id: 1669264593462-4
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: position_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: position_name
+            type: VARCHAR(255)
+        tableName: position
+- changeSet:
+    id: 1669264593462-5
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: schedule_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: visiting_week
+            type: VARCHAR(255)
+        - column:
+            name: visited_user_id
+            type: BIGINT
+        - column:
+            name: visiter_user_id
+            type: BIGINT
+        tableName: schedule
+- changeSet:
+    id: 1669264593462-6
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: schedule_id
+            type: BIGINT
+        - column:
+            name: status
+            type: VARCHAR(255)
+        tableName: schedule_status
+- changeSet:
+    id: 1669264593462-7
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: study_group_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: group_name
+            type: VARCHAR(255)
+        tableName: study_group
+- changeSet:
+    id: 1669264593462-8
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        - column:
+            name: roles
+            type: VARCHAR(255)
+        tableName: user_roles
+- changeSet:
+    id: 1669264593462-9
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usr_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: active
+            type: BOOLEAN
+        - column:
+            name: password
+            type: VARCHAR(255)
+        - column:
+            name: username
+            type: VARCHAR(255)
+        tableName: usr
+- changeSet:
+    id: 1669264593462-10
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: visiting_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: purpose_of_the_lesson
+            type: VARCHAR(255)
+        - column:
+            name: date
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: lesson_topic
+            type: VARCHAR(9999)
+        - column:
+            constraints:
+              nullable: false
+            name: number_of_students
+            type: INTEGER
+        - column:
+            name: purpose_of_the_visit
+            type: VARCHAR(9999)
+        - column:
+            name: academic_discipline_id
+            type: BIGINT
+        - column:
+            name: position_id
+            type: BIGINT
+        - column:
+            name: schedule_id
+            type: BIGINT
+        - column:
+            name: study_group_id
+            type: BIGINT
+        tableName: visiting
+- changeSet:
+    id: 1669264593462-11
+    author: Petrikeev_E_A (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: visiting_criteria_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: criteria_name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: score
+            type: INTEGER
+        - column:
+            name: value_of_one_point
+            type: VARCHAR(9999)
+        - column:
+            name: value_of_three_point
+            type: VARCHAR(9999)
+        - column:
+            name: value_of_two_point
+            type: VARCHAR(9999)
+        - column:
+            name: criteria_id
+            type: BIGINT
+        tableName: visiting_criteria
+- changeSet:
+    id: 1669264593462-12
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: visited_user_id
+        baseTableName: schedule
+        constraintName: fk7t8e7sy54wattiem91hufa681
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: usr
+        validate: true
+- changeSet:
+    id: 1669264593462-13
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: position_id
+        baseTableName: visiting
+        constraintName: fkbh6sfou4yn415402d4pshsben
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: position
+        validate: true
+- changeSet:
+    id: 1669264593462-14
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_roles
+        constraintName: fkg6agnwreityp2vf23bm2jgjm3
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: usr
+        validate: true
+- changeSet:
+    id: 1669264593462-15
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: academic_discipline_id
+        baseTableName: visiting
+        constraintName: fkk7kelh13kx6f8qlqeeajlknxv
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: academic_discipline
+        validate: true
+- changeSet:
+    id: 1669264593462-16
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: criteria_score_id
+        baseTableName: criteria_score
+        constraintName: fklov23qgx7t7jq86rrvnxd1dd7
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: visiting
+        validate: true
+- changeSet:
+    id: 1669264593462-17
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: schedule_id
+        baseTableName: visiting
+        constraintName: fkmb6ihpib32v6jou4bg82smmis
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: schedule
+        validate: true
+- changeSet:
+    id: 1669264593462-18
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: study_group_id
+        baseTableName: visiting
+        constraintName: fkmvfkano7958hay5o7mhoy1ywf
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: study_group
+        validate: true
+- changeSet:
+    id: 1669264593462-19
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: criteria_id
+        baseTableName: visiting_criteria
+        constraintName: fkpdbbt1wo15m2loi0jrx9fhiqf
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: visiting
+        validate: true
+- changeSet:
+    id: 1669264593462-20
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: schedule_id
+        baseTableName: schedule_status
+        constraintName: fkpdr3ff1sl0r0kr8poja4bmeep
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: schedule
+        validate: true
+- changeSet:
+    id: 1669264593462-21
+    author: Petrikeev_E_A (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: visiter_user_id
+        baseTableName: schedule
+        constraintName: fks7jbi4bjta0km0dswu6pijexs
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: usr
+        validate: true
+
