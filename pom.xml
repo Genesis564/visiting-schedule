@@ -71,6 +71,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.23.1-GA</version>
+        </dependency>
     </dependencies>
 
 
@@ -94,19 +99,6 @@
                         <user.name>Petrikeev_E_A</user.name>
                     </systemProperties>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate5</artifactId>
-                        <version>4.17.2</version>
-                        <type>jar</type>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
-                        <version>3.23.1-GA</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -21,6 +21,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <div>
                             <button class="btn btn-primary" type="submit">Сохранить</button>
+                            <input type="hidden" name="scheduleId" value="${schedule.id}">
                             <input type="hidden" name="_csrf" value="${_csrf.token}">
                         </div>
                     </div>

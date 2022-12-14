@@ -3,6 +3,7 @@ package com.okei.visitingschedule.entity.schedule;
 import javax.persistence.*;
 
 @Entity
+@Table(name="study_group")
 public class StudyGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

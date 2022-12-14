@@ -3,6 +3,10 @@
 
 <@c.page>
     <div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Цель посещения занятия</span>
+            <input type="text" class="form-control" name="purposeOfTheVisit" id="purposeOfTheVisit">
+        </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Дата</span>
@@ -28,6 +32,10 @@
             </select>
             <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
         </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Количество обучающихся</span>
+            <input type="text" class="form-control" name="numberOfStudents" id="numberOfStudents">
+        </div>
 
         <div class="input-group mb-3">
             <select class="form-select" id="positionsSelect" aria-label="Default select example"
@@ -50,6 +58,15 @@
             </select>
             <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
         </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Тема занятия</span>
+            <input type="text" class="form-control" name="lessonTopic" id="lessonTopic">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Цель занятия</span>
+            <input type="text" class="form-control" name="purposeOfTheLesson" id="purposeOfTheLesson">
+        </div>
+
         <div class="mb-3">
             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseCriteria" aria-expanded="false" aria-controls="collapseCriteria">
@@ -66,6 +83,7 @@
                     <label for="recipient-name" class="col-form-label">Значение для 3 балла: </label>
                     <input type="text" class="form-control mb-2" name="valueOfThreePoint">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="hidden" name="scheduleId" value="${schedule.id}">
                     <button class="btn btn-outline-primary btn-lg mb-2 me-2" type="submit">Сохранить</button>
                     <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseCriteria" aria-expanded="false"
@@ -167,22 +185,19 @@
         let positionId;
         let disciplineId;
         let status;
-        let criteriaScore = [];
-        let criteria = [];
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
         let curr = new Date(getDateOfWeek(splitDate[0],splitDate[1]));
-        let last = curr + 6;
-        let firstDay = new Date(curr.setDate(first)).toUTCString();
-        let lastDay = new Date(curr.setDate(last)).toUTCString();
-
 
         document.addEventListener("DOMContentLoaded",() =>{
 
             document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
-            document.getElementById("visitingDate").valueAsDate = new Date(curr);
-            document.getElementById("visitingDate").setAttribute("min",curr.toLocaleDateString("en-US"));
-            document.getElementById("visitingDate").setAttribute("max",lastDay);
+            let inputData = document.getElementById("visitingDate");
+            inputData.valueAsDate = new Date(curr);
+            let month= inputData.valueAsDate.getMonth()+1
+            let lastDayOfWeek = inputData.valueAsDate.getDate()+6;
+            inputData.min = inputData.valueAsDate.getFullYear() +"-"+month+"-"+ inputData.valueAsDate.getDate();
+            inputData.max = inputData.valueAsDate.getFullYear() +"-"+month+"-"+lastDayOfWeek;
         })
 
         function selectValueOfCriteria(){
@@ -196,7 +211,7 @@
         }
 
         function getDateOfWeek(year,week){
-            let simple = new Date(year, 0, 1 + (week - 1) *7);
+            let simple = new Date(year, 0, 1 + (week - 1) *7,5);
             let dow = simple.getDay();
             let ISOweekStart = simple;
             if (dow <= 4)
@@ -223,6 +238,8 @@
         }
 
         submitForm.onsubmit = async (e) => {
+            let criteriaScore = [];
+            let criteria = [];
             e.preventDefault();
             let visitingRequestDTO = new FormData(submitForm);
             <#list criteries as criteria>
@@ -230,12 +247,17 @@
             criteria.push(${criteria.id});
             </#list>
             visitingRequestDTO.append("studyGroupId", groupId)
+            visitingRequestDTO.append("purposeOfTheVisit", document.getElementById('purposeOfTheVisit').value)
+            visitingRequestDTO.append("numberOfStudents", document.getElementById('numberOfStudents').value)
+            visitingRequestDTO.append("lessonTopic", document.getElementById('lessonTopic').value)
+            visitingRequestDTO.append("purposeOfTheLesson", document.getElementById('purposeOfTheLesson').value)
             visitingRequestDTO.append("positionId", positionId)
             visitingRequestDTO.append("academicDisciplineId", disciplineId)
             visitingRequestDTO.append("criteriaScoreIds", criteriaScore)
             visitingRequestDTO.append("status", status)
             visitingRequestDTO.append("date", document.getElementById('visitingDate').value)
             visitingRequestDTO.append("criterionIds", criteria)
+            visitingRequestDTO.append("scheduleId", ${schedule.id})
 
             let response = await fetch('/admin/schedule/add/visiting', {
                 method: 'POST',

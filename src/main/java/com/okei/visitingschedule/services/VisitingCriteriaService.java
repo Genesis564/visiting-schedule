@@ -29,6 +29,10 @@ public class VisitingCriteriaService {
         return visitingCriteriaRepo.findByCriteriaName(criteriaName);
     }
 
+    public VisitingCriteria findById(Long id){
+        return visitingCriteriaRepo.findById(id).get();
+    }
+
     public List<VisitingCriteria> findAll(){
         return (List<VisitingCriteria>) visitingCriteriaRepo.findAll();
     }

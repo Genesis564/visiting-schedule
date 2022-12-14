@@ -8,33 +8,43 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class VisitingServices {
 
     private final VisitingRepo visitingRepo;
+
     @Autowired
     public VisitingServices(VisitingRepo visitingRepo) {
         this.visitingRepo = visitingRepo;
     }
 
-    public void addVisiting(Date date, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline,
-                            List<VisitingCriteria> criteria,List<CriteriaScore> criteriaScore){
-//        visitingRepo.save(new Visiting());
+    public void addVisiting(String purposeOfTheVisit, int numberOfStudents,
+                            String lessonTopic, String purposeOfTheLesson,
+                            String  date, StudyGroup studyGroup,
+                            Position position, AcademicDiscipline academicDiscipline,
+                            List<VisitingCriteria> criteria, Set<CriteriaScore> criteriaScore,
+                            Schedule schedule) {
+        visitingRepo.save(new Visiting(purposeOfTheVisit, numberOfStudents,
+                lessonTopic, purposeOfTheLesson,
+                date, studyGroup,
+                position, academicDiscipline,
+                criteriaScore,
+                schedule));
     }
 
-    public List<CriteriaScore> fillCriteriaScore(List<VisitingCriteria> visitingCriteria){
-        List<CriteriaScore> criteriaScores = new ArrayList<>();
-        for (VisitingCriteria criteria: visitingCriteria) {
-            criteriaScores.add(new CriteriaScore(criteria.getScore()));
-        }
-        return criteriaScores;
+
+
+    public Visiting findFromDb(Schedule schedule, String date) {
+        return visitingRepo.findByScheduleAndDate(schedule, date);
     }
-    public void save(Visiting visiting){
+
+    public void save(Visiting visiting) {
         visitingRepo.save(visiting);
     }
 
-    public List<Visiting> findAll(){
+    public List<Visiting> findAll() {
         return (List<Visiting>) visitingRepo.findAll();
     }
 }

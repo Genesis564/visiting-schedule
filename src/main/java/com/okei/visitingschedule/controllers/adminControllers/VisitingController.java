@@ -1,6 +1,7 @@
 package com.okei.visitingschedule.controllers.adminControllers;
 
 import com.okei.visitingschedule.dto.*;
+import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.repos.CriteriaScoreRepo;
 import com.okei.visitingschedule.services.*;
@@ -9,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -49,60 +50,84 @@ public class VisitingController {
         return "createVisiting";
     }
 
-    @PostMapping("{schedule}/visiting")
-    public String createSchedule(VisitingRequestDTO visitingRequestDTO, Map<String,Object> model){
+    @PostMapping("visiting")
+    public String createSchedule(@RequestParam("studyGroupId") StudyGroup studyGroup,
+                                 @RequestParam("scheduleId") Schedule schedule,
+                                 @RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
+                                 @RequestParam("positionId") Position position,
+                                 VisitingRequestDTO visitingRequestDTO, Map<String,Object> model){
+        Visiting visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
+        List<VisitingCriteria> criteriaLists = new ArrayList<>();
+        Set<CriteriaScore> criteriaScoreSet = new HashSet<>();
+        for (Long criteriaId : visitingRequestDTO.getCriterionIds()) {
+            criteriaLists.add(visitingCriteriaService.findById(criteriaId));
+        }
+//        for (Long criteriaScoreId : visitingRequestDTO.getCriteriaScoreIds()) {
+//            criteriaScoreLists.add(criteriaScoreRepo.findById(criteriaScoreId).get());
+//        }
+//        if(visitingFromDb == null){
+//            visitingServices.addVisiting(visitingRequestDTO.getPurposeOfTheVisit(),
+//                    visitingRequestDTO.getNumberOfStudents(),
+//                    visitingRequestDTO.getLessonTopic(),
+//                    visitingRequestDTO.getPurposeOfTheLesson(),
+//                    visitingRequestDTO.getDate(),studyGroup,
+//                    position,academicDiscipline,
+//                    criteriaLists,criteriaScoreLists,
+//                    schedule);
+//            return "redirect:/admin/schedule/";
+//        }
 
-        return "redirect:/admin/schedule/";
+        return "redirect:/admin/schedule/add";
     }
 
 
     @PostMapping("create-study-group")
-    public String  createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+    public String  createStudyGroup(@RequestParam("scheduleId") long scheduleId,StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return "redirect:/admin/schedule/add/visiting";
+            return "redirect:/admin/schedule/add/" + scheduleId;
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
-        return "redirect:/admin/schedule/add/visiting";
+        return "redirect:/admin/schedule/add/" + scheduleId;
     }
 
 
     @PostMapping("create-position")
-    public String  createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
+    public String  createPosition(@RequestParam("scheduleId") long scheduleId,PositionRequestDto positionRequestDto, Map<String,Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         //            model.put("message","Position exists!");
         if (positionFromDb != null) {
-            return "redirect:/admin/schedule/add/visiting";
+            return "redirect:/admin/schedule/add/" + scheduleId;
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-        return "redirect:/admin/schedule/add/visiting";
+        return "redirect:/admin/schedule/add/" + scheduleId;
     }
 
 
     @PostMapping("create-discipline")
-    public String  createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+    public String  createDiscipline(@RequestParam("scheduleId") long scheduleId,AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return "redirect:/admin/schedule/add/visiting";
+            return "redirect:/admin/schedule/add/" + scheduleId;
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
-        return "redirect:/admin/schedule/add/visiting";
+        return "redirect:/admin/schedule/add/" + scheduleId;
     }
 
     @PostMapping("create-visiting-criteria")
-    public String  createCriteria(VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String,Object> model){
+    public String  createCriteria(@RequestParam("scheduleId") long scheduleId,VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String,Object> model){
         VisitingCriteria visitingCriteriaFromDb = visitingCriteriaService.findByCriteriaName(visitingCriteriaRequestDTO.getCritariaName());
         if (visitingCriteriaFromDb != null){
-//            model.put("message","Discipline exists!");
-            return "redirect:/admin/schedule/add/visiting";
+//            model.put("me ssage","Discipline exists!");
+            return "redirect:/admin/schedule/add/" + scheduleId;
         }
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
                 visitingCriteriaRequestDTO.getValueOfOnePoint(),
                 visitingCriteriaRequestDTO.getValueOfTwoPoint(),
                 visitingCriteriaRequestDTO.getValueOfThreePoint());
-        return "redirect:/admin/schedule/add/visiting";
+        return "redirect:/admin/schedule/add/" + scheduleId;
     }
 
 }
