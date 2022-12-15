@@ -17,10 +17,10 @@ public class VisitingRequestDTO implements Serializable {
     private final Long positionId;
     private final Long academicDisciplineId;
     private final List<Long> criterionIds;
-    private final List<Long> criteriaScoreIds;
+    private final List<Integer> criteriaScoreIds;
     private final Long scheduleId;
 
-    public VisitingRequestDTO(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, String date, Long studyGroupId, Long positionId, Long academicDisciplineId, List<Long> criterionIds, List<Long> criteriaScoreIds, Long scheduleId) {
+    public VisitingRequestDTO(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, String date, Long studyGroupId, Long positionId, Long academicDisciplineId, List<Long> criterionIds, List<Integer> criteriaScoreIds, Long scheduleId) {
         this.purposeOfTheVisit = purposeOfTheVisit;
         this.numberOfStudents = numberOfStudents;
         this.lessonTopic = lessonTopic;
@@ -70,7 +70,7 @@ public class VisitingRequestDTO implements Serializable {
         return criterionIds;
     }
 
-    public List<Long> getCriteriaScoreIds() {
+    public List<Integer> getCriteriaScoreIds() {
         return criteriaScoreIds;
     }
 

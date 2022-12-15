@@ -1,11 +1,12 @@
 package com.okei.visitingschedule.entity.schedule;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="visiting")
-public class Visiting {
+public class Visiting{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -38,7 +39,7 @@ public class Visiting {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    public Visiting(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, String date, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline, Set<CriteriaScore> criteriaScore, Schedule schedule) {
+    public Visiting(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, String date, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline, Schedule schedule) {
         this.purposeOfTheVisit = purposeOfTheVisit;
         this.numberOfStudents = numberOfStudents;
         this.lessonTopic = lessonTopic;
@@ -47,7 +48,6 @@ public class Visiting {
         this.studyGroup = studyGroup;
         this.position = position;
         this.academicDiscipline = academicDiscipline;
-        this.criteriaScore = criteriaScore;
         this.schedule = schedule;
     }
 
@@ -148,12 +148,12 @@ public class Visiting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Visiting visiting = (Visiting) o;
-        return numberOfStudents == visiting.numberOfStudents && Objects.equals(id, visiting.id) && Objects.equals(purposeOfTheVisit, visiting.purposeOfTheVisit) && Objects.equals(lessonTopic, visiting.lessonTopic) && Objects.equals(purposeOfTheLesson, visiting.purposeOfTheLesson) && Objects.equals(date, visiting.date) && Objects.equals(studyGroup, visiting.studyGroup) && Objects.equals(position, visiting.position) && Objects.equals(academicDiscipline, visiting.academicDiscipline) && Objects.equals(criteriaScore, visiting.criteriaScore) && Objects.equals(schedule, visiting.schedule);
+        return numberOfStudents == visiting.numberOfStudents && Objects.equals(id, visiting.id) && Objects.equals(purposeOfTheVisit, visiting.purposeOfTheVisit) && Objects.equals(lessonTopic, visiting.lessonTopic) && Objects.equals(purposeOfTheLesson, visiting.purposeOfTheLesson) && Objects.equals(date, visiting.date) && Objects.equals(studyGroup, visiting.studyGroup) && Objects.equals(position, visiting.position) && Objects.equals(academicDiscipline, visiting.academicDiscipline) && Objects.equals(schedule, visiting.schedule);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date, studyGroup, position, academicDiscipline, criteriaScore, schedule);
+        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date, studyGroup, position, academicDiscipline, schedule);
     }
 }
 

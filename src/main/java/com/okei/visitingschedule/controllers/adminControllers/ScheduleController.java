@@ -4,7 +4,10 @@ import com.okei.visitingschedule.dto.ScheduleRequestDto;
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
-import com.okei.visitingschedule.services.*;
+import com.okei.visitingschedule.entity.schedule.Visiting;
+import com.okei.visitingschedule.services.ScheduleServices;
+import com.okei.visitingschedule.services.UserServices;
+import com.okei.visitingschedule.services.VisitingServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,17 +25,21 @@ public class ScheduleController {
 
     private UserServices userServices;
     private ScheduleServices scheduleServices;
+    private VisitingServices visitingServices;
 
     @Autowired
-    public ScheduleController(UserServices userServices,ScheduleServices scheduleServices) {
+    public ScheduleController(UserServices userServices,ScheduleServices scheduleServices,VisitingServices visitingServices) {
         this.userServices = userServices;
         this.scheduleServices = scheduleServices;
+        this.visitingServices = visitingServices;
     }
 
     @GetMapping
     public String getSchedule(Map<String ,Object> model){
         Iterable<Schedule> schedules = scheduleServices.findAll();
+        Iterable<Visiting> visitings = visitingServices.findAll();
 
+        model.put("visitings",visitings);
         model.put("schedules",schedules);
         return "schedule";
     }

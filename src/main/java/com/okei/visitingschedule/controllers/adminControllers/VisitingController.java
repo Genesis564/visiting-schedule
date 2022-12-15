@@ -62,20 +62,32 @@ public class VisitingController {
         for (Long criteriaId : visitingRequestDTO.getCriterionIds()) {
             criteriaLists.add(visitingCriteriaService.findById(criteriaId));
         }
-//        for (Long criteriaScoreId : visitingRequestDTO.getCriteriaScoreIds()) {
-//            criteriaScoreLists.add(criteriaScoreRepo.findById(criteriaScoreId).get());
-//        }
-//        if(visitingFromDb == null){
-//            visitingServices.addVisiting(visitingRequestDTO.getPurposeOfTheVisit(),
-//                    visitingRequestDTO.getNumberOfStudents(),
-//                    visitingRequestDTO.getLessonTopic(),
-//                    visitingRequestDTO.getPurposeOfTheLesson(),
-//                    visitingRequestDTO.getDate(),studyGroup,
-//                    position,academicDiscipline,
-//                    criteriaLists,criteriaScoreLists,
-//                    schedule);
-//            return "redirect:/admin/schedule/";
-//        }
+
+        if(visitingFromDb == null){
+            visitingServices.addVisiting(visitingRequestDTO.getPurposeOfTheVisit(),
+                    visitingRequestDTO.getNumberOfStudents(),
+                    visitingRequestDTO.getLessonTopic(),
+                    visitingRequestDTO.getPurposeOfTheLesson(),
+                    visitingRequestDTO.getDate(),studyGroup,
+                    position,academicDiscipline,
+                    criteriaLists,
+                    schedule);
+            visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
+            Set<CriteriaScore> tempCriteriaScoreSet = new HashSet<>();
+            int i =0;
+            for (Integer criteriaScore : visitingRequestDTO.getCriteriaScoreIds()) {
+                CriteriaScoreKey scoreKey = new CriteriaScoreKey(visitingFromDb.getId(),criteriaLists.get(i).getId());
+                CriteriaScore newCriteriaScore = new CriteriaScore(scoreKey,visitingFromDb, criteriaLists.get(i), criteriaScore.intValue());
+                 criteriaScoreRepo.save(newCriteriaScore);
+                i++;
+//                tempCriteriaScoreSet.clear();
+//                tempCriteriaScoreSet.add(newCriteriaScore);
+//                criteriaLists.get(i).setCriteriaScore(tempCriteriaScoreSet);
+//                visitingCriteriaService.updateCriteriaScore(criteriaLists.get(i),tempCriteriaScoreSet );
+//                criteriaScoreSet.add(newCriteriaScore);
+            }
+            return "redirect:/admin/schedule/";
+        }
 
         return "redirect:/admin/schedule/add";
     }

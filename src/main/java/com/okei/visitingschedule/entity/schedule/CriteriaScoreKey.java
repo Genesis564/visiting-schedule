@@ -1,5 +1,7 @@
 package com.okei.visitingschedule.entity.schedule;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;

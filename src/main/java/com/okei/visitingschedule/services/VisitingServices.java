@@ -24,15 +24,15 @@ public class VisitingServices {
                             String lessonTopic, String purposeOfTheLesson,
                             String  date, StudyGroup studyGroup,
                             Position position, AcademicDiscipline academicDiscipline,
-                            List<VisitingCriteria> criteria, Set<CriteriaScore> criteriaScore,
+                            List<VisitingCriteria> criteria,
                             Schedule schedule) {
         visitingRepo.save(new Visiting(purposeOfTheVisit, numberOfStudents,
                 lessonTopic, purposeOfTheLesson,
                 date, studyGroup,
                 position, academicDiscipline,
-                criteriaScore,
                 schedule));
     }
+
 
 
 

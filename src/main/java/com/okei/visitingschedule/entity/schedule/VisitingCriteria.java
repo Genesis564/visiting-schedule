@@ -1,12 +1,16 @@
 package com.okei.visitingschedule.entity.schedule;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 @Entity
 @Table(name="visiting_criteria")
-public class VisitingCriteria {
+public class VisitingCriteria{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -94,12 +98,12 @@ public class VisitingCriteria {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VisitingCriteria that = (VisitingCriteria) o;
-        return Objects.equals(id, that.id) && Objects.equals(criteriaName, that.criteriaName) && Objects.equals(valueOfOnePoint, that.valueOfOnePoint) && Objects.equals(valueOfTwoPoint, that.valueOfTwoPoint) && Objects.equals(valueOfThreePoint, that.valueOfThreePoint) && Objects.equals(criteriaScore, that.criteriaScore);
+        return Objects.equals(id, that.id) && Objects.equals(criteriaName, that.criteriaName) && Objects.equals(valueOfOnePoint, that.valueOfOnePoint) && Objects.equals(valueOfTwoPoint, that.valueOfTwoPoint) && Objects.equals(valueOfThreePoint, that.valueOfThreePoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, criteriaName, valueOfOnePoint, valueOfTwoPoint, valueOfThreePoint, criteriaScore);
+        return Objects.hash(id, criteriaName, valueOfOnePoint, valueOfTwoPoint, valueOfThreePoint);
     }
 
     @Override
