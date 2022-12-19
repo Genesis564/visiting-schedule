@@ -1,5 +1,6 @@
 package com.okei.visitingschedule.controllers;
 
+import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,13 @@ public class MainController {
     }
 
 
-    @GetMapping("/admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/home")
     public String main(Map<String, Object> model) {
-        Iterable<User> users = userServices.findAll();
-        model.put("users", users);
+        Iterable<User> usersVisited = userServices.findByRoles(Role.USER_VISITED);
+        Iterable<User> usersVisitor = userServices.findByRoles(Role.USER_VISITOR);
+
+        model.put("usersVisited", usersVisited);
+        model.put("usersVisitor", usersVisitor);
         return "main";
     }
 }

@@ -31,7 +31,7 @@
                             <input type="hidden" name="_csrf" value="${_csrf.token}">
                         </form>
                         <#else>
-                        <form action="/admin/schedule/add/${schedule.id}" method="get">
+                        <form action="/schedule/add/${schedule.id}" method="get">
                             <button type="submit" class="btn btn-outline-secondary ms-3">Посещение
                             </button>
                             <input type="hidden" name="_csrf" value="${_csrf.token}">
