@@ -17,17 +17,16 @@
                     </thead>
                     <tbody>
                     <#list schedules as schedule>
+                        <#assign currentVisiting = 'none'>
+                        <#list visitings as visiting>
+                            <#if visiting.schedule.id = schedule.id>
+                                <#assign currentVisiting = visiting>
+                            </#if>
+                        </#list>
                         <tr>
                             <td>${schedule.visitingWeek}</td>
                             <td>${schedule.visitorUser.username}</td>
                             <td>${schedule.visitedUser.username}</td>
-                            <#list visitings as visiting>
-                                <#if visiting.schedule.id = schedule.id>
-                                    <#assign currentVisiting = visiting>
-                                <#else>
-                                    <#assign currentVisiting = 'none'>
-                                </#if>
-                            </#list>
                             <td>
                                 <#if currentVisiting == 'none'>
                                     <form class="me-3" action="/schedule/add/${schedule.id}" method="get">
@@ -36,7 +35,7 @@
                                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                                     </form>
                                 <#else>
-                                    <form action="/schedule/add/${schedule.id}" method="get">
+                                    <form action="/schedule/view/${schedule.id}" method="get">
                                         <button type="submit" class="btn btn-outline-secondary ms-3">Посещение
                                         </button>
                                         <input type="hidden" name="_csrf" value="${_csrf.token}">

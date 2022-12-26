@@ -13,12 +13,10 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/home">Домашняя страница</a>
                 </li>
+
                 <#if isAdmin>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/user-list">Список пользователей</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/schedule/">Расписание</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

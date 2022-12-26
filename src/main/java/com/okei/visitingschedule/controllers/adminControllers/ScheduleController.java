@@ -34,16 +34,6 @@ public class ScheduleController {
         this.visitingServices = visitingServices;
     }
 
-    @GetMapping
-    public String getSchedule(Map<String ,Object> model){
-        Iterable<Schedule> schedules = scheduleServices.findAll();
-        Iterable<Visiting> visitings = visitingServices.findAll();
-
-        model.put("visitings",visitings);
-        model.put("schedules",schedules);
-        return "schedule";
-    }
-
 
     @GetMapping("add")
     public String addSchedule(Map<String, Object> model){
@@ -64,7 +54,7 @@ public class ScheduleController {
             scheduleServices.addSchedule(scheduleRequestDto.getVisitedUser(),
                     scheduleRequestDto.getVisitorUser(),
                     scheduleRequestDto.getVisitingWeek());
-            return "redirect:/admin/schedule/";
+            return "redirect:/home";
         }else return "redirect:/admin/schedule/add";
     }
 

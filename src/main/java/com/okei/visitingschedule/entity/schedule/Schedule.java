@@ -61,6 +61,14 @@ public class Schedule {
         this.visitedUser = visitedUser;
     }
 
+    public Set<Status> getStatus() {
+        return status;
+    }
+
+    public void setStatus(Set<Status> status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }

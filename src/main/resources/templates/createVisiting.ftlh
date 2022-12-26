@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/createObject.ftlh" as cr>
+<#include "parts/security.ftlh">
 
 <@c.page>
     <div>
@@ -13,15 +14,6 @@
             <input type="date" class="form-control" name="visitingDate" id="visitingDate">
         </div>
 
-        <div class="mb-3">
-            <select class="form-select" aria-label="Default select example" onchange="selectedStatus(this);">
-                <option selected disabled hidden>Статус</option>
-                <#list statuses as status>
-                    <option value="${status}">${status}</option>
-                </#list>
-            </select>
-        </div>
-
         <div class="input-group mb-3">
             <select class="form-select" id="studyGroupsSelect" aria-label="Default select example"
                     onchange="selectedGroup(this);">
@@ -30,7 +22,9 @@
                     <option value="${studyGroup.id!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
-            <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
+            <#if isAdmin>
+                <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
+            </#if>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Количество обучающихся</span>
@@ -45,7 +39,9 @@
                     <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
             </select>
-            <@cr.create "/admin/schedule/add/create-position","должность","positionName"/>
+            <#if isAdmin>
+                <@cr.create "/admin/schedule/add/create-position","должность","positionName"/>
+            </#if>
         </div>
 
         <div class="input-group mb-3">
@@ -56,7 +52,9 @@
                     <option value="${academicDiscipline.id!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
-            <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
+            <#if isAdmin>
+                <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
+            </#if>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Тема занятия</span>
@@ -67,32 +65,34 @@
             <input type="text" class="form-control" name="purposeOfTheLesson" id="purposeOfTheLesson">
         </div>
 
-        <div class="mb-3">
-            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseCriteria" aria-expanded="false" aria-controls="collapseCriteria">
-                Добавить критерий оценивания
-            </button>
-            <div class="collapse mb-2" id="collapseCriteria">
-                <form action="/admin/schedule/add/create-visiting-criteria" method="post">
-                    <label for="recipient-name" class="col-form-label">Название критерия: </label>
-                    <input type="text" class="form-control mb-1" name="critariaName">
-                    <label for="recipient-name" class="col-form-label">Значение для 1 балла: </label>
-                    <input type="text" class="form-control mb-1" name="valueOfOnePoint">
-                    <label for="recipient-name" class="col-form-label">Значение для 2 балла: </label>
-                    <input type="text" class="form-control mb-1" name="valueOfTwoPoint">
-                    <label for="recipient-name" class="col-form-label">Значение для 3 балла: </label>
-                    <input type="text" class="form-control mb-2" name="valueOfThreePoint">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <input type="hidden" name="scheduleId" value="${schedule.id}">
-                    <button class="btn btn-outline-primary btn-lg mb-2 me-2" type="submit">Сохранить</button>
-                    <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseCriteria" aria-expanded="false"
-                            aria-controls="collapseCriteria">
-                        Отмена
-                    </button>
-                </form>
+        <#if isAdmin>
+            <div class="mb-3">
+                <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseCriteria" aria-expanded="false" aria-controls="collapseCriteria">
+                    Добавить критерий оценивания
+                </button>
+                <div class="collapse mb-2" id="collapseCriteria">
+                    <form action="/admin/schedule/add/create-visiting-criteria" method="post">
+                        <label for="recipient-name" class="col-form-label">Название критерия: </label>
+                        <input type="text" class="form-control mb-1" name="critariaName">
+                        <label for="recipient-name" class="col-form-label">Значение для 1 балла: </label>
+                        <input type="text" class="form-control mb-1" name="valueOfOnePoint">
+                        <label for="recipient-name" class="col-form-label">Значение для 2 балла: </label>
+                        <input type="text" class="form-control mb-1" name="valueOfTwoPoint">
+                        <label for="recipient-name" class="col-form-label">Значение для 3 балла: </label>
+                        <input type="text" class="form-control mb-2" name="valueOfThreePoint">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <input type="hidden" name="scheduleId" value="${schedule.id}">
+                        <button class="btn btn-outline-primary btn-lg mb-2 me-2" type="submit">Сохранить</button>
+                        <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseCriteria" aria-expanded="false"
+                                aria-controls="collapseCriteria">
+                            Отмена
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </#if>
 
         <div class="mb-3">
             <#assign
@@ -172,11 +172,6 @@
                 <button class="btn btn-outline-primary btn-lg mb-6" type="submit">Сохранить</button>
             </div>
         </form>
-
-        <div>
-            <label id="labelFirst"></label>
-            <label id="labelSecond"></label>
-        </div>
     </div>
     <script>
 
@@ -187,31 +182,31 @@
         let status;
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
-        let curr = new Date(getDateOfWeek(splitDate[0],splitDate[1]));
+        let curr = new Date(getDateOfWeek(splitDate[0], splitDate[1]));
 
-        document.addEventListener("DOMContentLoaded",() =>{
+        document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
             let inputData = document.getElementById("visitingDate");
             inputData.valueAsDate = new Date(curr);
-            let month= inputData.valueAsDate.getMonth()+1
-            let lastDayOfWeek = inputData.valueAsDate.getDate()+6;
-            inputData.min = inputData.valueAsDate.getFullYear() +"-"+month+"-"+ inputData.valueAsDate.getDate();
-            inputData.max = inputData.valueAsDate.getFullYear() +"-"+month+"-"+lastDayOfWeek;
+            let month = inputData.valueAsDate.getMonth() + 1
+            let lastDayOfWeek = inputData.valueAsDate.getDate() + 6;
+            inputData.min = inputData.valueAsDate.getFullYear() + "-" + month + "-" + inputData.valueAsDate.getDate();
+            inputData.max = inputData.valueAsDate.getFullYear() + "-" + month + "-" + lastDayOfWeek;
         })
 
-        function selectValueOfCriteria(){
+        function selectValueOfCriteria() {
             currentScore = 0
             <#list criteries as criteria>
-            if(document.querySelector('input[name="${criteria.criteriaName}"]:checked')!=null){
+            if (document.querySelector('input[name="${criteria.criteriaName}"]:checked') != null) {
                 currentScore = (+currentScore) + (+document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
             }
             </#list>
-            document.getElementById("scoreInfo").innerHTML = "Общий балл: "+ currentScore +"   (Максимальный балл ${maxScore})";
+            document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл ${maxScore})";
         }
 
-        function getDateOfWeek(year,week){
-            let simple = new Date(year, 0, 1 + (week - 1) *7,5);
+        function getDateOfWeek(year, week) {
+            let simple = new Date(year, 0, 1 + (week - 1) * 7, 5);
             let dow = simple.getDay();
             let ISOweekStart = simple;
             if (dow <= 4)
@@ -221,9 +216,6 @@
             return ISOweekStart;
         }
 
-        function selectedStatus(sel) {
-            status = sel.value;
-        }
 
         function selectedGroup(sel) {
             groupId = sel.value;
@@ -254,12 +246,11 @@
             visitingRequestDTO.append("positionId", positionId)
             visitingRequestDTO.append("academicDisciplineId", disciplineId)
             visitingRequestDTO.append("criteriaScoreIds", criteriaScore)
-            visitingRequestDTO.append("status", status)
             visitingRequestDTO.append("date", document.getElementById('visitingDate').value)
             visitingRequestDTO.append("criterionIds", criteria)
             visitingRequestDTO.append("scheduleId", ${schedule.id})
 
-            let response = await fetch('/admin/schedule/add/visiting', {
+            let response = await fetch('/schedule/add/visiting', {
                 method: 'POST',
                 body: visitingRequestDTO
             });

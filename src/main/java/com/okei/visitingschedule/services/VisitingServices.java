@@ -33,8 +33,10 @@ public class VisitingServices {
                 schedule));
     }
 
-
-
+    public Visiting findVisitingBySchedule(Schedule schedule){
+        Visiting visiting = visitingRepo.findBySchedule(schedule);
+        return visiting;
+    }
 
     public Visiting findFromDb(Schedule schedule, String date) {
         return visitingRepo.findByScheduleAndDate(schedule, date);

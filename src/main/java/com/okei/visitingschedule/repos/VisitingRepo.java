@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface VisitingRepo extends JpaRepository<Visiting, Long> {
     Visiting findByScheduleAndDate(Schedule schedule,String date);
+    Visiting findBySchedule(Schedule schedule);
 }
