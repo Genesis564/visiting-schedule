@@ -6,12 +6,10 @@ import com.okei.visitingschedule.repos.CriteriaScoreRepo;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/schedule/")
@@ -23,15 +21,17 @@ public class UserScheduleController {
     private final CriteriaScoreRepo criteriaScoreRepo;
     private final StudyGroupServices studyGroupServices;
     private final VisitingCriteriaService visitingCriteriaService;
+    private final ScheduleServices scheduleServices;
 
     @Autowired
-    public UserScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, VisitingServices visitingServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService, CriteriaScoreRepo criteriaScoreRepo) {
+    public UserScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, VisitingServices visitingServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService, CriteriaScoreRepo criteriaScoreRepo,ScheduleServices scheduleServices) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
         this.visitingServices = visitingServices;
         this.studyGroupServices = studyGroupServices;
         this.visitingCriteriaService = visitingCriteriaService;
         this.criteriaScoreRepo = criteriaScoreRepo;
+        this.scheduleServices = scheduleServices;
     }
 
     @GetMapping("add/{schedule}")
@@ -66,6 +66,7 @@ public class UserScheduleController {
         return "visiting";
     }
 
+    @Transactional
     @PostMapping("add/visiting")
     public String createSchedule(@RequestParam("studyGroupId") StudyGroup studyGroup,
                                  @RequestParam("scheduleId") Schedule schedule,
@@ -74,6 +75,8 @@ public class UserScheduleController {
                                  VisitingRequestDTO visitingRequestDTO, Map<String,Object> model){
         Visiting visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
         List<VisitingCriteria> criteriaLists = new ArrayList<>();
+        Set<Status> statusSet = new HashSet<>();
+        statusSet.add(Status.WAITING_TO_CONFIRM);
         for (Long criteriaId : visitingRequestDTO.getCriterionIds()) {
             criteriaLists.add(visitingCriteriaService.findById(criteriaId));
         }
@@ -87,6 +90,8 @@ public class UserScheduleController {
                     position,academicDiscipline,
                     criteriaLists,
                     schedule);
+            schedule.setStatus(statusSet);
+            scheduleServices.save(schedule);
             visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
             int i =0;
             for (Integer criteriaScore : visitingRequestDTO.getCriteriaScoreIds()) {
@@ -96,9 +101,9 @@ public class UserScheduleController {
                 criteriaScoreRepo.save(newCriteriaScore);
                 i++;
             }
-            return "redirect:/admin/schedule/";
+           return "redirect:main";
         }
 
-        return "redirect:/admin/schedule/add";
+        return "redirect:/schedule/add/"+schedule.getId();
     }
 }

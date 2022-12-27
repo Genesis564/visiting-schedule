@@ -4,7 +4,6 @@ import com.okei.visitingschedule.dto.ScheduleRequestDto;
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
-import com.okei.visitingschedule.entity.schedule.Visiting;
 import com.okei.visitingschedule.services.ScheduleServices;
 import com.okei.visitingschedule.services.UserServices;
 import com.okei.visitingschedule.services.VisitingServices;
@@ -25,13 +24,11 @@ public class ScheduleController {
 
     private UserServices userServices;
     private ScheduleServices scheduleServices;
-    private VisitingServices visitingServices;
 
     @Autowired
-    public ScheduleController(UserServices userServices,ScheduleServices scheduleServices,VisitingServices visitingServices) {
+    public ScheduleController(UserServices userServices,ScheduleServices scheduleServices) {
         this.userServices = userServices;
         this.scheduleServices = scheduleServices;
-        this.visitingServices = visitingServices;
     }
 
 
