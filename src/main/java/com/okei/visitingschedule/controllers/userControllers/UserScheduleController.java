@@ -1,14 +1,17 @@
 package com.okei.visitingschedule.controllers.userControllers;
 
 import com.okei.visitingschedule.dto.VisitingRequestDTO;
+import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.repos.CriteriaScoreRepo;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -51,15 +54,21 @@ public class UserScheduleController {
     }
 
     @GetMapping("view/{schedule}")
-    public String viewVisiting(@PathVariable Schedule schedule, Map<String, Object> model){
+    public String viewVisiting(@PathVariable Schedule schedule, Principal principal, Map<String, Object> model){
         Visiting thisVisiting = visitingServices.findVisitingBySchedule(schedule);
         Set<CriteriaScore> criteriaScore = thisVisiting.getCriteriaScore();
+        User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        boolean access = false;
+        if (schedule.getVisitedUser().equals(user)){
+            access = true;
+        }
+
 
         List<VisitingCriteria> visitingCriteria = new ArrayList<>();
         for (CriteriaScore score:criteriaScore) {
             visitingCriteria.add(visitingCriteriaService.findById(score.getVisitingCriteria().getId()));
         }
-
+        model.put("access",access);
         model.put("criteriaScore",criteriaScore);
         model.put("criteries", visitingCriteria);
         model.put("visiting",thisVisiting);

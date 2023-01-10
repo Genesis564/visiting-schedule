@@ -180,19 +180,25 @@
         let positionId;
         let disciplineId;
         let status;
+        let curr;
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
-        let curr = new Date(getDateOfWeek(splitDate[0], splitDate[1]));
-
+        let week = splitDate[1].split("0")
+        if (week.length === 2){
+            curr = new Date(getDateOfWeek(splitDate[0], week[1]));
+        }else{
+            curr = new Date(getDateOfWeek(splitDate[0], week[0]));
+        }
         document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
             let inputData = document.getElementById("visitingDate");
             inputData.valueAsDate = new Date(curr);
             let month = inputData.valueAsDate.getMonth() + 1
-            let lastDayOfWeek = inputData.valueAsDate.getDate() + 6;
-            inputData.min = inputData.valueAsDate.getFullYear() + "-" + month + "-" + inputData.valueAsDate.getDate();
-            inputData.max = inputData.valueAsDate.getFullYear() + "-" + month + "-" + lastDayOfWeek;
+            let lastDayOfWeek = new Date(inputData.valueAsDate);
+            lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
+            inputData.min = inputData.valueAsDate.getFullYear() + ((month<10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate()<10) ? "-0" : "-") + inputData.valueAsDate.getDate();
+            inputData.max = lastDayOfWeek.getFullYear() + ((month<10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate()<10) ? "-0" : "-") + lastDayOfWeek.getDate();
         })
 
         function selectValueOfCriteria() {

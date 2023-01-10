@@ -114,12 +114,23 @@
             </div>
         </div>
 
+
+        <div class="input-group mb-3">
         <form action="/home" method="get">
-            <div class="mb-3">
+            <div class="mb-3 me-3">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <button class="btn btn-outline-secondary btn-lg mb-6" type="submit">Назад</button>
             </div>
         </form>
+                <#if access>
+                    <form action="/home" method="get">
+                        <div class="mb-3 me-3">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                            <button class="btn btn-primary btn-lg mb-6" type="submit">Подтвердить</button>
+                        </div>
+                    </form>
+                </#if>
+        </div>
     </div>
 
 
