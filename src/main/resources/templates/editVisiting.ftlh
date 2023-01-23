@@ -6,92 +6,56 @@
     <div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель посещения занятия</span>
-            <input type="text" class="form-control" name="purposeOfTheVisit" id="purposeOfTheVisit">
+            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}"
+                   name="purposeOfTheVisit" id="purposeOfTheVisit">
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Дата</span>
-            <input type="date" class="form-control" name="visitingDate" id="visitingDate">
+            <input type="date" class="form-control" value="${visiting.date}" name="visitingDate"
+                   id="visitingDate">
         </div>
         <div class="input-group mb-3">
-            <select class="form-select" id="studyGroupsSelect" aria-label="Default select example"
-                    onchange="selectedGroup(this);">
-                <option value="" selected disabled hidden>Группа</option>
+            <select class="form-select" id="studyGroupsSelect" aria-label="Default select example">
+                <option value="${visiting.studyGroup.id}" selected disabled hidden>${visiting.studyGroup.groupName}</option>
                 <#list studyGroups as studyGroup>
                     <option value="${studyGroup.id!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
-            <#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
-            </#if>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Количество обучающихся</span>
-            <input type="text" class="form-control" name="numberOfStudents" id="numberOfStudents">
+            <input type="text" class="form-control" value="${visiting.numberOfStudents}"
+                   name="numberOfStudents" id="numberOfStudents">
         </div>
 
         <div class="input-group mb-3">
-            <select class="form-select" id="positionsSelect" aria-label="Default select example"
-                    onchange="selectedPosition(this);">
-                <option value="" selected disabled hidden>Должность посетившего занятия</option>
+            <select class="form-select" id="positionsSelect" aria-label="Default select example">
+                <option value="${visiting.position.id}" selected disabled hidden>${visiting.position.positionName}</option>
                 <#list positions as position>
                     <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
             </select>
-            <#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-position","должность","positionName"/>
-            </#if>
         </div>
 
         <div class="input-group mb-3">
-            <select class="form-select" id="academicDisciplinsSelect" aria-label="Default select example"
-                    onchange="selectedDiscipline(this);">
-                <option value="" selected disabled hidden>Учебная дисциплина</option>
+            <select class="form-select" id="academicDisciplinsSelect" aria-label="Default select example">
+                <option value="${visiting.academicDiscipline.id}" selected disabled hidden>${visiting.academicDiscipline.disciplineName}</option>
                 <#list academicDisciplins as academicDiscipline>
                     <option value="${academicDiscipline.id!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
-            <#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
-            </#if>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Тема занятия</span>
-            <input type="text" class="form-control" name="lessonTopic" id="lessonTopic">
+            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" name="lessonTopic"
+                   id="lessonTopic">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-            <input type="text" class="form-control" name="purposeOfTheLesson" id="purposeOfTheLesson">
+            <input type="text" class="form-control" value="${visiting.lessonTopic}" name="purposeOfTheLesson"
+                   id="purposeOfTheLesson">
         </div>
-
-        <#if isAdmin>
-            <div class="mb-3">
-                <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseCriteria" aria-expanded="false" aria-controls="collapseCriteria">
-                    Добавить критерий оценивания
-                </button>
-                <div class="collapse mb-2" id="collapseCriteria">
-                    <form action="/admin/schedule/add/create-visiting-criteria" method="post">
-                        <label for="recipient-name" class="col-form-label">Название критерия: </label>
-                        <input type="text" class="form-control mb-1" name="critariaName">
-                        <label for="recipient-name" class="col-form-label">Значение для 1 балла: </label>
-                        <input type="text" class="form-control mb-1" name="valueOfOnePoint">
-                        <label for="recipient-name" class="col-form-label">Значение для 2 балла: </label>
-                        <input type="text" class="form-control mb-1" name="valueOfTwoPoint">
-                        <label for="recipient-name" class="col-form-label">Значение для 3 балла: </label>
-                        <input type="text" class="form-control mb-2" name="valueOfThreePoint">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <input type="hidden" name="scheduleId" value="${schedule.id}">
-                        <button class="btn btn-outline-primary btn-lg mb-2 me-2" type="submit">Сохранить</button>
-                        <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseCriteria" aria-expanded="false"
-                                aria-controls="collapseCriteria">
-                            Отмена
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </#if>
 
         <div class="mb-3">
             <#assign
@@ -180,26 +144,38 @@
         let disciplineId;
         let status;
         let curr;
+        let criteriaScore = [];
+        <#list criteriaScore as score>
+        criteriaScore.push(${score.score});
+        </#list>
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
         let week = splitDate[1].split("0")
-        if (week.length === 2){
+        if (week.length === 2) {
             curr = new Date(getDateOfWeek(splitDate[0], week[1]));
-        }else{
+        } else {
             curr = new Date(getDateOfWeek(splitDate[0], week[0]));
         }
         document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
-            let inputData = document.getElementById("visitingDate");
-            inputData.valueAsDate = new Date(curr);
-            let month = inputData.valueAsDate.getMonth() + 1
-            let lastDayOfWeek = new Date(inputData.valueAsDate);
-            lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
-            inputData.min = inputData.valueAsDate.getFullYear() + ((month<10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate()<10) ? "-0" : "-") + inputData.valueAsDate.getDate();
-            inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth()<10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate()<10) ? "-0" : "-") + lastDayOfWeek.getDate();
+            let dataDoc = document.getElementById("visitingDate");
+            let inputData = new Date(curr);
+            let month = inputData.getMonth() + 1
+            let lastDayOfWeek = new Date(inputData);
+            lastDayOfWeek.setDate(inputData.getDate() + 6);
+            dataDoc.min = inputData.getFullYear() + ((month < 10) ? "-0" : "-") + month + ((inputData.getDate() < 10) ? "-0" : "-") + inputData.getDate();
+            dataDoc.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth() < 10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate() < 10) ? "-0" : "-") + lastDayOfWeek.getDate();
+            let i = 0;
+            <#list criteries as criteria>
+            document.querySelectorAll('input[name="${criteria.criteriaName}"]').forEach((elem) => {
+                if (elem.value == criteriaScore[i]) {
+                    elem.checked = true;
+                }
+            })
+            i++;
+            </#list>
         })
-
         function selectValueOfCriteria() {
             currentScore = 0
             <#list criteries as criteria>
@@ -221,20 +197,10 @@
             return ISOweekStart;
         }
 
-
-        function selectedGroup(sel) {
-            groupId = sel.value;
-        }
-
-        function selectedPosition(sel) {
-            positionId = sel.value;
-        }
-
-        function selectedDiscipline(sel) {
-            disciplineId = sel.value;
-        }
-
         submitForm.onsubmit = async (e) => {
+            groupId = document.querySelector("#studyGroupsSelect option:checked").value;
+            positionId = document.querySelector("#positionsSelect option:checked").value;
+            disciplineId = document.querySelector("#academicDisciplinsSelect option:checked").value;
             let criteriaScore = [];
             let criteria = [];
             e.preventDefault();
@@ -249,13 +215,13 @@
             visitingRequestDTO.append("lessonTopic", document.getElementById('lessonTopic').value)
             visitingRequestDTO.append("purposeOfTheLesson", document.getElementById('purposeOfTheLesson').value)
             visitingRequestDTO.append("positionId", positionId)
+            visitingRequestDTO.append("visitingId",${visiting.id})
             visitingRequestDTO.append("academicDisciplineId", disciplineId)
             visitingRequestDTO.append("criteriaScoreIds", criteriaScore)
             visitingRequestDTO.append("date", document.getElementById('visitingDate').value)
             visitingRequestDTO.append("criterionIds", criteria)
             visitingRequestDTO.append("scheduleId", ${schedule.id})
-
-            let response = await fetch('/schedule/add/visiting', {
+            let response = await fetch('/schedule/edit/${visiting.schedule.id}', {
                 method: 'POST',
                 body: visitingRequestDTO
             });

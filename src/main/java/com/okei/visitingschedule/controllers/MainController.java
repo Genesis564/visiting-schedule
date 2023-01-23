@@ -3,6 +3,7 @@ package com.okei.visitingschedule.controllers;
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
+import com.okei.visitingschedule.entity.schedule.Status;
 import com.okei.visitingschedule.entity.schedule.Visiting;
 import com.okei.visitingschedule.services.ScheduleServices;
 import com.okei.visitingschedule.services.UserServices;
@@ -19,20 +20,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
-    private final UserServices userServices;
-    private final VisitingServices visitingServices;
+
     private final ScheduleServices scheduleServices;
 
     @Autowired
-    public MainController(UserServices userServices, ScheduleServices scheduleServices, VisitingServices visitingServices) {
-        this.userServices = userServices;
+    public MainController(ScheduleServices scheduleServices) {
         this.scheduleServices = scheduleServices;
-        this.visitingServices = visitingServices;
     }
 
     @GetMapping("/")
@@ -42,19 +40,33 @@ public class MainController {
 
 
     @GetMapping("/home")
-    public String main(Principal principal,Map<String, Object> model) {
+    public String main(Principal principal, Map<String, Object> model) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Set<Role> roles = user.getRoles();
-        Iterable<Schedule> schedules = null;
-        if (roles.contains(Role.ADMIN)){
+        List<Schedule> schedules = null;
+        if (roles.contains(Role.ADMIN)) {
             schedules = scheduleServices.findAll();
         } else if (roles.contains(Role.USER_VISITOR) || roles.contains(Role.USER_VISITED)) {
             schedules = scheduleServices.findByUser(user);
-        }
-        Iterable<Visiting> visitings = visitingServices.findAll();
 
-        model.put("visitings", visitings);
+        }
+
+        boolean[] access = new boolean[schedules.size()];
+        int i = 0;
+        for (Schedule schedule:schedules) {
+
+            if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
+                    && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)){
+                access[i]=true;
+            }else {
+                access[i]=false;
+            }
+            i++;
+        }
+
+
         model.put("schedules", schedules);
+        model.put("access",access);
         scheduleServices.updateScheduleStatus();
         return "main";
     }

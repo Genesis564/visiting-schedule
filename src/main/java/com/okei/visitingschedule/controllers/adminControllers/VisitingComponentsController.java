@@ -8,7 +8,6 @@ import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
 import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.entity.schedule.StudyGroup;
 import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
-import com.okei.visitingschedule.repos.CriteriaScoreRepo;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

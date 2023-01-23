@@ -3,10 +3,11 @@ package com.okei.visitingschedule.entity.schedule;
 import com.okei.visitingschedule.entity.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="schedule")
+@Table(name = "schedule")
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +26,9 @@ public class Schedule {
     @JoinColumn(name = "visited_user_id")
     private User visitedUser;
     private String visitingWeek;
+    @OneToOne
+    @JoinColumn(name = "visiting_id")
+    private Visiting visiting;
 
 
     public Schedule(Set<Status> status, User visitorUser, User visitedUser, String visitingWeek) {
@@ -75,5 +79,48 @@ public class Schedule {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Visiting getVisiting() {
+        return visiting;
+    }
+
+    public void setVisiting(Visiting visiting) {
+        this.visiting = visiting;
+    }
+
+    public boolean isVisited(){
+        if (!(this.getVisiting()==null)){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Schedule schedule = (Schedule) o;
+        return Objects.equals(id, schedule.id) && Objects.equals(status, schedule.status)
+                && Objects.equals(visitorUser, schedule.visitorUser)
+                && Objects.equals(visitedUser, schedule.visitedUser)
+                && Objects.equals(visitingWeek, schedule.visitingWeek);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, status, visitorUser, visitedUser, visitingWeek);
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", status=" + status +
+                ", visitorUser=" + visitorUser +
+                ", visitedUser=" + visitedUser +
+                ", visitingWeek='" + visitingWeek + '\'' +
+                ", visiting=" + visiting +
+                '}';
     }
 }

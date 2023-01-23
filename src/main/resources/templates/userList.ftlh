@@ -15,18 +15,24 @@
                 <tr>
                     <td>${user.username}</td>
                     <td>
-                        <#list user.roles as role>
-                            ${role.roleName!"No Role"}<#sep>,
-                        </#list>
-                    </td>
-                    <td>
-                        <form action="/admin/${user.id}" method="get">
-                            <button type="button" class="btn btn-outline-secondary ms-3" data-bs-toggle="modal"
-                                    href="#user-${user.id}"
-                                    data-bs-whatever="@getbootstrap">Редактировать
-                            </button>
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        </form>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-start">
+                                    <#list user.roles as role>
+                                        ${role.roleName!"No Role"}<#sep>,
+                                    </#list>
+                                </div>
+                                <div class="col text-start">
+                                    <form action="/admin/${user.id}" method="get">
+                                        <button type="button" class="btn btn-outline-secondary ms-3" data-bs-toggle="modal"
+                                                href="#user-${user.id}"
+                                                data-bs-whatever="@getbootstrap">Редактировать
+                                        </button>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </#list>
@@ -51,7 +57,8 @@
                                     <#list roles as role>
                                         <div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="${role}" ${user.roles?seq_contains(role)?string("checked","")}>
+                                                <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                                                       name="${role}" ${user.roles?seq_contains(role)?string("checked","")}>
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     ${role.roleName}
                                                 </label>

@@ -148,12 +148,20 @@ public class Visiting{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Visiting visiting = (Visiting) o;
-        return numberOfStudents == visiting.numberOfStudents && Objects.equals(id, visiting.id) && Objects.equals(purposeOfTheVisit, visiting.purposeOfTheVisit) && Objects.equals(lessonTopic, visiting.lessonTopic) && Objects.equals(purposeOfTheLesson, visiting.purposeOfTheLesson) && Objects.equals(date, visiting.date) && Objects.equals(studyGroup, visiting.studyGroup) && Objects.equals(position, visiting.position) && Objects.equals(academicDiscipline, visiting.academicDiscipline) && Objects.equals(schedule, visiting.schedule);
+        return numberOfStudents == visiting.numberOfStudents
+                && Objects.equals(id, visiting.id)
+                && Objects.equals(purposeOfTheVisit, visiting.purposeOfTheVisit)
+                && Objects.equals(lessonTopic, visiting.lessonTopic)
+                && Objects.equals(purposeOfTheLesson, visiting.purposeOfTheLesson)
+                && Objects.equals(date, visiting.date)
+                && Objects.equals(studyGroup, visiting.studyGroup)
+                && Objects.equals(position, visiting.position)
+                && Objects.equals(academicDiscipline, visiting.academicDiscipline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date, studyGroup, position, academicDiscipline, schedule);
+        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date, studyGroup, position, academicDiscipline);
     }
 }
 

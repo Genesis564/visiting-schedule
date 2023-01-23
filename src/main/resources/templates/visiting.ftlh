@@ -46,8 +46,7 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-            <input type="text" class="form-control" value="${visiting.lessonTopic}" disabled name="purposeOfTheLesson"
-                   id="purposeOfTheLesson">
+
         </div>
 
 
@@ -116,20 +115,28 @@
 
 
         <div class="input-group mb-3">
-        <form action="/home" method="get">
-            <div class="mb-3 me-3">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button class="btn btn-outline-secondary btn-lg mb-6" type="submit">Назад</button>
-            </div>
-        </form>
-                <#if access>
-                    <form action="/home" method="get">
-                        <div class="mb-3 me-3">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <button class="btn btn-primary btn-lg mb-6" type="submit">Подтвердить</button>
-                        </div>
-                    </form>
-                </#if>
+            <form action="/home" method="get">
+                <div class="mb-3 me-3">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button class="btn btn-outline-secondary btn-lg mb-6" type="submit">Назад</button>
+                </div>
+            </form>
+            <#if access>
+                <form action="/schedule/view/${schedule.id}" method="post">
+                    <div class="mb-3 me-3">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <button class="btn btn-primary btn-lg mb-6" type="submit">Подтвердить</button>
+                    </div>
+                </form>
+            </#if>
+            <#if subjectToEditing>
+            <form action="/schedule/edit/${schedule.id}" method="get">
+                    <div class="mb-3 me-3">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать</button>
+                    </div>
+            </form>
+            </#if>
         </div>
     </div>
 
@@ -145,8 +152,8 @@
         document.addEventListener("DOMContentLoaded", () => {
             let i = 0;
             <#list criteries as criteria>
-            document.querySelectorAll('input[name="${criteria.criteriaName}"]').forEach((elem)=>{
-                if (elem.value == criteriaScore[i]){
+            document.querySelectorAll('input[name="${criteria.criteriaName}"]').forEach((elem) => {
+                if (elem.value == criteriaScore[i]) {
                     elem.checked = true;
                 }
             })
