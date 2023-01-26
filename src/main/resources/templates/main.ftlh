@@ -2,88 +2,65 @@
 
 <@c.page>
     <div>
-        <div class="card mb-3">
-            <div class="card-header">
-                Расписание
-            </div>
-            <div class="card-body">
-                <div>
-                    <table class="table table-hover table-responsive">
-                        <thead>
-                        <tr>
-                            <th>Неделя</th>
-                            <th>Посещающий занятие</th>
-                            <th>Преподаватель</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <#assign
-                        i = 0
-                        >
-                        <#list schedules as schedule>
-                            <tr>
-                                <td>
-                                    ${schedule.visitingWeek}
-                                </td>
-                                <td>
-                                    ${schedule.visitorUser.username}
-                                </td>
-                                <td>
-                                    ${schedule.visitedUser.username}
-                                </td>
-                                <td>
-                                    <div class="d-grid gap-2">
-                                        <#if schedule.isOverdue()>
-                                            <label class="col-form-label">Посещение просроченно</label>
-                                        <#else>
-                                            <#if schedule.isVisited()>
-                                                <#if access[i] == true>
-                                                    <form action="/schedule/view/${schedule.id}" method="get">
-                                                        <button type="submit"
-                                                                class="btn btn-outline-secondary btn-xs ms-3"
-                                                                style="width: 100%; height: 100%">
-                                                            Подтвердить
-                                                            посещение
-                                                        </button>
-                                                        <input type="hidden" name="_csrf"
-                                                               value="${_csrf.token}">
-                                                    </form>
-                                                <#else>
-                                                    <form action="/schedule/view/${schedule.id}" method="get">
-                                                        <button type="submit"
-                                                                class="btn btn-outline-secondary btn-xs ms-3"
-                                                                style="width: 100%; height: 100%">
-                                                            Посещение
-                                                        </button>
-                                                        <input type="hidden" name="_csrf"
-                                                               value="${_csrf.token}">
-                                                    </form>
-                                                </#if>
-                                            <#else>
-                                                <form class="me-3" action="/schedule/add/${schedule.id}"
-                                                      method="get">
-                                                    <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs ms-3"
-                                                            style="width: 100%; height: 100%">
-                                                        Начать
-                                                        посещение
-                                                    </button>
-                                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                                </form>
-                                            </#if>
-                                        </#if>
-                                    </div>
-                                </td>
-                            </tr>
-                            <#assign
-                            i = i+1
-                            >
-                        </#list>
-                        </tbody>
-                    </table>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+            <#assign
+            i = 0
+            >
+            <#list schedules as schedule>
+                <div class="col">
+                    <div class="card text-center my-3 h-100">
+                        <div class="card-header bg-transparent">Неделя: ${schedule.visitingWeek}</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
+                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <#if schedule.isOverdue()>
+                                <label class="col-form-label">Посещение просроченно</label>
+                            <#else>
+                                <#if schedule.isVisited()>
+                                    <#if access[i] == true>
+                                        <form action="/schedule/view/${schedule.id}" method="get">
+                                            <button type="submit"
+                                                    class="btn btn-outline-secondary btn-xs"
+                                                    style="width: 100%; height: 100%">
+                                                Подтвердить
+                                                посещение
+                                            </button>
+                                            <input type="hidden" name="_csrf"
+                                                   value="${_csrf.token}">
+                                        </form>
+                                    <#else>
+                                        <form action="/schedule/view/${schedule.id}" method="get">
+                                            <button type="submit"
+                                                    class="btn btn-outline-secondary btn-xs"
+                                                    style="width: 100%; height: 100%">
+                                                Посещение
+                                            </button>
+                                            <input type="hidden" name="_csrf"
+                                                   value="${_csrf.token}">
+                                        </form>
+                                    </#if>
+                                <#else>
+                                    <form class="me-3" action="/schedule/add/${schedule.id}"
+                                          method="get">
+                                        <button type="submit"
+                                                class="btn btn-outline-secondary btn-xs"
+                                                style="width: 100%; height: 100%">
+                                            Начать
+                                            посещение
+                                        </button>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    </form>
+                                </#if>
+                            </#if>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <#assign
+                i = i+1
+                >
+            </#list>
         </div>
     </div>
 </@c.page>
