@@ -31,15 +31,27 @@
                                                    value="${_csrf.token}">
                                         </form>
                                     <#else>
-                                        <form action="/schedule/view/${schedule.id}" method="get">
-                                            <button type="submit"
-                                                    class="btn btn-outline-secondary btn-xs"
-                                                    style="width: 100%; height: 100%">
-                                                Посещение
-                                            </button>
-                                            <input type="hidden" name="_csrf"
-                                                   value="${_csrf.token}">
-                                        </form>
+                                        <#if schedule.isWaitingToConfirm()>
+                                            <form action="/schedule/view/${schedule.id}" method="get">
+                                                <button type="submit"
+                                                        class="btn btn-outline-secondary btn-xs"
+                                                        style="width: 100%; height: 100%">
+                                                    Редактировать посещение
+                                                </button>
+                                                <input type="hidden" name="_csrf"
+                                                       value="${_csrf.token}">
+                                            </form>
+                                        <#else>
+                                            <form action="/schedule/view/${schedule.id}" method="get">
+                                                <button type="submit"
+                                                        class="btn btn-outline-secondary btn-xs"
+                                                        style="width: 100%; height: 100%">
+                                                    Просмотреть посещение
+                                                </button>
+                                                <input type="hidden" name="_csrf"
+                                                       value="${_csrf.token}">
+                                            </form>
+                                        </#if>
                                     </#if>
                                 <#else>
                                     <form class="me-3" action="/schedule/add/${schedule.id}"

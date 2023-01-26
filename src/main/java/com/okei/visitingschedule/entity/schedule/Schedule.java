@@ -102,6 +102,10 @@ public class Schedule {
         return false;
     }
 
+    public boolean isWaitingToConfirm(){
+        return this.getStatus().contains(Status.WAITING_TO_CONFIRM);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
