@@ -8,12 +8,13 @@
             </div>
             <div class="card-body">
                 <div>
-                    <table class="table table-hover table-sm">
+                    <table class="table table-hover table-responsive">
                         <thead>
                         <tr>
                             <th>Неделя</th>
                             <th>Посещающий занятие</th>
                             <th>Преподаватель</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -29,44 +30,49 @@
                                     ${schedule.visitorUser.username}
                                 </td>
                                 <td>
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col text-start">
-                                                ${schedule.visitedUser.username}
-                                            </div>
-                                            <div class="col-6 text-start">
-                                                <#if schedule.isVisited()>
-                                                    <#if access[i] == true>
-                                                        <form action="/schedule/view/${schedule.id}" method="get">
-                                                            <button type="submit"
-                                                                    class="btn btn-outline-secondary ms-3">
-                                                                Подтвердить
-                                                                посещение
-                                                            </button>
-                                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                                        </form>
-                                                    <#else>
-                                                        <form action="/schedule/view/${schedule.id}" method="get">
-                                                            <button type="submit"
-                                                                    class="btn btn-outline-secondary ms-3">
-                                                                Посещение
-                                                            </button>
-                                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                                        </form>
-                                                    </#if>
-                                                <#else>
-                                                    <form class="me-3" action="/schedule/add/${schedule.id}"
-                                                          method="get">
-                                                        <button type="submit" class="btn btn-outline-secondary ms-3">
-                                                            Создать
+                                    ${schedule.visitedUser.username}
+                                </td>
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <#if schedule.isOverdue()>
+                                            <label class="col-form-label">Посещение просроченно</label>
+                                        <#else>
+                                            <#if schedule.isVisited()>
+                                                <#if access[i] == true>
+                                                    <form action="/schedule/view/${schedule.id}" method="get">
+                                                        <button type="submit"
+                                                                class="btn btn-outline-secondary btn-xs ms-3"
+                                                                style="width: 100%; height: 100%">
+                                                            Подтвердить
                                                             посещение
                                                         </button>
-                                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                                        <input type="hidden" name="_csrf"
+                                                               value="${_csrf.token}">
+                                                    </form>
+                                                <#else>
+                                                    <form action="/schedule/view/${schedule.id}" method="get">
+                                                        <button type="submit"
+                                                                class="btn btn-outline-secondary btn-xs ms-3"
+                                                                style="width: 100%; height: 100%">
+                                                            Посещение
+                                                        </button>
+                                                        <input type="hidden" name="_csrf"
+                                                               value="${_csrf.token}">
                                                     </form>
                                                 </#if>
-                                            </div>
-
-                                        </div>
+                                            <#else>
+                                                <form class="me-3" action="/schedule/add/${schedule.id}"
+                                                      method="get">
+                                                    <button type="submit"
+                                                            class="btn btn-outline-secondary btn-xs ms-3"
+                                                            style="width: 100%; height: 100%">
+                                                        Начать
+                                                        посещение
+                                                    </button>
+                                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                                </form>
+                                            </#if>
+                                        </#if>
                                     </div>
                                 </td>
                             </tr>

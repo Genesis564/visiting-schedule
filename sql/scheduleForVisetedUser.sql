@@ -1,0 +1,1 @@
+select s from schedule s join schedule_status ss on s.id = ss.schedule_id where status ='PLANNED' and s.visited_user_id = ?1

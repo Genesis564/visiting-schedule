@@ -1,8 +1,8 @@
 package com.okei.visitingschedule.entity.schedule;
 
 public enum Status {
-    PLANNED("Запланированно"),
     WAITING_TO_CONFIRM("В ожидании подтверждения"),
+    PLANNED("Запланированно"),
     CONFIRMED("Подтверждено"),
     OVERDUE("Просрочено");
 

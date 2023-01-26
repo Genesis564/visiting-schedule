@@ -6,6 +6,7 @@ import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.entity.schedule.Status;
 import com.okei.visitingschedule.repos.ScheduleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -37,19 +38,14 @@ public class ScheduleServices {
 
     public List<Schedule> findByUser(User user){
         List<Schedule> schedules = new ArrayList<>();
-        if (user.getRoles().contains(Role.USER_VISITOR)){
-            schedules.addAll(scheduleRepo.findAllByVisitorUser(user));
-        }
-        if (user.getRoles().contains(Role.USER_VISITED)){
-            schedules.addAll(scheduleRepo.findAllByVisitedUser(user));
-        }
+        schedules.addAll(scheduleRepo.findAllByVisitorUserOrVisitedUserOrderByStatusDesc(user,user));
         return schedules;
     }
     public List<Schedule> findAll(){
-        return (List<Schedule>) scheduleRepo.findAll();
+        return (List<Schedule>) scheduleRepo.findAll(Sort.by(Sort.Direction.DESC, "status"));
     }
 
-    @Scheduled(cron = "@weekly")
+     @Scheduled(cron = "@weekly")
     public void updateScheduleStatus(){
         Calendar date= new GregorianCalendar();
         int week = date.get(Calendar.WEEK_OF_YEAR);
@@ -60,7 +56,7 @@ public class ScheduleServices {
         for (Schedule schedule:scheduleList) {
             int scheduleWeek = Integer.parseInt(schedule.getVisitingWeek().substring(6));
             int scheduleYear = Integer.parseInt(schedule.getVisitingWeek().substring(0,4));
-            if (scheduleWeek < week && scheduleYear<=year){
+            if ((scheduleWeek < week && scheduleYear==year) || (scheduleYear<year)){
                 schedule.setStatus(statusSet);
                 scheduleRepo.save(schedule);
             }

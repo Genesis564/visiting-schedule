@@ -25,7 +25,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/admin/registration">Добавить пользователя</a></li>
-                            <li><a class="dropdown-item" href="/admin/schedule/add/">Добавить посещение</a></li>
+                            <li><a class="dropdown-item" href="/admin/schedule/add/">Запланировать посещение</a></li>
                         </ul>
                     </li>
                 </#if>

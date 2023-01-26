@@ -95,6 +95,12 @@ public class Schedule {
         }
         return false;
     }
+    public boolean isOverdue(){
+        if (this.getStatus().contains(Status.OVERDUE)){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object o) {
