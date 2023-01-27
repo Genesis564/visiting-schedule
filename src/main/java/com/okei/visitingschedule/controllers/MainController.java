@@ -51,22 +51,36 @@ public class MainController {
 
         }
 
-        boolean[] access = new boolean[schedules.size()];
+        boolean[] accessToConfirmVisiting = new boolean[schedules.size()];
         int i = 0;
         for (Schedule schedule:schedules) {
 
             if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
                     && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)){
-                access[i]=true;
+                accessToConfirmVisiting[i]=true;
             }else {
-                access[i]=false;
+                accessToConfirmVisiting[i]=false;
+            }
+            i++;
+        }
+
+        boolean[] accessToCreateVisiting = new boolean[schedules.size()];
+        i = 0;
+        for (Schedule schedule:schedules) {
+
+            if ((schedule.getVisitorUser().equals(user) || user.isAdmin())
+                    && schedule.getStatus().contains(Status.PLANNED)){
+                accessToCreateVisiting[i]=true;
+            }else {
+                accessToCreateVisiting[i]=false;
             }
             i++;
         }
 
 
         model.put("schedules", schedules);
-        model.put("access",access);
+        model.put("accessToConfirmVisiting",accessToConfirmVisiting);
+        model.put("accessToCreateVisiting",accessToCreateVisiting);
         scheduleServices.updateScheduleStatus();
         return "main";
     }
