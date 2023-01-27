@@ -40,10 +40,10 @@ public class VisitingComponentsController {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return "redirect:/admin/schedule/add/" + scheduleId;
+            return "redirect:/schedule/add/" + scheduleId;
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
-        return "redirect:/admin/schedule/add/" + scheduleId;
+        return "redirect:/schedule/add/" + scheduleId;
     }
 
 
@@ -52,10 +52,10 @@ public class VisitingComponentsController {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         //            model.put("message","Position exists!");
         if (positionFromDb != null) {
-            return "redirect:/admin/schedule/add/" + scheduleId;
+            return "redirect:/schedule/add/" + scheduleId;
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-        return "redirect:/admin/schedule/add/" + scheduleId;
+        return "redirect:/schedule/add/" + scheduleId;
     }
 
 
@@ -64,10 +64,10 @@ public class VisitingComponentsController {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return "redirect:/admin/schedule/add/" + scheduleId;
+            return "redirect:/schedule/add/" + scheduleId;
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
-        return "redirect:/admin/schedule/add/" + scheduleId;
+        return "redirect:/schedule/add/" + scheduleId;
     }
 
     @PostMapping("create-visiting-criteria")
@@ -75,13 +75,13 @@ public class VisitingComponentsController {
         VisitingCriteria visitingCriteriaFromDb = visitingCriteriaService.findByCriteriaName(visitingCriteriaRequestDTO.getCritariaName());
         if (visitingCriteriaFromDb != null){
 //            model.put("me ssage","Discipline exists!");
-            return "redirect:/admin/schedule/add/" + scheduleId;
+            return "redirect:/schedule/add/" + scheduleId;
         }
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
                 visitingCriteriaRequestDTO.getValueOfOnePoint(),
                 visitingCriteriaRequestDTO.getValueOfTwoPoint(),
                 visitingCriteriaRequestDTO.getValueOfThreePoint());
-        return "redirect:/admin/schedule/add/" + scheduleId;
+        return "redirect:/schedule/add/" + scheduleId;
     }
 
 }

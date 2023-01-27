@@ -1,5 +1,6 @@
 package com.okei.visitingschedule.entity;
 
+import com.okei.visitingschedule.entity.schedule.Position;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,11 +26,40 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User(String username, String password, boolean active, Set<Role> roles) {
+    private String lastname;
+    private String firstname;
+    private String middlename;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+    public User(String username, String password, boolean active,Position position, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.active = active;
+        this.position = position;
         this.roles = roles;
+    }
+
+    public User(String username, String password, boolean active,Position position, Set<Role> roles, String lastname, String firstname, String middlename) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.position = position;
+        this.roles = roles;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.middlename = middlename;
+    }
+
+    public User(String username, String password, boolean active,Position position, Set<Role> roles, String lastname, String firstname) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.position = position;
+        this.roles = roles;
+        this.lastname = lastname;
+        this.firstname = firstname;
     }
 
     public User() {
@@ -79,6 +109,38 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -110,12 +172,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return active == user.active && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return active == user.active && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(lastname, user.lastname) && Objects.equals(firstname, user.firstname) && Objects.equals(middlename, user.middlename);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, active, roles);
+        return Objects.hash(id, username, password, lastname, firstname, middlename, active);
     }
 
     @Override
@@ -124,8 +186,11 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", midlename='" + middlename + '\'' +
                 ", active=" + active +
-                ", role=" + roles +
+                ", roles=" + roles +
                 '}';
     }
 }

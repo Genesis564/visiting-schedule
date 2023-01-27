@@ -33,7 +33,6 @@
         <div class="input-group mb-3">
             <select class="form-select" id="positionsSelect" aria-label="Default select example"
                     onchange="selectedPosition(this);">
-                <option value="" selected disabled hidden>Должность посетившего занятия</option>
                 <#list positions as position>
                     <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
                 </#list>
@@ -198,6 +197,12 @@
             lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
             inputData.min = inputData.valueAsDate.getFullYear() + ((month<10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate()<10) ? "-0" : "-") + inputData.valueAsDate.getDate();
             inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth()<10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate()<10) ? "-0" : "-") + lastDayOfWeek.getDate();
+            let positions = document.querySelectorAll("#positionsSelect")[0].options;
+            for (let i = 0; i < positions.length; i++) {
+                if (positions[i].value == ${positionId}){
+                    positions[i].selected = true;
+                }
+            }
         })
 
         function selectValueOfCriteria() {

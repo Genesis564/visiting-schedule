@@ -2,6 +2,7 @@ package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
+import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,8 +23,17 @@ public class UserServices implements UserDetailsService {
         this.usersRepo = usersRepo;
     }
 
-    public void addUser(String username, String password, Set<Role> roles){
-        User user = new User(username,password,true,roles);
+    public void addUser(String username, String password, Position position, Set<Role> roles){
+        User user = new User(username,password,true,position,roles);
+        usersRepo.save(user);
+    }
+
+    public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname){
+        User user = new User(username,password,true,position,roles,lastname,firstname);
+        usersRepo.save(user);
+    }
+    public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname,String middlename){
+        User user = new User(username,password,true,position,roles,lastname,firstname,middlename);
         usersRepo.save(user);
     }
 
