@@ -10,7 +10,7 @@
                 <div class="col">
                     <div class="card text-center my-3 h-100">
                         <#if schedule.isVisited()>
-                            <div class="card-header bg-transparent">Посещение было: ${schedule.visiting.date}</div>
+                            <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                         <#else>
                             <div class="card-header bg-transparent">${schedule.visitingWeek}</div>
                         </#if>
@@ -104,6 +104,9 @@
                     let minDate = ((inputData.getDate() < 10) ? "0" : "") + inputData.getDate() + ((month < 10) ? ".0" : ".") + month + "." + inputData.getFullYear();
                     let maxDate = ((lastDayOfWeek.getDate() < 10) ? "0" : "") + lastDayOfWeek.getDate() + ((lastDayOfWeek.getMonth() < 10) ? ".0" : ".") + (lastDayOfWeek.getMonth() + 1) + "." + lastDayOfWeek.getFullYear();
                     elem.innerHTML = "Посещение запланировано на неделю с " + minDate + " по " + maxDate;
+                }else if (str.split('-').length === 3){
+                    let splitDate = str.split('-');
+                    elem.innerHTML = "Посещение прошло: " + splitDate[2] + "." + splitDate[1] + "." + splitDate[0];
                 }
             })
         })
