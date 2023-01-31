@@ -42,7 +42,14 @@ public class ScheduleServices {
         return schedules;
     }
     public List<Schedule> findAll(){
-        return (List<Schedule>) scheduleRepo.findAll(Sort.by(Sort.Direction.DESC, "status"));
+        return scheduleRepo.findAll(Sort.by(Sort.Direction.DESC, "status"));
+    }
+
+    public List<Schedule> findAllByStatus(Status status){
+        return scheduleRepo.findAllByStatusOrderByVisitingWeekDesc(status);
+    }
+    public List<Schedule> findAllByStatus(Status status,User user){
+        return scheduleRepo.findAllByStatusAndUser(status.name(),user.getId());
     }
 
      @Scheduled(cron = "@weekly")
@@ -50,7 +57,7 @@ public class ScheduleServices {
         Calendar date= new GregorianCalendar();
         int week = date.get(Calendar.WEEK_OF_YEAR);
         int year = date.get(Calendar.YEAR);
-        List<Schedule> scheduleList = scheduleRepo.findAllByStatus(Status.PLANNED);
+        List<Schedule> scheduleList = scheduleRepo.findAllByStatusOrderByVisitingWeekDesc(Status.PLANNED);
         Set<Status> statusSet = new HashSet<>();
         statusSet.add(Status.OVERDUE);
         for (Schedule schedule:scheduleList) {

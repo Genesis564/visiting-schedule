@@ -2,45 +2,33 @@
 
 <@c.page>
     <div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
-            <#assign
-            i = 0
-            >
-            <#list schedules as schedule>
-                <div class="col">
-                    <div class="card text-center my-3 h-100">
-                        <#if schedule.isVisited()>
-                            <div class="card-header bg-transparent">${schedule.visiting.date}</div>
-                        <#else>
-                            <div class="card-header bg-transparent">${schedule.visitingWeek}</div>
-                        </#if>
-                        <div class="card-body">
-                            <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
-                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
-                        </div>
-                        <div class="card-footer text-muted">
-                            <#if schedule.isOverdue()>
-                                <label class="col-form-label">Посещение просроченно</label>
-                            <#else>
-                                <#if schedule.isVisited()>
-                                    <#if accessToConfirmVisiting[i] == true>
-                                        <form action="/schedule/view/${schedule.id}" method="get">
-                                            <button type="submit"
-                                                    class="btn btn-outline-secondary btn-xs"
-                                                    style="width: 100%; height: 100%">
-                                                Подтвердить
-                                                посещение
-                                            </button>
-                                            <input type="hidden" name="_csrf"
-                                                   value="${_csrf.token}">
-                                        </form>
-                                    <#else>
-                                        <#if schedule.isWaitingToConfirm()>
+        <#if isEmpty[0]>
+        <#else>
+            <div class="card mb-3">
+                <div class="card-header">
+                    В ожидании подтверждения
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                        <#assign
+                        i = 0
+                        >
+                        <#list schedulesWaitingToConfirm as schedule>
+                            <div class="col">
+                                <div class="card text-center my-3 h-100">
+                                    <div class="card-header bg-transparent">${schedule.visiting.date}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
+                                        <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <#if accessToConfirmVisiting[i] == true>
                                             <form action="/schedule/view/${schedule.id}" method="get">
                                                 <button type="submit"
                                                         class="btn btn-outline-secondary btn-xs"
                                                         style="width: 100%; height: 100%">
-                                                    Редактировать посещение
+                                                    Подтвердить
+                                                    посещение
                                                 </button>
                                                 <input type="hidden" name="_csrf"
                                                        value="${_csrf.token}">
@@ -50,38 +38,125 @@
                                                 <button type="submit"
                                                         class="btn btn-outline-secondary btn-xs"
                                                         style="width: 100%; height: 100%">
-                                                    Просмотреть посещение
+                                                    Редактировать посещение
                                                 </button>
                                                 <input type="hidden" name="_csrf"
                                                        value="${_csrf.token}">
                                             </form>
                                         </#if>
-                                    </#if>
-                                <#else>
-                                    <#if accessToCreateVisiting[i] == true>
-                                        <form class="me-3" action="/schedule/add/${schedule.id}"
-                                              method="get">
+                                    </div>
+                                </div>
+                            </div>
+                            <#assign
+                            i = i+1
+                            >
+                        </#list>
+                    </div>
+                </div>
+            </div>
+        </#if>
+        <#if isEmpty[1]>
+        <#else>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Запланированные посещения
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                        <#assign
+                        i = 0
+                        >
+                        <#list schedulesPlanned as schedule>
+                            <div class="col">
+                                <div class="card text-center my-3 h-100">
+                                    <div class="card-header bg-transparent">${schedule.visitingWeek}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
+                                        <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <#if accessToCreateVisiting[i] == true>
+                                            <form class="me-3" action="/schedule/add/${schedule.id}"
+                                                  method="get">
+                                                <button type="submit"
+                                                        class="btn btn-outline-secondary btn-xs"
+                                                        style="width: 100%; height: 100%">
+                                                    Начать
+                                                    посещение
+                                                </button>
+                                                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                            </form>
+                                        <#else>
+                                            <label class="col-form-label">Посещение запланировано</label>
+                                        </#if>
+                                    </div>
+                                </div>
+                            </div>
+                            <#assign
+                            i = i+1
+                            >
+                        </#list>
+                    </div>
+                </div>
+            </div>
+        </#if>
+        <#if isEmpty[2]>
+        <#else>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Прошедшие посещения
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                        <#list schedulesConfirmed as schedule>
+                            <div class="col">
+                                <div class="card text-center my-3 h-100">
+                                    <div class="card-header bg-transparent">${schedule.visiting.date}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
+                                        <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <form action="/schedule/view/${schedule.id}" method="get">
                                             <button type="submit"
                                                     class="btn btn-outline-secondary btn-xs"
                                                     style="width: 100%; height: 100%">
-                                                Начать
-                                                посещение
+                                                Просмотреть посещение
                                             </button>
-                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                            <input type="hidden" name="_csrf"
+                                                   value="${_csrf.token}">
                                         </form>
-                                    <#else>
-                                        <label class="col-form-label">Посещение запланировано</label>
-                                    </#if>
-                                </#if>
-                            </#if>
-                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </#list>
                     </div>
                 </div>
-                <#assign
-                i = i+1
-                >
-            </#list>
-        </div>
+            </div>
+        </#if>
+        <#if isEmpty[3]>
+        <#else>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Просроченные посещения
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                        <#list schedulesOverdue as schedule>
+                            <div class="col">
+                                <div class="card text-center my-3 h-100">
+                                    <div class="card-header bg-transparent schedule-overdue">${schedule.visitingWeek}</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Посещающий занятие: ${schedule.visitorUser.username}</h5>
+                                        <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                </div>
+            </div>
+        </#if>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -103,8 +178,12 @@
                     lastDayOfWeek.setDate(inputData.getDate() + 6);
                     let minDate = ((inputData.getDate() < 10) ? "0" : "") + inputData.getDate() + ((month < 10) ? ".0" : ".") + month + "." + inputData.getFullYear();
                     let maxDate = ((lastDayOfWeek.getDate() < 10) ? "0" : "") + lastDayOfWeek.getDate() + ((lastDayOfWeek.getMonth() < 10) ? ".0" : ".") + (lastDayOfWeek.getMonth() + 1) + "." + lastDayOfWeek.getFullYear();
-                    elem.innerHTML = "Посещение запланировано на неделю с " + minDate + " по " + maxDate;
-                }else if (str.split('-').length === 3){
+                    if (elem.classList.contains('schedule-overdue')){
+                        elem.innerHTML = "Посещение было запланированно на неделю с " + minDate + " по " + maxDate;
+                    }else{
+                        elem.innerHTML = "Посещение запланировано на неделю с " + minDate + " по " + maxDate;
+                    }
+                } else if (str.split('-').length === 3) {
                     let splitDate = str.split('-');
                     elem.innerHTML = "Посещение прошло: " + splitDate[2] + "." + splitDate[1] + "." + splitDate[0];
                 }

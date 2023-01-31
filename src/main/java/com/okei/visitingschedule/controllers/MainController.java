@@ -43,20 +43,27 @@ public class MainController {
     public String main(Principal principal, Map<String, Object> model) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Set<Role> roles = user.getRoles();
-        List<Schedule> schedules = null;
+        List<Schedule> schedulesWaitingToConfirm = null;
+        List<Schedule> schedulesPlanned = null;
+        List<Schedule> schedulesConfirmed = null;
+        List<Schedule> schedulesOverdue = null;
         if (roles.contains(Role.ADMIN)) {
-            schedules = scheduleServices.findAll();
+            schedulesWaitingToConfirm = scheduleServices.findAllByStatus(Status.WAITING_TO_CONFIRM);
+            schedulesPlanned = scheduleServices.findAllByStatus(Status.PLANNED);
+            schedulesConfirmed = scheduleServices.findAllByStatus(Status.CONFIRMED);
+            schedulesOverdue = scheduleServices.findAllByStatus(Status.OVERDUE);
         } else if (roles.contains(Role.USER_VISITOR) || roles.contains(Role.USER_VISITED)) {
-            schedules = scheduleServices.findByUser(user);
-
+            schedulesWaitingToConfirm = scheduleServices.findAllByStatus(Status.WAITING_TO_CONFIRM,user);
+            schedulesPlanned = scheduleServices.findAllByStatus(Status.PLANNED,user);
+            schedulesConfirmed = scheduleServices.findAllByStatus(Status.CONFIRMED,user);
+            schedulesOverdue = scheduleServices.findAllByStatus(Status.OVERDUE,user);
         }
 
-        boolean[] accessToConfirmVisiting = new boolean[schedules.size()];
+        boolean[] accessToConfirmVisiting = new boolean[schedulesWaitingToConfirm.size()];
         int i = 0;
-        for (Schedule schedule:schedules) {
+        for (Schedule schedule:schedulesWaitingToConfirm) {
 
-            if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
-                    && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)){
+            if ((schedule.getVisitedUser().equals(user) || user.isAdmin())){
                 accessToConfirmVisiting[i]=true;
             }else {
                 accessToConfirmVisiting[i]=false;
@@ -64,12 +71,11 @@ public class MainController {
             i++;
         }
 
-        boolean[] accessToCreateVisiting = new boolean[schedules.size()];
+        boolean[] accessToCreateVisiting = new boolean[schedulesPlanned.size()];
         i = 0;
-        for (Schedule schedule:schedules) {
+        for (Schedule schedule:schedulesPlanned) {
 
-            if ((schedule.getVisitorUser().equals(user) || user.isAdmin())
-                    && schedule.getStatus().contains(Status.PLANNED)){
+            if ((schedule.getVisitorUser().equals(user) || user.isAdmin())){
                 accessToCreateVisiting[i]=true;
             }else {
                 accessToCreateVisiting[i]=false;
@@ -77,8 +83,14 @@ public class MainController {
             i++;
         }
 
+        boolean[] isEmpty = new boolean[] {schedulesWaitingToConfirm.isEmpty(),schedulesPlanned.isEmpty(),schedulesConfirmed.isEmpty(),schedulesOverdue.isEmpty()};
 
-        model.put("schedules", schedules);
+
+        model.put("schedulesWaitingToConfirm", schedulesWaitingToConfirm);
+        model.put("schedulesPlanned", schedulesPlanned);
+        model.put("schedulesConfirmed", schedulesConfirmed);
+        model.put("schedulesOverdue", schedulesOverdue);
+        model.put("isEmpty",isEmpty);
         model.put("accessToConfirmVisiting",accessToConfirmVisiting);
         model.put("accessToCreateVisiting",accessToCreateVisiting);
         scheduleServices.updateScheduleStatus();
