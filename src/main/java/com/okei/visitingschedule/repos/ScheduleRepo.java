@@ -13,9 +13,9 @@ import java.util.List;
 public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
     Schedule findByVisitedUserAndVisitorUserAndVisitingWeek(User visitedUser, User visitorUser, String visitingWeek);
 
-    List<Schedule> findAllByStatusOrderByVisitingWeekDesc(Status status);
+    List<Schedule> findAllByStatus(Status status,Sort sort);
 
-    @Query(value = "select * from schedule s join schedule_status ss on s.id = ss.schedule_id join usr u on u.id = s.visited_user_id join usr u2 on u2.id = s.visiter_user_id where status = :status and (visited_user_id = :userId or visiter_user_id = :userId)",
+    @Query(value = "select * from schedule s join schedule_status ss on s.id = ss.schedule_id join usr u on u.id = s.visited_user_id join usr u2 on u2.id = s.visiter_user_id where status = :status and (visited_user_id = :userId or visiter_user_id = :userId) order by visiting_week",
             nativeQuery = true)
     List<Schedule> findAllByStatusAndUser(@Param("status") String status,@Param("userId") Long userId);
 

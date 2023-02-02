@@ -33,10 +33,24 @@
     </div>
     <script>
 
+        let curr;
         let previousId = 0;
+
         document.addEventListener("DOMContentLoaded", () => {
             setCurrentWeek();
-            document.getElementById('visitingDate').valueAsDate = new Date();
+            let str = document.getElementById('weekInfo').innerHTML;
+            let splitDate = str.split("-W");
+            let week = splitDate[1].split("0");
+            if (week.length === 2){
+                curr = new Date(getDateOfWeek(splitDate[0], week[1]));
+            }else{
+                curr = new Date(getDateOfWeek(splitDate[0], week[0]));
+            }
+
+            let inputData = document.getElementById('visitingDate');
+            inputData.valueAsDate = new Date();
+            let month = curr.getMonth() + 1;
+            inputData.min = curr.getFullYear() + ((month<10) ? "-0" : "-") + month + ((curr.getDate()<10) ? "-0" : "-") + curr.getDate();
         })
 
         function setCurrentWeek(){
@@ -82,5 +96,17 @@
             date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
             return date.getFullYear();
         }
+
+        function getDateOfWeek(year, week) {
+            let simple = new Date(year, 0, 1 + (week - 1) * 7, 5);
+            let dow = simple.getDay();
+            let ISOweekStart = simple;
+            if (dow <= 4)
+                ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+            else
+                ISOweekStart.setDate(simple.getDate() + 8 - (simple.getDay()));
+            return ISOweekStart;
+        }
+
     </script>
 </@c.page>

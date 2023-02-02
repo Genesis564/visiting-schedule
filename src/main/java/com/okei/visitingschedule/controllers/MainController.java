@@ -4,24 +4,14 @@ import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.entity.schedule.Status;
-import com.okei.visitingschedule.entity.schedule.Visiting;
 import com.okei.visitingschedule.services.ScheduleServices;
-import com.okei.visitingschedule.services.UserServices;
-import com.okei.visitingschedule.services.VisitingServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -61,10 +51,12 @@ public class MainController {
 
         boolean[] accessToConfirmVisiting = new boolean[schedulesWaitingToConfirm.size()];
         int i = 0;
+        int badgeCount = 0;
         for (Schedule schedule:schedulesWaitingToConfirm) {
 
             if ((schedule.getVisitedUser().equals(user) || user.isAdmin())){
                 accessToConfirmVisiting[i]=true;
+                badgeCount++;
             }else {
                 accessToConfirmVisiting[i]=false;
             }
@@ -73,9 +65,14 @@ public class MainController {
 
         boolean[] accessToCreateVisiting = new boolean[schedulesPlanned.size()];
         i = 0;
+        Calendar date= new GregorianCalendar();
+        int week = date.get(Calendar.WEEK_OF_YEAR);
+        int year = date.get(Calendar.YEAR);
         for (Schedule schedule:schedulesPlanned) {
+            int scheduleWeek = Integer.parseInt(schedule.getVisitingWeek().substring(6));
+            int scheduleYear = Integer.parseInt(schedule.getVisitingWeek().substring(0,4));
 
-            if ((schedule.getVisitorUser().equals(user) || user.isAdmin())){
+            if ((schedule.getVisitorUser().equals(user) || user.isAdmin()) && (scheduleWeek == week && scheduleYear==year)){
                 accessToCreateVisiting[i]=true;
             }else {
                 accessToCreateVisiting[i]=false;
@@ -91,6 +88,7 @@ public class MainController {
         model.put("schedulesConfirmed", schedulesConfirmed);
         model.put("schedulesOverdue", schedulesOverdue);
         model.put("isEmpty",isEmpty);
+        model.put("badgeCount",badgeCount);
         model.put("accessToConfirmVisiting",accessToConfirmVisiting);
         model.put("accessToCreateVisiting",accessToCreateVisiting);
         scheduleServices.updateScheduleStatus();

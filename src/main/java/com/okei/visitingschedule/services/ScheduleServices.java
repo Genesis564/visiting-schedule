@@ -46,7 +46,7 @@ public class ScheduleServices {
     }
 
     public List<Schedule> findAllByStatus(Status status){
-        return scheduleRepo.findAllByStatusOrderByVisitingWeekDesc(status);
+        return scheduleRepo.findAllByStatus(status,Sort.by(Sort.Direction.ASC, "visitingWeek"));
     }
     public List<Schedule> findAllByStatus(Status status,User user){
         return scheduleRepo.findAllByStatusAndUser(status.name(),user.getId());
@@ -57,7 +57,7 @@ public class ScheduleServices {
         Calendar date= new GregorianCalendar();
         int week = date.get(Calendar.WEEK_OF_YEAR);
         int year = date.get(Calendar.YEAR);
-        List<Schedule> scheduleList = scheduleRepo.findAllByStatusOrderByVisitingWeekDesc(Status.PLANNED);
+        List<Schedule> scheduleList = scheduleRepo.findAllByStatus(Status.PLANNED,Sort.by(Sort.Direction.DESC, "visitingWeek"));
         Set<Status> statusSet = new HashSet<>();
         statusSet.add(Status.OVERDUE);
         for (Schedule schedule:scheduleList) {
