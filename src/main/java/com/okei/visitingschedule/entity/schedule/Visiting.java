@@ -39,6 +39,10 @@ public class Visiting{
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @OneToOne
+    @JoinColumn(name = "concolusion_id")
+    private Conclusion conclusion;
+
     public Visiting(String purposeOfTheVisit, int numberOfStudents, String lessonTopic, String purposeOfTheLesson, String date, StudyGroup studyGroup, Position position, AcademicDiscipline academicDiscipline, Schedule schedule) {
         this.purposeOfTheVisit = purposeOfTheVisit;
         this.numberOfStudents = numberOfStudents;
@@ -97,6 +101,14 @@ public class Visiting{
 
     public String getDate() {
         return date;
+    }
+
+    public Conclusion getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(Conclusion conclusion) {
+        this.conclusion = conclusion;
     }
 
     public void setDate(String date) {

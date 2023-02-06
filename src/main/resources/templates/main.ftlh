@@ -8,7 +8,55 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-10 align-self-center">
-                            <label>Посещения ожидающие подтверждения</label>
+                            <label class="me-2">Посещения ожидающие подведения итогов</label>
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#scheduleSummingUp" aria-expanded="true"
+                                    aria-controls="scheduleSummingUp" onclick="collapseButtonClick(this)">
+                                Скрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse show multi-collapse" id="scheduleSummingUp">
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                            <#list schedulesSummingUp as schedule>
+                                <div class="col">
+                                    <div class="card text-center my-3 h-100">
+                                        <div class="card-header bg-transparent">${schedule.visiting.date}</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Посещающий
+                                                занятие: ${schedule.visitorUser.username}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                                <form action="/schedule/summing-up/${schedule.id}" method="get">
+                                                    <button type="submit"
+                                                            class="btn btn-outline-secondary btn-xs"
+                                                            style="width: 100%; height: 100%">
+                                                        Подвести итоги
+                                                    </button>
+                                                    <input type="hidden" name="_csrf"
+                                                           value="${_csrf.token}">
+                                                </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </#list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </#if>
+        <#if isEmpty[1]>
+        <#else>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-sm-10 align-self-center">
+                            <label class="me-2">Посещения ожидающие подтверждения</label>
                         </div>
                         <div class="col-auto align-self-center">
                             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
@@ -71,13 +119,13 @@
                 </div>
             </div>
         </#if>
-        <#if isEmpty[1]>
+        <#if isEmpty[2]>
         <#else>
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-10 align-self-center">
-                            <label>Запланированные посещения</label>
+                            <label class="me-2">Запланированные посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
                             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
@@ -129,13 +177,13 @@
                 </div>
             </div>
         </#if>
-        <#if isEmpty[2]>
+        <#if isEmpty[3]>
         <#else>
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-10 align-self-center">
-                            <label>Прошедшие посещения</label>
+                            <label  class="me-2">Прошедшие посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
                             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
@@ -176,13 +224,13 @@
                 </div>
             </div>
         </#if>
-        <#if isEmpty[3]>
+        <#if isEmpty[4]>
         <#else>
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-10 align-self-center">
-                            <label>Просроченные посещения</label>
+                            <label class="me-2">Просроченные посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
                             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"

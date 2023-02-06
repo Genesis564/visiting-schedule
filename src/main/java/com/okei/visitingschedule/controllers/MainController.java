@@ -31,22 +31,26 @@ public class MainController {
 
     @GetMapping("/home")
     public String main(Principal principal, Map<String, Object> model) {
+        scheduleServices.updateScheduleStatus();
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Set<Role> roles = user.getRoles();
         List<Schedule> schedulesWaitingToConfirm = null;
         List<Schedule> schedulesPlanned = null;
         List<Schedule> schedulesConfirmed = null;
         List<Schedule> schedulesOverdue = null;
+        List<Schedule> schedulesSummingUp = null;
         if (roles.contains(Role.ADMIN)) {
             schedulesWaitingToConfirm = scheduleServices.findAllByStatus(Status.WAITING_TO_CONFIRM);
             schedulesPlanned = scheduleServices.findAllByStatus(Status.PLANNED);
             schedulesConfirmed = scheduleServices.findAllByStatus(Status.CONFIRMED);
             schedulesOverdue = scheduleServices.findAllByStatus(Status.OVERDUE);
+            schedulesSummingUp = scheduleServices.findAllByStatus(Status.SUMMING_UP);
         } else if (roles.contains(Role.USER_VISITOR) || roles.contains(Role.USER_VISITED)) {
             schedulesWaitingToConfirm = scheduleServices.findAllByStatus(Status.WAITING_TO_CONFIRM,user);
             schedulesPlanned = scheduleServices.findAllByStatus(Status.PLANNED,user);
             schedulesConfirmed = scheduleServices.findAllByStatus(Status.CONFIRMED,user);
             schedulesOverdue = scheduleServices.findAllByStatus(Status.OVERDUE,user);
+            schedulesSummingUp = scheduleServices.findAllByStatus(Status.SUMMING_UP,user);
         }
 
         boolean[] accessToConfirmVisiting = new boolean[schedulesWaitingToConfirm.size()];
@@ -80,18 +84,18 @@ public class MainController {
             i++;
         }
 
-        boolean[] isEmpty = new boolean[] {schedulesWaitingToConfirm.isEmpty(),schedulesPlanned.isEmpty(),schedulesConfirmed.isEmpty(),schedulesOverdue.isEmpty()};
+        boolean[] isEmpty = new boolean[] {schedulesSummingUp.isEmpty(),schedulesWaitingToConfirm.isEmpty(),schedulesPlanned.isEmpty(),schedulesConfirmed.isEmpty(),schedulesOverdue.isEmpty()};
 
 
         model.put("schedulesWaitingToConfirm", schedulesWaitingToConfirm);
         model.put("schedulesPlanned", schedulesPlanned);
         model.put("schedulesConfirmed", schedulesConfirmed);
         model.put("schedulesOverdue", schedulesOverdue);
+        model.put("schedulesSummingUp", schedulesSummingUp);
         model.put("isEmpty",isEmpty);
         model.put("badgeCount",badgeCount);
         model.put("accessToConfirmVisiting",accessToConfirmVisiting);
         model.put("accessToCreateVisiting",accessToCreateVisiting);
-        scheduleServices.updateScheduleStatus();
         return "main";
     }
 }

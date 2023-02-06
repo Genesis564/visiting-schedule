@@ -112,6 +112,12 @@ public class UserScheduleController {
         return "editVisiting";
     }
 
+    @GetMapping("summing-up/{schedule}")
+    public String summingUp(@PathVariable Schedule schedule,Principal principal, Map<String, Object> model) {
+
+        return "summingUp";
+    }
+
     @PostMapping("edit/{schedule}")
     public String saveEditedVisiting(@RequestParam("studyGroupId") StudyGroup studyGroup,
                                      @RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
@@ -160,7 +166,7 @@ public class UserScheduleController {
         Visiting visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
         List<VisitingCriteria> criteriaLists = new ArrayList<>();
         Set<Status> statusSet = new HashSet<>();
-        statusSet.add(Status.WAITING_TO_CONFIRM);
+        statusSet.add(Status.SUMMING_UP);
         for (Long criteriaId : visitingRequestDTO.getCriterionIds()) {
             criteriaLists.add(visitingCriteriaService.findById(criteriaId));
         }
@@ -189,8 +195,7 @@ public class UserScheduleController {
             }
             return "redirect:/home";
         }
-
-        return "redirect:/schedule/add/" + schedule.getId();
-
+        return "redirect:/home";
     }
+
 }
