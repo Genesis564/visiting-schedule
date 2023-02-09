@@ -1,8 +1,7 @@
 package com.okei.visitingschedule.dto;
 
-import com.okei.visitingschedule.entity.schedule.Conclusion;
-
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,23 +9,20 @@ import java.util.Objects;
  */
 public class EventRequestDTO implements Serializable{
 
-    private final String name;
-    private final Long conclusionId;
+    private final List<String> eventNames;
 
 
-    public EventRequestDTO(String name, Long conclusionId) {
-        this.name = name;
-        this.conclusionId = conclusionId;
+
+    public EventRequestDTO(List<String> eventNames) {
+        this.eventNames = eventNames;
     }
 
-    public String getName() {
-        return name;
+    public List<String> getEventNames() {
+        return eventNames;
     }
 
 
-    public Long getConclusionId() {
-        return conclusionId;
-    }
+
 
 
     @Override
@@ -34,19 +30,18 @@ public class EventRequestDTO implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EventRequestDTO that = (EventRequestDTO) o;
-        return Objects.equals(name, that.name) && Objects.equals(conclusionId, that.conclusionId);
+        return Objects.equals(eventNames, that.eventNames) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, conclusionId);
+        return Objects.hash(eventNames);
     }
 
     @Override
     public String toString() {
         return "EventRequestDTO{" +
-                "name='" + name + '\'' +
-                ", conclusionId=" + conclusionId +
+                "name='" + eventNames + '\'' +
                 '}';
     }
 }

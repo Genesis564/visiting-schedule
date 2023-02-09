@@ -1,5 +1,7 @@
 package com.okei.visitingschedule.controllers.userControllers;
 
+import com.okei.visitingschedule.dto.ConclusionRequestDTO;
+import com.okei.visitingschedule.dto.EventRequestDTO;
 import com.okei.visitingschedule.dto.VisitingRequestDTO;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
@@ -24,9 +26,15 @@ public class UserScheduleController {
     private final StudyGroupServices studyGroupServices;
     private final VisitingCriteriaService visitingCriteriaService;
     private final ScheduleServices scheduleServices;
+    private final EventServices eventServices;
+    private final ConclusionServices conclusionServices;
 
     @Autowired
-    public UserScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, VisitingServices visitingServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService, CriteriaScoreServices criteriaScoreServices, ScheduleServices scheduleServices) {
+    public UserScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices,
+                                  VisitingServices visitingServices, StudyGroupServices studyGroupServices,
+                                  VisitingCriteriaService visitingCriteriaService, CriteriaScoreServices criteriaScoreServices,
+                                  ScheduleServices scheduleServices,EventServices eventServices,
+                                  ConclusionServices conclusionServices) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
         this.visitingServices = visitingServices;
@@ -34,6 +42,8 @@ public class UserScheduleController {
         this.visitingCriteriaService = visitingCriteriaService;
         this.criteriaScoreServices = criteriaScoreServices;
         this.scheduleServices = scheduleServices;
+        this.eventServices = eventServices;
+        this.conclusionServices = conclusionServices;
     }
 
     @GetMapping("add/{schedule}")
@@ -115,7 +125,35 @@ public class UserScheduleController {
     @GetMapping("summing-up/{schedule}")
     public String summingUp(@PathVariable Schedule schedule,Principal principal, Map<String, Object> model) {
 
+        model.put("schedule",schedule);
         return "summingUp";
+    }
+
+    @PostMapping("summing-up/add")
+    public String addSummingUp(@RequestParam("scheduleId") Schedule schedule,EventRequestDTO eventRequestDTO, ConclusionRequestDTO conclusionRequestDTO, Map<String, Object> model){
+        Conclusion conclusion = new Conclusion(conclusionRequestDTO.getVirtuesOfOccupation(),conclusionRequestDTO.getProblems());
+        conclusionServices.save(conclusion);
+        List<String> eventNames = new ArrayList<>(eventRequestDTO.getEventNames());
+        Set<Event> events= new HashSet<>();
+        Set<Status> statusSet = new HashSet<>();
+        statusSet.add(Status.WAITING_TO_CONFIRM);
+
+        for (String eventName: eventNames) {
+            Event event = new Event(eventName,conclusion);
+            events.add(event);
+            eventServices.save(event);
+        }
+
+        conclusion.setEvents(events);
+        conclusionServices.save(conclusion);
+        Visiting visiting = visitingServices.findVisitingBySchedule(schedule);
+        visiting.setConclusion(conclusion);
+        visitingServices.save(visiting);
+
+        schedule.setStatus(statusSet);
+        scheduleServices.save(schedule);
+
+        return "redirect:/home";
     }
 
     @PostMapping("edit/{schedule}")

@@ -7,13 +7,13 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.okei.visitingschedule.entity.schedule.Conclusion} entity
  */
-public class ConcolusionRequestDTO implements Serializable{
+public class ConclusionRequestDTO implements Serializable{
 
     private final String virtuesOfOccupation;
     private final String problems;
     private final List<Long> eventsid;
 
-    public ConcolusionRequestDTO(String virtuesOfOccupation, String problems, List<Long> eventsid) {
+    public ConclusionRequestDTO(String virtuesOfOccupation, String problems, List<Long> eventsid) {
         this.virtuesOfOccupation = virtuesOfOccupation;
         this.problems = problems;
         this.eventsid = eventsid;
@@ -35,7 +35,7 @@ public class ConcolusionRequestDTO implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ConcolusionRequestDTO that = (ConcolusionRequestDTO) o;
+        ConclusionRequestDTO that = (ConclusionRequestDTO) o;
         return Objects.equals(virtuesOfOccupation, that.virtuesOfOccupation) && Objects.equals(problems, that.problems) && Objects.equals(eventsid, that.eventsid);
     }
 
