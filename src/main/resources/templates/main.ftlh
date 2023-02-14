@@ -28,8 +28,8 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.username}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                                 <form action="/schedule/summing-up/${schedule.id}" method="get">
@@ -81,8 +81,8 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.username}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToConfirmVisiting[i] == true>
@@ -147,8 +147,8 @@
                                         <div class="card-header bg-transparent">${schedule.visitingWeek}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.username}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToCreateVisiting[i] == true>
@@ -202,8 +202,8 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.username}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <form action="/schedule/view/${schedule.id}" method="get">
@@ -249,8 +249,8 @@
                                         <div class="card-header bg-transparent schedule-overdue">${schedule.visitingWeek}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.username}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.username}</h5>
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                     </div>
                                 </div>

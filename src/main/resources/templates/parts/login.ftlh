@@ -1,30 +1,18 @@
 <#macro login path, buttonName,isRegistration>
-    <form action="${path}" method="post">
+    <form id="loginForm">
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Имя пользователя : </label>
+            <label class="col-sm-2 col-form-label">Имя пользователя: </label>
             <div class="col-sm-5">
                 <input type="text" name="username" class="form-control" placeholder="Имя пользователя">
             </div>
         </div>
         <div class="form-group row mt-2">
-            <label class="col-sm-2 col-form-label">Пароль : </label>
+            <label class="col-sm-2 col-form-label">Пароль: </label>
             <div class="col-sm-5">
                 <input type="password" name="password" class="form-control" placeholder="Пароль">
             </div>
         </div>
         <#if isRegistration>
-            <div class="form-group row mt-2">
-                <label class="col-sm-2 col-form-label">Должность : </label>
-                <div class="col-sm-5">
-                    <select class="form-select" id="positionsSelect"
-                            aria-label="Default select example" onchange="selectedPosition(this);">
-                        <option selected disabled hidden>Должность</option>
-                        <#list positions as position>
-                            <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
-                        </#list>
-                    </select>
-                </div>
-            </div>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Фамилия : </label>
                 <div class="col-sm-5">
@@ -48,12 +36,36 @@
                     </div>
                 </div>
             </div>
-            <script>
-                let positionId;
 
-                function selectedPosition(sel) {
-                    positionId = sel.value;
-                    document.getElementById("positionId").value = positionId;
+            <div class="form-group row mt-2">
+                <label class="col-sm-2 col-form-label">Роль : </label>
+                <div class="col-sm-5">
+                    <select class="form-select" id="roleSelect"
+                            onchange="selectedRole(this);">
+                        <option selected disabled hidden>Роль</option>
+                        <#list roles as role>
+                            <option value="${role.name()!"No value"}">${role.roleName!"No value"}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row mt-2" id="posDiv" hidden>
+                <label class="col-sm-2 col-form-label">Должность : </label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" placeholder="Должность" id="positionName">
+                </div>
+            </div>
+            <script>
+                let roleName;
+
+                function selectedRole(sel) {
+                    roleName = sel.value;
+                    if (sel.value == "USER_VISITED") {
+                        document.getElementById("posDiv").hidden = true
+                    } else {
+                        document.getElementById("posDiv").hidden = false
+                    }
+                    document.getElementById("roleName").value = roleName;
                 }
 
                 function hideMiddlename(elem) {
@@ -65,16 +77,54 @@
                         inputMiddlename.disabled = elem.checked;
                     }
                 }
+
+                loginForm.onsubmit = async (e) => {
+
+                }
+
             </script>
         </#if>
         <div>
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <#if isRegistration>
+                <input type="hidden" name="roleName" id="roleName">
                 <input type="hidden" name="positionId" id="positionId">
             </#if>
             <button class="btn btn-primary mt-2" type="submit">${buttonName}</button>
         </div>
     </form>
+    <script>
+
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            let positionRequestDto = new FormData(loginForm);
+            <#if isRegistration>
+            positionRequestDto.append("positionName", document.getElementById("positionName").value);
+            let response = await fetch('/admin/schedule/add/create-position', {
+                method: 'POST',
+                body: positionRequestDto,
+            }).then((res) => {
+                return res.json();
+            });
+            document.getElementById("positionId").value = response.id;
+            </#if>
+
+            let userRequestDTO = new FormData(loginForm);
+            await fetch('${path}', {
+                method: 'POST',
+                body: userRequestDTO
+            }).then((res) => {
+                if (res.ok) {
+                    <#if isRegistration>
+                    window.location.href = '/admin/registration';
+                    <#else>
+                    window.location.href = '/home';
+                    </#if>
+
+                }
+            });
+        }
+    </script>
 </#macro>
 
 <#macro logout>

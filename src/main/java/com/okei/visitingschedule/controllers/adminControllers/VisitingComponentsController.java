@@ -10,11 +10,14 @@ import com.okei.visitingschedule.entity.schedule.StudyGroup;
 import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -36,52 +39,53 @@ public class VisitingComponentsController {
     }
 
     @PostMapping("create-study-group")
-    public String  createStudyGroup(@RequestParam("scheduleId") long scheduleId,StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+    public ResponseEntity createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
         if (studyGroupFromDb != null){
 //            model.put("message","Study group exists!");
-            return "redirect:/schedule/add/" + scheduleId;
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
-        return "redirect:/schedule/add/" + scheduleId;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
     @PostMapping("create-position")
-    public String  createPosition(@RequestParam("scheduleId") long scheduleId,PositionRequestDto positionRequestDto, Map<String,Object> model) {
+    @ResponseBody
+    public ResponseEntity<?> createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         //            model.put("message","Position exists!");
         if (positionFromDb != null) {
-            return "redirect:/schedule/add/" + scheduleId;
+            return new ResponseEntity(positionFromDb,HttpStatus.OK);
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-        return "redirect:/schedule/add/" + scheduleId;
+        return new ResponseEntity(positionServices.findByPositionName(positionRequestDto.getPositionName()),HttpStatus.OK);
     }
 
 
     @PostMapping("create-discipline")
-    public String  createDiscipline(@RequestParam("scheduleId") long scheduleId,AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+    public ResponseEntity  createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
         if (disciplineFromDb != null){
 //            model.put("message","Discipline exists!");
-            return "redirect:/schedule/add/" + scheduleId;
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         academicDisciplineServices.addDiscipline(disciplineRequestDto.getDisciplineName());
-        return "redirect:/schedule/add/" + scheduleId;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("create-visiting-criteria")
-    public String  createCriteria(@RequestParam("scheduleId") long scheduleId,VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String,Object> model){
+    public ResponseEntity  createCriteria(@RequestParam("scheduleId") long scheduleId,VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String,Object> model){
         VisitingCriteria visitingCriteriaFromDb = visitingCriteriaService.findByCriteriaName(visitingCriteriaRequestDTO.getCritariaName());
         if (visitingCriteriaFromDb != null){
 //            model.put("me ssage","Discipline exists!");
-            return "redirect:/schedule/add/" + scheduleId;
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
                 visitingCriteriaRequestDTO.getValueOfOnePoint(),
                 visitingCriteriaRequestDTO.getValueOfTwoPoint(),
                 visitingCriteriaRequestDTO.getValueOfThreePoint());
-        return "redirect:/schedule/add/" + scheduleId;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

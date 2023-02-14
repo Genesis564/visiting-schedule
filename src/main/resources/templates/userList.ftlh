@@ -7,8 +7,22 @@
                 <div class="col">
                     <div class="card text-center my-3 h-100">
                         <div class="card-body">
-                            <h5 class="card-title">${user.username}</h5>
+                            <h5 class="card-title">
+                                <#if user.lastname??>
+                                    ${user.lastname}
+                                </#if>
+                                <#if user.firstname??>
+                                    ${user.firstname}
+                                </#if>
+                                <#if user.middlename??>
+                                    ${user.middlename}
+                                </#if>
+                            </h5>
                             <p class="card-text">
+                                Имя пользователя: ${user.username}
+                            </p>
+                            <p class="card-text">
+                                Роли:
                                 <#list user.roles as role>
                                     ${role.roleName}
                                 </#list>

@@ -182,9 +182,9 @@
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
         let week = splitDate[1].split("0")
-        if (week.length === 2){
+        if (week.length === 2) {
             curr = new Date(getDateOfWeek(splitDate[0], week[1]));
-        }else{
+        } else {
             curr = new Date(getDateOfWeek(splitDate[0], week[0]));
         }
         document.addEventListener("DOMContentLoaded", () => {
@@ -195,12 +195,13 @@
             let month = inputData.valueAsDate.getMonth() + 1
             let lastDayOfWeek = new Date(inputData.valueAsDate);
             lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
-            inputData.min = inputData.valueAsDate.getFullYear() + ((month<10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate()<10) ? "-0" : "-") + inputData.valueAsDate.getDate();
-            inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth()<10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate()<10) ? "-0" : "-") + lastDayOfWeek.getDate();
+            inputData.min = inputData.valueAsDate.getFullYear() + ((month < 10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate() < 10) ? "-0" : "-") + inputData.valueAsDate.getDate();
+            inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth() < 10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate() < 10) ? "-0" : "-") + lastDayOfWeek.getDate();
             let positions = document.querySelectorAll("#positionsSelect")[0].options;
             for (let i = 0; i < positions.length; i++) {
-                if (positions[i].value == ${positionId}){
+                if (positions[i].value == ${positionId}) {
                     positions[i].selected = true;
+                    positionId = ${positionId};
                 }
             }
         })
@@ -260,9 +261,14 @@
             visitingRequestDTO.append("criterionIds", criteria)
             visitingRequestDTO.append("scheduleId", ${schedule.id})
 
-            let response = await fetch('/schedule/add/visiting', {
+            await fetch('/schedule/add/visiting', {
                 method: 'POST',
-                body: visitingRequestDTO
+                body: visitingRequestDTO,
+                redirect: "manual"
+            }).then((res) => {
+                if (res.ok) {
+                    window.location.href = '/home';
+                }
             });
         }
 

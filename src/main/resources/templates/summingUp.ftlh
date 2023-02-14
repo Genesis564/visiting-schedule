@@ -96,6 +96,10 @@
             let response = await fetch('/schedule/summing-up/add', {
                 method: 'POST',
                 body: eventRequestDTO
+            }).then((res) => {
+                if (res.ok) {
+                    window.location.href = '/home';
+                }
             });
         }
     </script>

@@ -11,8 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,6 +20,7 @@ import java.util.Map;
 public class RegistrationController {
     private final UserServices userServices;
     private final PositionServices positionServices;
+
 
     @Autowired
     public RegistrationController(UserServices userServices,PositionServices positionServices) {
@@ -30,16 +31,30 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String registration(Map<String, Object> model){
         Iterable<Position> positions = positionServices.findAll();
+        Role[] roles = Role.values();
 
+        model.put("roles", roles);
         model.put("positions", positions);
         return "registration";
     }
 
     @PostMapping("/registration")
     public String addUser(@RequestParam("positionId") Position position,
+                          @RequestParam("roleName") Role role,
                           UserRequestDTO userRequestDTO,
                           Map<String,Object> model) {
         User userFromDb = userServices.findByUsername(userRequestDTO.getUsername());
+        Set<Role> roleSet = new HashSet<>();
+        if (role == Role.ADMIN){
+            roleSet.add(Role.ADMIN);
+            roleSet.add(Role.USER_VISITOR);
+            roleSet.add(Role.USER_VISITED);
+        } else if (role == Role.USER_VISITOR) {
+            roleSet.add(Role.USER_VISITED);
+            roleSet.add(Role.USER_VISITOR);
+        }else {
+            roleSet.add(Role.USER_VISITED);
+        }
         if (userFromDb != null){
             model.put("message","User exists!");
             return "registration";
@@ -48,19 +63,19 @@ public class RegistrationController {
             userServices.addUser(userRequestDTO.getUsername(),
                     userRequestDTO.getPassword(),
                     position,
-                    Collections.singleton(Role.USER_VISITED));
+                    roleSet);
         } else if (userRequestDTO.getMiddlename() == null){
             userServices.addUser(userRequestDTO.getUsername(),
                     userRequestDTO.getPassword(),
                     position,
-                    Collections.singleton(Role.USER_VISITED),
+                    roleSet,
                     userRequestDTO.getLastname(),
                     userRequestDTO.getFirstname());
         } else{
             userServices.addUser(userRequestDTO.getUsername(),
                     userRequestDTO.getPassword(),
                     position,
-                    Collections.singleton(Role.USER_VISITED),
+                    roleSet,
                     userRequestDTO.getLastname(),
                     userRequestDTO.getFirstname(),
                     userRequestDTO.getMiddlename());

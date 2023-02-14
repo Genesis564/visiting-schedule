@@ -3,10 +3,13 @@ package com.okei.visitingschedule.controllers.userControllers;
 import com.okei.visitingschedule.dto.ConclusionRequestDTO;
 import com.okei.visitingschedule.dto.EventRequestDTO;
 import com.okei.visitingschedule.dto.VisitingRequestDTO;
+import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/schedule/")
@@ -33,7 +37,7 @@ public class UserScheduleController {
     public UserScheduleController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices,
                                   VisitingServices visitingServices, StudyGroupServices studyGroupServices,
                                   VisitingCriteriaService visitingCriteriaService, CriteriaScoreServices criteriaScoreServices,
-                                  ScheduleServices scheduleServices,EventServices eventServices,
+                                  ScheduleServices scheduleServices, EventServices eventServices,
                                   ConclusionServices conclusionServices) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
@@ -47,7 +51,7 @@ public class UserScheduleController {
     }
 
     @GetMapping("add/{schedule}")
-    public String addVisiting(@PathVariable Schedule schedule,Principal principal, Map<String, Object> model) {
+    public String addVisiting(@PathVariable Schedule schedule, Principal principal, Map<String, Object> model) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long positionId = user.getPosition().getId();
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
@@ -123,23 +127,23 @@ public class UserScheduleController {
     }
 
     @GetMapping("summing-up/{schedule}")
-    public String summingUp(@PathVariable Schedule schedule,Principal principal, Map<String, Object> model) {
+    public String summingUp(@PathVariable Schedule schedule, Principal principal, Map<String, Object> model) {
 
-        model.put("schedule",schedule);
+        model.put("schedule", schedule);
         return "summingUp";
     }
 
     @PostMapping("summing-up/add")
-    public String addSummingUp(@RequestParam("scheduleId") Schedule schedule,EventRequestDTO eventRequestDTO, ConclusionRequestDTO conclusionRequestDTO, Map<String, Object> model){
-        Conclusion conclusion = new Conclusion(conclusionRequestDTO.getVirtuesOfOccupation(),conclusionRequestDTO.getProblems());
+    public ResponseEntity addSummingUp(@RequestParam("scheduleId") Schedule schedule, EventRequestDTO eventRequestDTO, ConclusionRequestDTO conclusionRequestDTO, Map<String, Object> model) {
+        Conclusion conclusion = new Conclusion(conclusionRequestDTO.getVirtuesOfOccupation(), conclusionRequestDTO.getProblems());
         conclusionServices.save(conclusion);
         List<String> eventNames = new ArrayList<>(eventRequestDTO.getEventNames());
-        Set<Event> events= new HashSet<>();
+        Set<Event> events = new HashSet<>();
         Set<Status> statusSet = new HashSet<>();
         statusSet.add(Status.WAITING_TO_CONFIRM);
 
-        for (String eventName: eventNames) {
-            Event event = new Event(eventName,conclusion);
+        for (String eventName : eventNames) {
+            Event event = new Event(eventName, conclusion);
             events.add(event);
             eventServices.save(event);
         }
@@ -153,7 +157,7 @@ public class UserScheduleController {
         schedule.setStatus(statusSet);
         scheduleServices.save(schedule);
 
-        return "redirect:/home";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("edit/{schedule}")
@@ -182,7 +186,7 @@ public class UserScheduleController {
         visiting.setPosition(position);
         visiting.setAcademicDiscipline(academicDiscipline);
         visitingServices.save(visiting);
-        return "redirect:/schedule/view/"+visiting.getSchedule().getId();
+        return "redirect:/schedule/view/" + visiting.getSchedule().getId();
     }
 
     @PostMapping("view/{schedule}")
@@ -196,11 +200,11 @@ public class UserScheduleController {
 
     @Transactional
     @PostMapping("add/visiting")
-    public String createSchedule(@RequestParam("studyGroupId") StudyGroup studyGroup,
-                                 @RequestParam("scheduleId") Schedule schedule,
-                                 @RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
-                                 @RequestParam("positionId") Position position,
-                                 VisitingRequestDTO visitingRequestDTO, Map<String, Object> model) {
+    public ResponseEntity createSchedule(@RequestParam("studyGroupId") StudyGroup studyGroup,
+                                         @RequestParam("scheduleId") Schedule schedule,
+                                         @RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
+                                         @RequestParam("positionId") Position position,
+                                         VisitingRequestDTO visitingRequestDTO, Map<String, Object> model) {
         Visiting visitingFromDb = visitingServices.findFromDb(schedule, visitingRequestDTO.getDate());
         List<VisitingCriteria> criteriaLists = new ArrayList<>();
         Set<Status> statusSet = new HashSet<>();
@@ -231,9 +235,9 @@ public class UserScheduleController {
                 criteriaScoreServices.save(newCriteriaScore);
                 i++;
             }
-            return "redirect:/home";
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return "redirect:/home";
+        return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

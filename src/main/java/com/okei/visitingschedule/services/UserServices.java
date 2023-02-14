@@ -5,9 +5,11 @@ import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,22 +20,25 @@ public class UserServices implements UserDetailsService {
 
     private final UsersRepo usersRepo;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServices(UsersRepo usersRepo) {
+    public UserServices(UsersRepo usersRepo,PasswordEncoder passwordEncoder) {
         this.usersRepo = usersRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void addUser(String username, String password, Position position, Set<Role> roles){
-        User user = new User(username,password,true,position,roles);
+        User user = new User(username,passwordEncoder.encode(password),true,position,roles);
         usersRepo.save(user);
     }
 
     public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname){
-        User user = new User(username,password,true,position,roles,lastname,firstname);
+        User user = new User(username,passwordEncoder.encode(password),true,position,roles,lastname,firstname);
         usersRepo.save(user);
     }
     public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname,String middlename){
-        User user = new User(username,password,true,position,roles,lastname,firstname,middlename);
+        User user = new User(username,passwordEncoder.encode(password),true,position,roles,lastname,firstname,middlename);
         usersRepo.save(user);
     }
 
