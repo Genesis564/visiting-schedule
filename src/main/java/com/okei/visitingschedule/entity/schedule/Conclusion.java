@@ -17,15 +17,21 @@ public class Conclusion {
     @OneToMany(mappedBy = "conclusion")
     Set<Event> events;
 
-    public Conclusion(String virtuesOfOccupation, String problems, Set<Event> events) {
+    @OneToOne
+    @JoinColumn(name = "visiting_id")
+    private Visiting visiting;
+
+    public Conclusion(String virtuesOfOccupation, String problems, Set<Event> events,Visiting visiting) {
         this.virtuesOfOccupation = virtuesOfOccupation;
         this.problems = problems;
         this.events = events;
+        this.visiting = visiting;
     }
 
-    public Conclusion(String virtuesOfOccupation, String problems) {
+    public Conclusion(String virtuesOfOccupation, String problems, Visiting visiting) {
         this.virtuesOfOccupation = virtuesOfOccupation;
         this.problems = problems;
+        this.visiting = visiting;
     }
 
     public Conclusion() {

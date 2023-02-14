@@ -6,7 +6,10 @@ import com.okei.visitingschedule.repos.EventRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EventServices {
@@ -28,5 +31,23 @@ public class EventServices {
 
     public List<Event> findAll(){
         return (List<Event>) eventRepo.findAll();
+    }
+    public List<Event> findAll(Conclusion conclusion){
+        return (List<Event>) eventRepo.findAllByConclusion(conclusion);
+    }
+
+    public Set<Event> eventsNameToEventsList(List<String> eventNames,Conclusion conclusion){
+        Set<Event> events = new HashSet<>();
+        for (String eventName : eventNames) {
+            Event eventFromDB = eventRepo.findByName(eventName);
+            if (eventFromDB !=null){
+                events.add(eventFromDB);
+            }else {
+                Event event = new Event(eventName, conclusion);
+                events.add(event);
+                eventRepo.save(event);
+            }
+        }
+        return events;
     }
 }

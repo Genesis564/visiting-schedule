@@ -131,11 +131,19 @@
             </#if>
             <#if subjectToEditing>
             <form action="/schedule/edit/${schedule.id}" method="get">
-                    <div class="mb-3 me-3">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать</button>
-                    </div>
+                <div class="mb-3 me-3">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать посещение</button>
+                </div>
             </form>
+                <#if summingUpSubjectToEditing>
+                    <form action="/schedule/edit/summing-up/${schedule.id}" method="get">
+                        <div class="mb-3 me-3">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                            <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать итоги</button>
+                        </div>
+                    </form>
+                </#if>
             </#if>
         </div>
     </div>

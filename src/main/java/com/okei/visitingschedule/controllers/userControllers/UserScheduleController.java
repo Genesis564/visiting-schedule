@@ -88,6 +88,12 @@ public class UserScheduleController {
             subjectToEditing = true;
         }
 
+        boolean summingUpSubjectToEditing = false;
+        if ((schedule.getVisitorUser().equals(user) || user.isAdmin())
+                && thisVisiting.getConclusion() != null){
+            summingUpSubjectToEditing = true;
+        }
+
         List<VisitingCriteria> visitingCriteria = new ArrayList<>();
         for (CriteriaScore score : sortedCriteriaScore) {
             visitingCriteria.add(visitingCriteriaService.findById(score.getVisitingCriteria().getId()));
@@ -95,6 +101,7 @@ public class UserScheduleController {
 
         model.put("access", access);
         model.put("subjectToEditing", subjectToEditing);
+        model.put("summingUpSubjectToEditing", summingUpSubjectToEditing);
         model.put("criteriaScore", sortedCriteriaScore);
         model.put("criteries", visitingCriteria);
         model.put("visiting", thisVisiting);
@@ -133,30 +140,51 @@ public class UserScheduleController {
         return "summingUp";
     }
 
+    @GetMapping("edit/summing-up/{schedule}")
+    public String editSummingUp(@PathVariable Schedule schedule, Map<String, Object> model) {
+        Visiting thisVisiting = visitingServices.findVisitingBySchedule(schedule);
+        Conclusion thisConclusion = conclusionServices.findConclusionByVisiting(thisVisiting);
+        List<Event> events = eventServices.findAll(thisConclusion);
+
+        model.put("visiting", thisVisiting);
+        model.put("conclusion", thisConclusion);
+        model.put("events", events);
+        return "editSummingUp";
+    }
+
     @PostMapping("summing-up/add")
     public ResponseEntity addSummingUp(@RequestParam("scheduleId") Schedule schedule, EventRequestDTO eventRequestDTO, ConclusionRequestDTO conclusionRequestDTO, Map<String, Object> model) {
-        Conclusion conclusion = new Conclusion(conclusionRequestDTO.getVirtuesOfOccupation(), conclusionRequestDTO.getProblems());
+        Visiting visiting = visitingServices.findVisitingBySchedule(schedule);
+        Conclusion conclusion = new Conclusion(conclusionRequestDTO.getVirtuesOfOccupation(), conclusionRequestDTO.getProblems(),visiting);
         conclusionServices.save(conclusion);
-        List<String> eventNames = new ArrayList<>(eventRequestDTO.getEventNames());
-        Set<Event> events = new HashSet<>();
         Set<Status> statusSet = new HashSet<>();
         statusSet.add(Status.WAITING_TO_CONFIRM);
 
-        for (String eventName : eventNames) {
-            Event event = new Event(eventName, conclusion);
-            events.add(event);
-            eventServices.save(event);
-        }
+        Set<Event> events = new HashSet<>(eventServices.eventsNameToEventsList(eventRequestDTO.getEventNames(),conclusion));
+
 
         conclusion.setEvents(events);
         conclusionServices.save(conclusion);
-        Visiting visiting = visitingServices.findVisitingBySchedule(schedule);
+
         visiting.setConclusion(conclusion);
         visitingServices.save(visiting);
 
         schedule.setStatus(statusSet);
         scheduleServices.save(schedule);
 
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("summing-up/edit/{visiting}")
+    public ResponseEntity addSummingUp(@PathVariable Visiting visiting, EventRequestDTO eventRequestDTO, ConclusionRequestDTO conclusionRequestDTO, Map<String, Object> model) {
+        Conclusion conclusion = conclusionServices.findConclusionByVisiting(visiting);
+        conclusion.setProblems(conclusionRequestDTO.getProblems());
+        conclusion.setVirtuesOfOccupation(conclusionRequestDTO.getVirtuesOfOccupation());
+
+        Set<Event> events = new HashSet<>(eventServices.eventsNameToEventsList(eventRequestDTO.getEventNames(),conclusion));
+
+        conclusion.setEvents(events);
+        conclusionServices.save(conclusion);
         return new ResponseEntity(HttpStatus.OK);
     }
 

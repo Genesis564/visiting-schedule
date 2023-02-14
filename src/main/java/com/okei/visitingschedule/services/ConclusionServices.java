@@ -2,6 +2,7 @@ package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.schedule.Conclusion;
 import com.okei.visitingschedule.entity.schedule.Event;
+import com.okei.visitingschedule.entity.schedule.Visiting;
 import com.okei.visitingschedule.repos.ConclusionRepo;
 import com.okei.visitingschedule.repos.EventRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,14 @@ public class ConclusionServices {
     }
 
 
-    public void addConclusion(String virtuesOfOccupation,String problems){
-        conclusionRepo.save(new Conclusion(virtuesOfOccupation,problems));
+    public void addConclusion(String virtuesOfOccupation, String problems, Visiting visiting){
+        conclusionRepo.save(new Conclusion(virtuesOfOccupation,problems,visiting));
     }
 
     public List<Conclusion> findAll(){
         return (List<Conclusion>) conclusionRepo.findAll();
+    }
+    public Conclusion findConclusionByVisiting(Visiting visiting){
+        return conclusionRepo.findByVisiting(visiting);
     }
 }

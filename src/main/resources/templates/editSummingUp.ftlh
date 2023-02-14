@@ -1,7 +1,9 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/createObject.ftlh" as cr>
+<#include "parts/security.ftlh">
 
 <@c.page>
-    <div class="card mb-3">
+<div class="card mb-3">
     <div class="card-header d-flex justify-content-center">
         <div class="col-sm-10 text-center">
             <label>Выводы</label>
@@ -10,13 +12,13 @@
     <div class="card-body">
         <div class="input-group mb-3">
             <div class="form-floating">
-                <textarea class="form-control" id="virtuesOfOccupation" style="height: 15vh"></textarea>
+                <textarea class="form-control" id="virtuesOfOccupation" style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
                 <label for="virtuesOfOccupation">Достоинства занятия</label>
             </div>
         </div>
         <div class="input-group mb-3">
             <div class="form-floating">
-                <textarea class="form-control" id="problems" style="height: 15vh"></textarea>
+                <textarea class="form-control" id="problems" style="height: 15vh">${conclusion.problems}</textarea>
                 <label for="problems">Проблемы, замечания</label>
             </div>
         </div>
@@ -27,14 +29,16 @@
             </button>
         </div>
         <div id="events">
+            <#list events as event>
             <div class="input-group-sm mb-3">
                         <span class="input-group-text d-flex justify-content-between">
                                 Мероприятие
                             <button type="button" class="btn btn-outline-secondary btn-xs"
                                     onclick="deleteEvent(this)">Удалить</button>
                         </span>
-                <textarea class="form-control" id="eventName" style="height: 15vh"></textarea>
+                <textarea class="form-control" id="eventName" style="height: 15vh">${event.name}</textarea>
             </div>
+            </#list>
         </div>
         <div>
             <form id="submitForm">
@@ -93,7 +97,7 @@
             eventRequestDTO.append("virtuesOfOccupation",document.getElementById("virtuesOfOccupation").value);
             eventRequestDTO.append("problems",document.getElementById("problems").value);
             eventRequestDTO.append("scheduleId",${schedule.id});
-            let response = await fetch('/schedule/summing-up/add', {
+            let response = await fetch('/schedule/summing-up/edit/' + ${visiting.id}, {
                 method: 'POST',
                 body: eventRequestDTO
             }).then((res) => {

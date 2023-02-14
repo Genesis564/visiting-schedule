@@ -22,6 +22,9 @@
                 <div class="collapse show multi-collapse" id="scheduleSummingUp">
                     <div class="card-body">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                            <#assign
+                            i = 0
+                            >
                             <#list schedulesSummingUp as schedule>
                                 <div class="col">
                                     <div class="card text-center my-3 h-100">
@@ -32,6 +35,7 @@
                                             <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
+                                            <#if accessToSummingUpVisiting[i] == true>
                                                 <form action="/schedule/summing-up/${schedule.id}" method="get">
                                                     <button type="submit"
                                                             class="btn btn-outline-secondary btn-xs"
@@ -41,9 +45,15 @@
                                                     <input type="hidden" name="_csrf"
                                                            value="${_csrf.token}">
                                                 </form>
+                                            <#else>
+                                                <label class="col-form-label">В ожидании подтверждения итогов</label>
+                                            </#if>
                                         </div>
                                     </div>
                                 </div>
+                                <#assign
+                                i = i+1
+                                >
                             </#list>
                         </div>
                     </div>

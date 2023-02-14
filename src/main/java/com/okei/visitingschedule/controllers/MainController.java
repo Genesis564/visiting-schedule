@@ -66,6 +66,16 @@ public class MainController {
             }
             i++;
         }
+        boolean[] accessToSummingUpVisiting = new boolean[schedulesSummingUp.size()];
+        i = 0;
+        for (Schedule schedule:schedulesSummingUp) {
+            if ((schedule.getVisitorUser().equals(user) || user.isAdmin())){
+                accessToSummingUpVisiting[i]=true;
+            }else {
+                accessToSummingUpVisiting[i]=false;
+            }
+            i++;
+        }
 
         boolean[] accessToCreateVisiting = new boolean[schedulesPlanned.size()];
         i = 0;
@@ -96,6 +106,7 @@ public class MainController {
         model.put("badgeCount",badgeCount);
         model.put("accessToConfirmVisiting",accessToConfirmVisiting);
         model.put("accessToCreateVisiting",accessToCreateVisiting);
+        model.put("accessToSummingUpVisiting",accessToSummingUpVisiting);
         return "main";
     }
 }

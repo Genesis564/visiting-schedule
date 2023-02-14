@@ -62,6 +62,7 @@
                     roleName = sel.value;
                     if (sel.value == "USER_VISITED") {
                         document.getElementById("posDiv").hidden = true
+                        document.getElementById("positionName").value = "Преподаватель";
                     } else {
                         document.getElementById("posDiv").hidden = false
                     }
@@ -77,11 +78,6 @@
                         inputMiddlename.disabled = elem.checked;
                     }
                 }
-
-                loginForm.onsubmit = async (e) => {
-
-                }
-
             </script>
         </#if>
         <div>
