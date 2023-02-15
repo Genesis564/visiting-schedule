@@ -21,7 +21,14 @@ public class UserRequestDTO implements Serializable{
         this.positionId = positionId;
     }
 
-    public UserRequestDTO(String username, String password, String lastname, String firstname,Long positionId) {
+    public UserRequestDTO(String username, String lastname, String firstname, String middlename) {
+        this.username = username;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.middlename = middlename;
+    }
+
+    public UserRequestDTO(String username, String password, String lastname, String firstname, Long positionId) {
         this.username = username;
         this.password = password;
         this.lastname = lastname;

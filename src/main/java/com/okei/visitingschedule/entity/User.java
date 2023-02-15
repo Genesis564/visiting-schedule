@@ -141,6 +141,11 @@ public class User implements UserDetails {
         this.position = position;
     }
 
+    public String getFullName(){
+        return lastname +" "+ firstname +" "+ middlename;
+    }
+
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

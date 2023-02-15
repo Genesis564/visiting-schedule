@@ -41,12 +41,13 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Тема занятия</span>
-            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" disabled name="lessonTopic"
+            <input type="text" class="form-control" value="${visiting.lessonTopic}" disabled name="lessonTopic"
                    id="lessonTopic">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-
+            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" disabled name="purposeOfTheLesson"
+                   id="purposeOfTheLesson">
         </div>
 
 
