@@ -5,12 +5,13 @@
 <@c.page>
     <div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Цель посещения занятия</span>
-            <input type="text" class="form-control" name="purposeOfTheVisit" id="purposeOfTheVisit">
+            <div class="form-floating">
+                <textarea class="form-control" name="purposeOfTheVisit" id="purposeOfTheVisit" style="height: 15vh"></textarea>
+                <label for="purposeOfTheVisit">Цель посещения занятия</label>
+            </div>
         </div>
-
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Дата</span>
+            <span class="input-group-text">Дата</span>
             <input type="date" class="form-control" name="visitingDate" id="visitingDate">
         </div>
         <div class="input-group mb-3">
@@ -21,25 +22,23 @@
                     <option value="${studyGroup.id!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
-            <#if isAdmin>
+            <#--<#if isAdmin>
                 <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
-            </#if>
+            </#if>-->
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Количество обучающихся</span>
+            <span class="input-group-text">Количество обучающихся</span>
             <input type="text" class="form-control" name="numberOfStudents" id="numberOfStudents">
         </div>
 
         <div class="input-group mb-3">
-            <select class="form-select" id="positionsSelect" aria-label="Default select example"
-                    onchange="selectedPosition(this);">
-                <#list positions as position>
-                    <option value="${position.id!"No value"}">${position.positionName!"No value"}</option>
-                </#list>
-            </select>
-            <#if isAdmin>
+            <div class="form-floating">
+                <textarea class="form-control" name="position" id="position" readonly>${position.positionName}</textarea>
+                <label for="position">Должность</label>
+            </div>
+            <#--<#if isAdmin>
                 <@cr.create "/admin/schedule/add/create-position","должность","positionName"/>
-            </#if>
+            </#if>-->
         </div>
 
         <div class="input-group mb-3">
@@ -50,17 +49,21 @@
                     <option value="${academicDiscipline.id!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
-            <#if isAdmin>
+            <#--<#if isAdmin>
                 <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
-            </#if>
+            </#if>-->
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Тема занятия</span>
-            <input type="text" class="form-control" name="lessonTopic" id="lessonTopic">
+            <div class="form-floating">
+                <textarea class="form-control" name="lessonTopic" id="lessonTopic" style="height: 15vh"></textarea>
+                <label for="lessonTopic">Тема занятия</label>
+            </div>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-            <input type="text" class="form-control" name="purposeOfTheLesson" id="purposeOfTheLesson">
+            <div class="form-floating">
+                <textarea class="form-control" name="purposeOfTheLesson" id="purposeOfTheLesson" style="height: 15vh"></textarea>
+                <label for="purposeOfTheLesson">Цель занятия</label>
+            </div>
         </div>
 
         <#if isAdmin>
@@ -175,7 +178,7 @@
 
         let currentScore;
         let groupId;
-        let positionId;
+        let positionId = ${position.id};
         let disciplineId;
         let status;
         let curr;
@@ -197,13 +200,6 @@
             lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
             inputData.min = inputData.valueAsDate.getFullYear() + ((month < 10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate() < 10) ? "-0" : "-") + inputData.valueAsDate.getDate();
             inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth() < 10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate() < 10) ? "-0" : "-") + lastDayOfWeek.getDate();
-            let positions = document.querySelectorAll("#positionsSelect")[0].options;
-            for (let i = 0; i < positions.length; i++) {
-                if (positions[i].value == ${positionId}) {
-                    positions[i].selected = true;
-                    positionId = ${positionId};
-                }
-            }
         })
 
         function selectValueOfCriteria() {

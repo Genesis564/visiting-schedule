@@ -14,16 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("/admin/schedule/add/")
+@RequestMapping("/admin/add/")
 public class VisitingComponentsController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
@@ -36,6 +33,18 @@ public class VisitingComponentsController {
         this.positionServices = positionServices;
         this.studyGroupServices = studyGroupServices;
         this.visitingCriteriaService = visitingCriteriaService;
+    }
+
+    @GetMapping
+    public String editComponents(Map<String,Object> model){
+        Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
+        Iterable<Position> positions = positionServices.findAll();
+        Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
+
+        model.put("academicDisciplines",academicDisciplines);
+        model.put("positions",positions);
+        model.put("studyGroups",studyGroups);
+        return "editComponents";
     }
 
     @PostMapping("create-study-group")

@@ -53,19 +53,17 @@ public class UserScheduleController {
     @GetMapping("add/{schedule}")
     public String addVisiting(@PathVariable Schedule schedule, Principal principal, Map<String, Object> model) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Long positionId = user.getPosition().getId();
+        Position position = user.getPosition();
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
-        Iterable<Position> positions = positionServices.findAll();
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
         Iterable<VisitingCriteria> visitingCriteria = visitingCriteriaService.findAll();
 
         model.put("schedule", schedule);
         model.put("statuses", Status.values());
         model.put("studyGroups", studyGroups);
-        model.put("positions", positions);
         model.put("academicDisciplins", academicDisciplines);
         model.put("criteries", visitingCriteria);
-        model.put("positionId", positionId);
+        model.put("position", position);
         return "createVisiting";
     }
 

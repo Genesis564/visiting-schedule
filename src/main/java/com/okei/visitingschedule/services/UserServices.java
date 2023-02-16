@@ -6,6 +6,7 @@ import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,11 +44,12 @@ public class UserServices implements UserDetailsService {
     }
 
     public void save(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepo.save(user);
     }
 
     public List<User> findAll(){
-       return (List<User>) usersRepo.findAll();
+       return (List<User>) usersRepo.findAll(Sort.by(Sort.Direction.ASC, "lastname"));
     };
 
     public List<User> findByRoles(Role role){

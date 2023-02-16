@@ -22,25 +22,22 @@
 
 
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Количество обучающихся</span>
-            <input type="text" class="form-control" value="${visiting.numberOfStudents}" disabled
-                   name="numberOfStudents" id="numberOfStudents">
+            <span class="input-group-text" >Количество обучающихся</span>
+            <input type="text" class="form-control" value="${visiting.numberOfStudents}" disabled>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Должность посетившего занятия</span>
-            <input type="text" class="form-control" value="${visiting.position.positionName}" disabled
-                   name="numberOfStudents" id="numberOfStudents">
+            <span class="input-group-text" >Должность посетившего занятия</span>
+            <input type="text" class="form-control" value="${visiting.position.positionName}" disabled>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Учебная дисциплина</span>
-            <input type="text" class="form-control" value="${visiting.academicDiscipline.disciplineName}" disabled
-                   name="numberOfStudents" id="numberOfStudents">
+            <span class="input-group-text" >Учебная дисциплина</span>
+            <input type="text" class="form-control" value="${visiting.academicDiscipline.disciplineName}" disabled>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Тема занятия</span>
+            <span class="input-group-text" >Тема занятия</span>
             <input type="text" class="form-control" value="${visiting.lessonTopic}" disabled name="lessonTopic"
                    id="lessonTopic">
         </div>

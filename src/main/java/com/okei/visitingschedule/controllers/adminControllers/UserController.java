@@ -51,6 +51,7 @@ public class UserController {
             @RequestParam String firstname,
             @RequestParam String middlename,
             @RequestParam String position,
+            @RequestParam String password,
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user) {
 
@@ -66,6 +67,10 @@ public class UserController {
             positionServices.addPosition(position);
             Position newPosition = positionServices.findByPositionName(position);
             user.setPosition(newPosition);
+        }
+
+        if (!password.equals("")){
+            user.setPassword(password);
         }
 
         Set<String> roles = Arrays.stream(Role.values())
