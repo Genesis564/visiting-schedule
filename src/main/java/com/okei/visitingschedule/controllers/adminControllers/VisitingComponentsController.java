@@ -8,7 +8,10 @@ import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
 import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.entity.schedule.StudyGroup;
 import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
-import com.okei.visitingschedule.services.*;
+import com.okei.visitingschedule.services.AcademicDisciplineServices;
+import com.okei.visitingschedule.services.PositionServices;
+import com.okei.visitingschedule.services.StudyGroupServices;
+import com.okei.visitingschedule.services.VisitingCriteriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("/admin/add/")
+@RequestMapping("/admin/")
 public class VisitingComponentsController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
@@ -28,7 +31,7 @@ public class VisitingComponentsController {
     private final VisitingCriteriaService visitingCriteriaService;
 
     @Autowired
-    public VisitingComponentsController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices,  StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService) {
+    public VisitingComponentsController(AcademicDisciplineServices academicDisciplineServices, PositionServices positionServices, StudyGroupServices studyGroupServices, VisitingCriteriaService visitingCriteriaService) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
         this.studyGroupServices = studyGroupServices;
@@ -36,21 +39,21 @@ public class VisitingComponentsController {
     }
 
     @GetMapping
-    public String editComponents(Map<String,Object> model){
+    public String editComponents(Map<String, Object> model) {
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
         Iterable<Position> positions = positionServices.findAll();
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
 
-        model.put("academicDisciplines",academicDisciplines);
-        model.put("positions",positions);
-        model.put("studyGroups",studyGroups);
+        model.put("academicDisciplines", academicDisciplines);
+        model.put("positions", positions);
+        model.put("studyGroups", studyGroups);
         return "editComponents";
     }
 
-    @PostMapping("create-study-group")
-    public ResponseEntity createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String,Object> model) {
+    @PostMapping("add/create-study-group")
+    public ResponseEntity createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String, Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
-        if (studyGroupFromDb != null){
+        if (studyGroupFromDb != null) {
 //            model.put("message","Study group exists!");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
@@ -59,23 +62,22 @@ public class VisitingComponentsController {
     }
 
 
-    @PostMapping("create-position")
+    @PostMapping("add/create-position")
     @ResponseBody
-    public ResponseEntity<?> createPosition(PositionRequestDto positionRequestDto, Map<String,Object> model) {
+    public ResponseEntity<?> createPosition(PositionRequestDto positionRequestDto, Map<String, Object> model) {
         Position positionFromDb = positionServices.findByPositionName(positionRequestDto.getPositionName());
         //            model.put("message","Position exists!");
         if (positionFromDb != null) {
-            return new ResponseEntity(positionFromDb,HttpStatus.OK);
+            return new ResponseEntity(positionFromDb, HttpStatus.OK);
         }
         positionServices.addPosition(positionRequestDto.getPositionName());
-        return new ResponseEntity(positionServices.findByPositionName(positionRequestDto.getPositionName()),HttpStatus.OK);
+        return new ResponseEntity(positionServices.findByPositionName(positionRequestDto.getPositionName()), HttpStatus.OK);
     }
 
-
-    @PostMapping("create-discipline")
-    public ResponseEntity  createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String,Object> model) {
+    @PostMapping("add/create-discipline")
+    public ResponseEntity createDiscipline(AcademicDisciplineRequestDto disciplineRequestDto, Map<String, Object> model) {
         AcademicDiscipline disciplineFromDb = academicDisciplineServices.findByDisciplineName(disciplineRequestDto.getDisciplineName());
-        if (disciplineFromDb != null){
+        if (disciplineFromDb != null) {
 //            model.put("message","Discipline exists!");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
@@ -83,17 +85,25 @@ public class VisitingComponentsController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("create-visiting-criteria")
-    public ResponseEntity  createCriteria(@RequestParam("scheduleId") long scheduleId,VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String,Object> model){
+    @PostMapping("add/create-visiting-criteria")
+    public ResponseEntity createCriteria(@RequestParam("scheduleId") long scheduleId, VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String, Object> model) {
         VisitingCriteria visitingCriteriaFromDb = visitingCriteriaService.findByCriteriaName(visitingCriteriaRequestDTO.getCritariaName());
-        if (visitingCriteriaFromDb != null){
-//            model.put("me ssage","Discipline exists!");
+        if (visitingCriteriaFromDb != null) {
+//            model.put("message","Discipline exists!");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
                 visitingCriteriaRequestDTO.getValueOfOnePoint(),
                 visitingCriteriaRequestDTO.getValueOfTwoPoint(),
                 visitingCriteriaRequestDTO.getValueOfThreePoint());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("edit/position")
+    public ResponseEntity editPosition(@RequestParam("positionId") Position position, PositionRequestDto positionRequestDto, Map<String, Object> model) {
+
+        position.setPositionName(positionRequestDto.getPositionName());
+        positionServices.save(position);
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -22,9 +22,6 @@
                     <option value="${studyGroup.id!"No value"}">${studyGroup.groupName!"No value"}</option>
                 </#list>
             </select>
-            <#--<#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-study-group","учебную группу","groupName"/>
-            </#if>-->
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Количество обучающихся</span>
@@ -36,9 +33,6 @@
                 <textarea class="form-control" name="position" id="position" readonly>${position.positionName}</textarea>
                 <label for="position">Должность</label>
             </div>
-            <#--<#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-position","должность","positionName"/>
-            </#if>-->
         </div>
 
         <div class="input-group mb-3">
@@ -49,9 +43,6 @@
                     <option value="${academicDiscipline.id!"No value"}">${academicDiscipline.disciplineName!"No value"}</option>
                 </#list>
             </select>
-            <#--<#if isAdmin>
-                <@cr.create "/admin/schedule/add/create-discipline","учебную дисциплину","disciplineName"/>
-            </#if>-->
         </div>
         <div class="input-group mb-3">
             <div class="form-floating">
@@ -73,7 +64,7 @@
                     Добавить критерий оценивания
                 </button>
                 <div class="collapse mb-2" id="collapseCriteria">
-                    <form action="/admin/schedule/add/create-visiting-criteria" method="post">
+                    <form action="/admin/add/create-visiting-criteria" method="post">
                         <label for="recipient-name" class="col-form-label">Название критерия: </label>
                         <input type="text" class="form-control mb-1" name="critariaName">
                         <label for="recipient-name" class="col-form-label">Значение для 1 балла: </label>

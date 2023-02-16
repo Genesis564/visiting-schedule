@@ -19,7 +19,7 @@
                         <a class="nav-link" href="/admin/user-list">Список пользователей</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/add/">Редактировать справочники</a>
+                        <a class="nav-link" href="/admin/">Редактировать справочники</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
