@@ -3,6 +3,7 @@ package com.okei.visitingschedule.services;
 import com.okei.visitingschedule.entity.schedule.StudyGroup;
 import com.okei.visitingschedule.repos.StudyGroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,11 @@ public class StudyGroupServices {
     }
 
     public List<StudyGroup> findAll(){
-        return (List<StudyGroup>) studyGroupRepo.findAll();
+        return (List<StudyGroup>) studyGroupRepo.findAll(Sort.by(Sort.Direction.ASC,"groupName"));
+    }
+
+    public void delete(StudyGroup studyGroup){
+        studyGroupRepo.delete(studyGroup);
     }
 
 }

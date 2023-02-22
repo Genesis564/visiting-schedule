@@ -1,10 +1,9 @@
 package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
-import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.repos.AcademicDisciplineRepo;
-import com.okei.visitingschedule.repos.PositionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +30,10 @@ public class AcademicDisciplineServices {
     }
 
     public List<AcademicDiscipline> findAll(){
-        return (List<AcademicDiscipline>) academicDisciplineRepo.findAll();
+        return (List<AcademicDiscipline>) academicDisciplineRepo.findAll(Sort.by(Sort.Direction.ASC,"disciplineName"));
+    }
+
+    public void delete(AcademicDiscipline academicDiscipline){
+        academicDisciplineRepo.delete(academicDiscipline);
     }
 }

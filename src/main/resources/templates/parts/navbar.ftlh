@@ -21,7 +21,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/">Редактировать справочники</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown me-3">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Создать

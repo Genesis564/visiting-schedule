@@ -4,10 +4,7 @@ import com.okei.visitingschedule.dto.AcademicDisciplineRequestDto;
 import com.okei.visitingschedule.dto.PositionRequestDto;
 import com.okei.visitingschedule.dto.StudyGroupRequestDto;
 import com.okei.visitingschedule.dto.VisitingCriteriaRequestDTO;
-import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
-import com.okei.visitingschedule.entity.schedule.Position;
-import com.okei.visitingschedule.entity.schedule.StudyGroup;
-import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
+import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.services.AcademicDisciplineServices;
 import com.okei.visitingschedule.services.PositionServices;
 import com.okei.visitingschedule.services.StudyGroupServices;
@@ -99,12 +96,59 @@ public class VisitingComponentsController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("edit/position")
+    @PostMapping("edit/position/")
     public ResponseEntity editPosition(@RequestParam("positionId") Position position, PositionRequestDto positionRequestDto, Map<String, Object> model) {
 
         position.setPositionName(positionRequestDto.getPositionName());
         positionServices.save(position);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete/position/{position}")
+    public ResponseEntity deletePosition(@PathVariable Position position){
+        try {
+            positionServices.delete(position);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("edit/academic-discipline/")
+    public ResponseEntity editAcademicDiscipline(@RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
+                                                 AcademicDisciplineRequestDto academicDisciplineRequestDto, Map<String, Object> model) {
+
+        academicDiscipline.setDisciplineName(academicDisciplineRequestDto.getDisciplineName());
+        academicDisciplineServices.save(academicDiscipline);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete/academic-discipline/{academicDiscipline}")
+    public ResponseEntity deleteAcademicDiscipline(@PathVariable AcademicDiscipline academicDiscipline){
+        try {
+            academicDisciplineServices.delete(academicDiscipline);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+    }
+    @PostMapping("edit/study-group/")
+    public ResponseEntity editStudyGroup(@RequestParam("studyGroupId") StudyGroup studyGroup,
+                                                 StudyGroupRequestDto studyGroupRequestDto, Map<String, Object> model) {
+
+        studyGroup.setGroupName(studyGroupRequestDto.getGroupName());
+        studyGroupServices.save(studyGroup);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete/study-group/{studyGroup}")
+    public ResponseEntity deleteStudyGroup(@PathVariable StudyGroup studyGroup){
+        try {
+            studyGroupServices.delete(studyGroup);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
 
 }

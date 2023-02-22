@@ -3,6 +3,7 @@ package com.okei.visitingschedule.services;
 import com.okei.visitingschedule.entity.schedule.Position;
 import com.okei.visitingschedule.repos.PositionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class PositionServices {
     }
 
     public List<Position> findAll(){
-        return (List<Position>) positionRepo.findAll();
+        return (List<Position>) positionRepo.findAll(Sort.by(Sort.Direction.ASC,"positionName"));
+    }
+
+    public void delete(Position position){
+        positionRepo.delete(position);
     }
 }
