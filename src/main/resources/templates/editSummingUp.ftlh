@@ -34,9 +34,9 @@
                         <span class="input-group-text d-flex justify-content-between">
                                 Мероприятие
                             <button type="button" class="btn btn-outline-secondary btn-xs"
-                                    onclick="deleteEvent(this)">Удалить</button>
+                                    onclick="deleteEvent(this,${event.id})">Удалить</button>
                         </span>
-                <textarea class="form-control" id="eventName" style="height: 15vh">${event.name}</textarea>
+                <textarea class="form-control" id="eventName" style="height: 15vh">${event.eventName}</textarea>
             </div>
             </#list>
         </div>
@@ -79,9 +79,21 @@
             })
         }
 
-        function deleteEvent(elem) {
+        async function deleteEvent(elem,id) {
             let deleteEventDiv = elem.parentElement.parentElement
             deleteEventDiv.remove();
+
+            let requestDTO = new FormData();
+            requestDTO.append("_csrf","${_csrf.token}")
+
+            await fetch('/schedule/summing-up/delete/' + id, {
+                method: 'DELETE',
+                body: requestDTO,
+            }).then((res) => {
+                if (res.ok) {
+                    window.location.href = '/schedule/edit/summing-up/' + ${visiting.schedule.id};
+                }
+            })
         }
 
         submitForm.onsubmit = async (e) => {

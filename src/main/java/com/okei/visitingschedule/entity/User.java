@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String lastname;
     private String firstname;
     private String middlename;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     private Position position;
 

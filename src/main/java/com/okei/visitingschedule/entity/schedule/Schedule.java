@@ -19,14 +19,14 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     private Set<Status> status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visiter_user_id")
     private User visitorUser;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visited_user_id")
     private User visitedUser;
     private String visitingWeek;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visiting_id")
     private Visiting visiting;
 
@@ -112,14 +112,12 @@ public class Schedule {
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
         return Objects.equals(id, schedule.id) && Objects.equals(status, schedule.status)
-                && Objects.equals(visitorUser, schedule.visitorUser)
-                && Objects.equals(visitedUser, schedule.visitedUser)
                 && Objects.equals(visitingWeek, schedule.visitingWeek);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, visitorUser, visitedUser, visitingWeek);
+        return Objects.hash(id, status, visitingWeek);
     }
 
     @Override
@@ -127,10 +125,7 @@ public class Schedule {
         return "Schedule{" +
                 "id=" + id +
                 ", status=" + status +
-                ", visitorUser=" + visitorUser +
-                ", visitedUser=" + visitedUser +
                 ", visitingWeek='" + visitingWeek + '\'' +
-                ", visiting=" + visiting +
                 '}';
     }
 }

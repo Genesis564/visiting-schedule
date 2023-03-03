@@ -69,11 +69,11 @@ public class CriteriaScore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CriteriaScore that = (CriteriaScore) o;
-        return score == that.score && Objects.equals(id, that.id) && Objects.equals(visiting, that.visiting) && Objects.equals(visitingCriteria, that.visitingCriteria);
+        return score == that.score && Objects.equals(id, that.id) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, visiting, visitingCriteria, score);
+        return Objects.hash(id, score);
     }
 }

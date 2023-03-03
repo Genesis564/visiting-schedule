@@ -1,6 +1,7 @@
 package com.okei.visitingschedule.entity.schedule;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "position")
@@ -32,5 +33,26 @@ public class Position {
 
     public void setPositionName(String positionName) {
         this.positionName = positionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return Objects.equals(id, position.id) && Objects.equals(positionName, position.positionName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, positionName);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "id=" + id +
+                ", positionName='" + positionName + '\'' +
+                '}';
     }
 }

@@ -157,8 +157,6 @@
             curr = new Date(getDateOfWeek(splitDate[0], week[0]));
         }
         document.addEventListener("DOMContentLoaded", () => {
-
-            document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
             let dataDoc = document.getElementById("visitingDate");
             let inputData = new Date(curr);
             let month = inputData.getMonth() + 1
@@ -175,6 +173,7 @@
             })
             i++;
             </#list>
+            selectValueOfCriteria();
         })
         function selectValueOfCriteria() {
             currentScore = 0

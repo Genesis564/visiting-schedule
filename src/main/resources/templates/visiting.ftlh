@@ -5,45 +5,45 @@
     <div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель посещения занятия</span>
-            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" disabled
+            <input type="text" class="form-control" value="${visiting.purposeOfTheVisit}" readonly
                    name="purposeOfTheVisit" id="purposeOfTheVisit">
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Дата</span>
-            <input type="date" class="form-control" disabled value="${visiting.date}" name="visitingDate"
+            <input type="date" class="form-control" readonly value="${visiting.date}" name="visitingDate"
                    id="visitingDate">
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Группа</span>
-            <input type="text" class="form-control" value="${visiting.studyGroup.groupName}" disabled>
+            <input type="text" class="form-control" value="${visiting.studyGroup.groupName}" readonly>
         </div>
 
 
         <div class="input-group mb-3">
             <span class="input-group-text" >Количество обучающихся</span>
-            <input type="text" class="form-control" value="${visiting.numberOfStudents}" disabled>
+            <input type="text" class="form-control" value="${visiting.numberOfStudents}" readonly>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" >Должность посетившего занятия</span>
-            <input type="text" class="form-control" value="${visiting.position.positionName}" disabled>
+            <input type="text" class="form-control" value="${visiting.position.positionName}" readonly>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" >Учебная дисциплина</span>
-            <input type="text" class="form-control" value="${visiting.academicDiscipline.disciplineName}" disabled>
+            <input type="text" class="form-control" value="${visiting.academicDiscipline.disciplineName}" readonly>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text" >Тема занятия</span>
-            <input type="text" class="form-control" value="${visiting.lessonTopic}" disabled name="lessonTopic"
+            <input type="text" class="form-control" value="${visiting.lessonTopic}" readonly name="lessonTopic"
                    id="lessonTopic">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" disabled name="purposeOfTheLesson"
+            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" readonly name="purposeOfTheLesson"
                    id="purposeOfTheLesson">
         </div>
 
@@ -110,6 +110,40 @@
                 </table>
             </div>
         </div>
+
+        <#if visiting.conclusion??>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" readonly id="virtuesOfOccupation" style="height: 15vh">${visiting.conclusion.virtuesOfOccupation}</textarea>
+                    <label for="virtuesOfOccupation">Достоинства занятия</label>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" readonly id="problems" style="height: 15vh">${visiting.conclusion.problems}</textarea>
+                    <label for="problems">Проблемы, замечания</label>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <label class="mb-3">План устранения замечаний:</label>
+            </div>
+            <div id="events">
+                <#list visiting.conclusion.events as event>
+                    <div class="input-group-sm mb-3">
+                        <span class="input-group-text d-flex justify-content-between">
+                                Мероприятие
+                            <div class="d-flex">
+                                <label class="form-check-label me-1" for="completionMark">
+                                 Отметка о выполнении
+                                </label>
+                                <input class="form-check-input align-self-center" type="checkbox" disabled id="completionMark">
+                            </div>
+                        </span>
+                        <textarea class="form-control" readonly id="eventName" style="height: 15vh">${event.eventName}</textarea>
+                    </div>
+                </#list>
+            </div>
+        </#if>
 
 
         <div class="input-group mb-3">

@@ -11,10 +11,12 @@
                             <label class="me-2">Посещения ожидающие подведения итогов</label>
                         </div>
                         <div class="col-auto align-self-center">
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                            <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleSummingUp" aria-expanded="true"
                                     aria-controls="scheduleSummingUp" onclick="collapseButtonClick(this)">
-                                Скрыть
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -69,10 +71,12 @@
                             <label class="me-2">Посещения ожидающие подтверждения</label>
                         </div>
                         <div class="col-auto align-self-center">
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                            <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleWaitingToConfirmCards" aria-expanded="true"
                                     aria-controls="scheduleWaitingToConfirmCards" onclick="collapseButtonClick(this)">
-                                Скрыть
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
                             </button>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="scheduleBadge">
                                 </span>
@@ -138,9 +142,12 @@
                             <label class="me-2">Запланированные посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                            <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#schedulePlannedCards" aria-expanded="true"
-                                    aria-controls="schedulePlannedCards" onclick="collapseButtonClick(this)">Скрыть
+                                    aria-controls="schedulePlannedCards" onclick="collapseButtonClick(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -196,9 +203,12 @@
                             <label  class="me-2">Прошедшие посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                            <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleConfirmedCards" aria-expanded="true"
-                                    aria-controls="scheduleConfirmedCards" onclick="collapseButtonClick(this)">Скрыть
+                                    aria-controls="scheduleConfirmedCards" onclick="collapseButtonClick(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -243,9 +253,12 @@
                             <label class="me-2">Просроченные посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                            <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleOverdueCards" aria-expanded="true"
-                                    aria-controls="scheduleOverdueCards" onclick="collapseButtonClick(this)">Скрыть
+                                    aria-controls="scheduleOverdueCards" onclick="collapseButtonClick(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -279,12 +292,14 @@
                 let str = elem.innerHTML;
                 if (str.split('-W').length === 2) {
                     let splitDate = str.split('-W');
-                    let week = splitDate[1].split("0")
-                    if (week.length === 2) {
+                    let week = splitDate[1]
+                    if (week[0] == '0'){
+                        week = week.split("0")
                         curr = new Date(getDateOfWeek(splitDate[0], week[1]));
-                    } else {
-                        curr = new Date(getDateOfWeek(splitDate[0], week[0]));
+                    }else{
+                        curr = new Date(getDateOfWeek(splitDate[0], week));
                     }
+
                     let inputData = new Date(curr);
                     let month = inputData.getMonth() + 1
                     let lastDayOfWeek = new Date(inputData);
@@ -301,18 +316,21 @@
                     elem.innerHTML = "Посещение прошло: " + splitDate[2] + "." + splitDate[1] + "." + splitDate[0];
                 }
             })
+            <#if isEmpty[1]>
+            <#else>
             if (${badgeCount} == 0){
                 document.getElementById("scheduleBadge").hidden = true;
             }else {
                 document.getElementById("scheduleBadge").innerHTML = ${badgeCount};
             }
+            </#if>
         })
 
         function collapseButtonClick(elem) {
             if (elem.ariaExpanded == 'true') {
-                elem.innerHTML = "Скрыть"
+                elem.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/> </svg>'
             } else {
-                elem.innerHTML = "Открыть"
+                elem.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/> </svg>';
             }
         }
 

@@ -3,7 +3,6 @@ package com.okei.visitingschedule.controllers.userControllers;
 import com.okei.visitingschedule.dto.ConclusionRequestDTO;
 import com.okei.visitingschedule.dto.EventRequestDTO;
 import com.okei.visitingschedule.dto.VisitingRequestDTO;
-import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.services.*;
@@ -14,10 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/schedule/")
@@ -26,6 +23,7 @@ public class UserScheduleController {
     private final AcademicDisciplineServices academicDisciplineServices;
     private final PositionServices positionServices;
     private final VisitingServices visitingServices;
+    private final UserServices userServices;
     private final CriteriaScoreServices criteriaScoreServices;
     private final StudyGroupServices studyGroupServices;
     private final VisitingCriteriaService visitingCriteriaService;
@@ -38,7 +36,7 @@ public class UserScheduleController {
                                   VisitingServices visitingServices, StudyGroupServices studyGroupServices,
                                   VisitingCriteriaService visitingCriteriaService, CriteriaScoreServices criteriaScoreServices,
                                   ScheduleServices scheduleServices, EventServices eventServices,
-                                  ConclusionServices conclusionServices) {
+                                  ConclusionServices conclusionServices,UserServices userServices) {
         this.academicDisciplineServices = academicDisciplineServices;
         this.positionServices = positionServices;
         this.visitingServices = visitingServices;
@@ -48,11 +46,13 @@ public class UserScheduleController {
         this.scheduleServices = scheduleServices;
         this.eventServices = eventServices;
         this.conclusionServices = conclusionServices;
+        this.userServices = userServices;
     }
 
     @GetMapping("add/{schedule}")
     public String addVisiting(@PathVariable Schedule schedule, Principal principal, Map<String, Object> model) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        user = userServices.findByUsername(user.getUsername());
         Position position = user.getPosition();
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
@@ -184,6 +184,16 @@ public class UserScheduleController {
         conclusion.setEvents(events);
         conclusionServices.save(conclusion);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("summing-up/delete/{event}")
+    public ResponseEntity deleteEvent(@PathVariable Event event){
+        try {
+            eventServices.delete(event);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("edit/{schedule}")

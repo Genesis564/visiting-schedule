@@ -51,7 +51,7 @@
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование
                                                 должности</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            <button type="button" onclick="editModalClose(${position.id},'${position.positionName}','positionName')" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <form id="positionForm">
@@ -60,14 +60,14 @@
                                                     <div class="form-group row mt-2">
                                                         <label for="recipient-name" class="col-sm-4 col-form-label">Наименование должности: </label>
                                                         <div class="col-sm-7 d-flex">
-                                                            <input class="form-control flex-fill" type="text"
-                                                                   name="positionName" value="${position.positionName}">
+                                                            <input class="form-control flex-fill" required type="text"
+                                                                   name="positionName" id="positionName-#{position.id}" value="${position.positionName}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary" onclick="editModalClose(${position.id},'${position.positionName}','positionName')" data-bs-dismiss="modal">
                                                     Закрыть
                                                 </button>
                                                 <div>
@@ -133,7 +133,7 @@
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование
                                                 дисциплины</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            <button type="button" class="btn-close" onclick="editModalClose(${academicDiscipline.id},'${academicDiscipline.disciplineName}','discipline')" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <form id="academicDisciplineForm">
@@ -142,14 +142,14 @@
                                                     <div class="form-group row mt-2">
                                                         <label for="recipient-name" class="col-sm-4 col-form-label">Наименование дисциплины: </label>
                                                         <div class="col-sm-7 d-flex">
-                                                            <input class="form-control flex-fill" type="text"
-                                                                   name="disciplineName" value="${academicDiscipline.disciplineName}">
+                                                            <input class="form-control flex-fill" required type="text"
+                                                                   name="disciplineName" id="discipline-#{academicDiscipline.id}" value="${academicDiscipline.disciplineName}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary" onclick="editModalClose(${academicDiscipline.id},'${academicDiscipline.disciplineName}','discipline')" data-bs-dismiss="modal">
                                                     Закрыть
                                                 </button>
                                                 <div>
@@ -208,14 +208,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="studyGroup-${studyGroup.id}" tabindex="-1"
+                            <div class="modal fade"  id="studyGroup-${studyGroup.id}" tabindex="-1"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование
                                                 группы</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            <button type="button" class="btn-close" onclick="editModalClose(${studyGroup.id},'${studyGroup.groupName}','group')" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <form id="studyGroupForm">
@@ -224,14 +224,14 @@
                                                     <div class="form-group row mt-2">
                                                         <label for="recipient-name" class="col-sm-4 col-form-label">Наименование группы: </label>
                                                         <div class="col-sm-7 d-flex">
-                                                            <input class="form-control flex-fill" type="text"
-                                                                   name="groupName" value="${studyGroup.groupName}">
+                                                            <input class="form-control flex-fill" required type="text"
+                                                                   name="groupName" id="group-#{studyGroup.id}" value="${studyGroup.groupName}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary" onclick="editModalClose(${studyGroup.id},'${studyGroup.groupName}','group')" data-bs-dismiss="modal">
                                                     Закрыть
                                                 </button>
                                                 <div>
@@ -275,6 +275,9 @@
         </div>
     </div>
     <script>
+        function editModalClose(id,value,component){
+            document.getElementById(component+"-"+id).value = value;
+        }
 
         function collapseButtonClick(elem) {
             if (elem.ariaExpanded == 'true') {

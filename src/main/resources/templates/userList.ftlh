@@ -59,32 +59,36 @@
                                     <label for="recipient-name" class="col-sm-4 col-form-label">Имя
                                         пользователя: </label>
                                     <div class="col-sm-7 d-flex">
-                                        <input class="form-control flex-fill" type="text" name="username" value="${user.username}">
+                                        <input class="form-control flex-fill" required type="text" name="username" value="${user.username}">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
                                     <label for="recipient-name" class="col-sm-4 col-form-label">Фамилия: </label>
                                     <div class="col-sm-7 d-flex">
-                                        <input class="form-control flex-fill" type="text" name="lastname" value="${user.lastname}">
+                                        <input class="form-control flex-fill" required type="text" name="lastname" value="${user.lastname}">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
                                     <label for="recipient-name" class="col-sm-4 col-form-label">Имя: </label>
                                     <div class="col-sm-7 d-flex">
-                                        <input class="form-control flex-fill" type="text" name="firstname" value="${user.firstname}">
+                                        <input class="form-control flex-fill" required type="text" name="firstname" value="${user.firstname}">
                                     </div>
                                 </div>
-                                <div class="form-group row mt-2">
-                                    <label for="recipient-name" class="col-sm-4 col-form-label">Отчество: </label>
-                                    <div class="col-sm-7 d-flex">
-                                        <input class="form-control flex-fill" type="text" name="middlename"
-                                               value="${user.middlename}">
+
+                                    <div class="form-group row mt-2">
+                                        <label for="recipient-name" class="col-sm-4 col-form-label">Отчество: </label>
+                                        <div class="col-sm-7 d-flex">
+                                            <input class="form-control flex-fill" type="text" name="middlename"
+                                                    <#if user.middlename??>
+                                                    value="${user.middlename}"
+                                                    </#if>
+                                            >
+                                        </div>
                                     </div>
-                                </div>
                                 <div class="form-group row my-2">
                                     <label for="recipient-name" class="col-sm-4 col-form-label">Должность: </label>
                                     <div class="col-sm-7 d-flex">
-                                        <input class="form-control flex-fill" type="text" name="position"
+                                        <input class="form-control flex-fill" required type="text" name="position"
                                                value="${user.position.positionName}">
                                     </div>
                                 </div>
@@ -103,7 +107,7 @@
                                 <#list roles as role>
                                     <div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                                            <input class="form-check-input" type="checkbox" onclick="deRequireCb(${user.id})" id="roleCheckbox-${user.id}"
                                                    name="${role}" ${user.roles?seq_contains(role)?string("checked","")}>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 ${role.roleName}
@@ -132,12 +136,35 @@
         function passwordLinkClick(obj){
             obj.style.display = "none";
             obj.parentNode.firstElementChild.setAttribute('type', 'text');
+            obj.parentNode.firstElementChild.required = true;
         }
 
         function closeModal(userId){
             document.getElementById("password-"+userId).setAttribute('type', 'hidden');
             document.getElementById("password-"+userId).setAttribute('value', '');
+            document.getElementById("password-"+userId).required = false;
             document.getElementById("passwordLink-"+userId).style.display = "";
+        }
+
+        function deRequireCb(id) {
+            let el = document.querySelectorAll("#roleCheckbox-"+id);
+
+            let atLeastOneChecked = false; //at least one cb is checked
+            for (let i = 0; i < el.length; i++) {
+                if (el[i].checked === true) {
+                    atLeastOneChecked = true;
+                }
+            }
+
+            if (atLeastOneChecked === true) {
+                for (let i = 0; i < el.length; i++) {
+                    el[i].required = false;
+                }
+            } else {
+                for (let i = 0; i < el.length; i++) {
+                    el[i].required = true;
+                }
+            }
         }
     </script>
 </@c.page>

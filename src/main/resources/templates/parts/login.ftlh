@@ -3,32 +3,32 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Имя пользователя: </label>
             <div class="col-sm-5">
-                <input type="text" name="username" class="form-control" placeholder="Имя пользователя">
+                <input type="text" autocomplete="off" name="username" class="form-control" required placeholder="Имя пользователя">
             </div>
         </div>
         <div class="form-group row mt-2">
             <label class="col-sm-2 col-form-label">Пароль: </label>
             <div class="col-sm-5">
-                <input type="password" name="password" class="form-control" placeholder="Пароль">
+                <input type="password" autocomplete="off" name="password" required class="form-control" placeholder="Пароль">
             </div>
         </div>
         <#if isRegistration>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Фамилия : </label>
                 <div class="col-sm-5">
-                    <input type="text" name="lastname" class="form-control" placeholder="Фамилия">
+                    <input type="text" autocomplete="off" name="lastname" required class="form-control" placeholder="Фамилия">
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Имя : </label>
                 <div class="col-sm-5">
-                    <input type="text" name="firstname" class="form-control" placeholder="Имя">
+                    <input type="text" autocomplete="off" name="firstname" required class="form-control" placeholder="Имя">
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Отчество : </label>
                 <div class="col-sm-5">
-                    <input type="text" name="middlename" class="form-control" placeholder="Отчество" id="middlenameId">
+                    <input type="text" autocomplete="off" name="middlename" required class="form-control" placeholder="Отчество" id="middlenameId">
                     <div class="form-check form-switch mt-2">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
                                onchange="hideMiddlename(this)">
@@ -36,13 +36,12 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Роль : </label>
                 <div class="col-sm-5">
-                    <select class="form-select" id="roleSelect"
+                    <select class="form-select" required id="roleSelect"
                             onchange="selectedRole(this);">
-                        <option selected disabled hidden>Роль</option>
+                        <option selected disabled hidden value="">Роль</option>
                         <#list roles as role>
                             <option value="${role.name()!"No value"}">${role.roleName!"No value"}</option>
                         </#list>
@@ -52,7 +51,7 @@
             <div class="form-group row mt-2" id="posDiv" hidden>
                 <label class="col-sm-2 col-form-label">Должность : </label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" placeholder="Должность" id="positionName">
+                    <input type="text" autocomplete="off" class="form-control" placeholder="Должность" id="positionName">
                 </div>
             </div>
             <script>
@@ -60,11 +59,15 @@
 
                 function selectedRole(sel) {
                     roleName = sel.value;
+                    posDiv = document.getElementById("posDiv");
+                    positionName = document.getElementById("positionName");
                     if (sel.value == "USER_VISITED") {
-                        document.getElementById("posDiv").hidden = true
-                        document.getElementById("positionName").value = "Преподаватель";
+                        posDiv.hidden = true
+                        positionName.required = false
+                        positionName.value = "Преподаватель";
                     } else {
-                        document.getElementById("posDiv").hidden = false
+                        posDiv.hidden = false
+                        positionName.required = true
                     }
                     document.getElementById("roleName").value = roleName;
                 }
@@ -74,8 +77,10 @@
                     if (elem.checked) {
                         inputMiddlename.value = null;
                         inputMiddlename.disabled = elem.checked;
+                        inputMiddlename.required = !elem.checked;
                     } else {
                         inputMiddlename.disabled = elem.checked;
+                        inputMiddlename.required = !elem.checked;
                     }
                 }
             </script>
@@ -96,7 +101,7 @@
             let positionRequestDto = new FormData(loginForm);
             <#if isRegistration>
             positionRequestDto.append("positionName", document.getElementById("positionName").value);
-            let response = await fetch('/admin/schedule/add/create-position', {
+            let response = await fetch('/admin/add/create-position', {
                 method: 'POST',
                 body: positionRequestDto,
             }).then((res) => {
@@ -125,7 +130,7 @@
 
 <#macro logout>
     <form action="/logout" method="post">
-        <button class="btn btn-primary" type="submit">Выйти</button>
+        <button class="btn btn-sm btn-primary" type="submit">Выйти</button>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
     </form>
 </#macro>

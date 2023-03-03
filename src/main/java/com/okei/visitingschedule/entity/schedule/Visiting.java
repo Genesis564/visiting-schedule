@@ -20,26 +20,26 @@ public class Visiting{
     private String purposeOfTheLesson;
     private String date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_group_id")
     private StudyGroup studyGroup;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "academic_discipline_id")
     private AcademicDiscipline academicDiscipline;
 
-    @OneToMany(mappedBy = "visiting")
+    @OneToMany(mappedBy = "visiting",fetch = FetchType.LAZY)
     Set<CriteriaScore> criteriaScore;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concolusion_id")
     private Conclusion conclusion;
 
@@ -165,15 +165,12 @@ public class Visiting{
                 && Objects.equals(purposeOfTheVisit, visiting.purposeOfTheVisit)
                 && Objects.equals(lessonTopic, visiting.lessonTopic)
                 && Objects.equals(purposeOfTheLesson, visiting.purposeOfTheLesson)
-                && Objects.equals(date, visiting.date)
-                && Objects.equals(studyGroup, visiting.studyGroup)
-                && Objects.equals(position, visiting.position)
-                && Objects.equals(academicDiscipline, visiting.academicDiscipline);
+                && Objects.equals(date, visiting.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date, studyGroup, position, academicDiscipline);
+        return Objects.hash(id, purposeOfTheVisit, numberOfStudents, lessonTopic, purposeOfTheLesson, date);
     }
 }
 

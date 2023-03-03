@@ -2,23 +2,24 @@
 
 <@c.page>
     <div>
+        <form action="/admin/schedule/add" method="post">
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Дата</span>
-            <input type="date" class="form-control" name="visitingWeek" id="visitingDate" onchange="getWeekOfDate()">
+            <input type="date" class="form-control" id="visitingDate" required onchange="getWeekOfDate()">
             <span class="input-group-text" id="weekInfo"></span>
         </div>
-        <form action="/admin/schedule/add" method="post">
+
             <div class="mb-3">
-                <select class="form-select" name="visitorUser" id="visitorUser" aria-label="Default select example" onchange="updateListUsers(this)">
-                    <option selected disabled hidden>Посещающий занятие</option>
+                <select class="form-select" required name="visitorUser" id="visitorUser" aria-label="Default select example" onchange="updateListUsers(this)">
+                    <option selected disabled hidden value="">Посещающий занятие</option>
                     <#list usersVisitor as visitor>
                         <option value="${visitor.id}">${visitor.username}</option>
                     </#list>
                 </select>
             </div>
             <div class="mb-3">
-                <select class="form-select" name="visitedUser" id="visitedUser" aria-label="Default select example" onchange="updateListUsers(this)">
-                    <option selected disabled hidden>Преподаватель</option>
+                <select class="form-select" required name="visitedUser" id="visitedUser" aria-label="Default select example" onchange="updateListUsers(this)">
+                    <option selected disabled hidden value="">Преподаватель</option>
                     <#list usersVisited as visited>
                         <option value="${visited.id}">${visited.username}</option>
                     </#list>
@@ -60,9 +61,14 @@
         }
 
         function getWeekOfDate() {
-            let currDate = new Date(document.getElementById("visitingDate").valueAsDate)
-            document.getElementById("weekInfo").innerHTML = currDate.getWeekYear()+((currDate.getWeek() < 10) ? "-W0" : "-W")+currDate.getWeek();
-            document.getElementById('weekValue').value =currDate.getWeekYear()+((currDate.getWeek() < 10) ? "-W0" : "-W")+currDate.getWeek();
+            if (document.getElementById("visitingDate").valueAsDate !== null){
+                let currDate = new Date(document.getElementById("visitingDate").valueAsDate)
+                document.getElementById("weekInfo").innerHTML = currDate.getWeekYear()+((currDate.getWeek() < 10) ? "-W0" : "-W")+currDate.getWeek();
+                document.getElementById('weekValue').value =currDate.getWeekYear()+((currDate.getWeek() < 10) ? "-W0" : "-W")+currDate.getWeek();
+            }else{
+                document.getElementById("weekInfo").innerHTML = 'Выберите неделю';
+                document.getElementById('weekValue').value ='';
+            }
         }
 
         function updateListUsers(elem){

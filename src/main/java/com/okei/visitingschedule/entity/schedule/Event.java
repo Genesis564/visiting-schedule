@@ -9,15 +9,17 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
-    private String name;
+
+    @Column(length = 9999)
+    private String eventName;
 
     @ManyToOne
     @JoinColumn(name="concolusion_id")
     private Conclusion conclusion;
     private boolean completionMark;
 
-    public Event(String name, Conclusion conclusion) {
-        this.name = name;
+    public Event(String eventName, Conclusion conclusion) {
+        this.eventName = eventName;
         this.conclusion = conclusion;
         this.completionMark = false;
     }
@@ -25,12 +27,12 @@ public class Event {
     public Event() {
     }
 
-    public String getName() {
-        return name;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public boolean isCompletionMark() {
@@ -62,19 +64,19 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return completionMark == event.completionMark && Objects.equals(id, event.id) && Objects.equals(name, event.name);
+        return completionMark == event.completionMark && Objects.equals(id, event.id) && Objects.equals(eventName, event.eventName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, completionMark);
+        return Objects.hash(id, eventName, completionMark);
     }
 
     @Override
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + eventName + '\'' +
                 ", completionMark=" + completionMark +
                 '}';
     }

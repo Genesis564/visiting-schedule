@@ -18,13 +18,13 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">${bodyName} : </label>
-                            <input type="text" class="form-control" id="${variableName}" name="${variableName}">
+                            <input type="text" required class="form-control" id="${variableName}" name="${variableName}">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                         <div>
-                            <button class="btn btn-primary" type="submit" data-bs-dismiss="modal">Сохранить</button>
+                            <button class="btn btn-primary" type="submit">Сохранить</button>
                             <input type="hidden" name="_csrf" value="${_csrf.token}">
                         </div>
                     </div>

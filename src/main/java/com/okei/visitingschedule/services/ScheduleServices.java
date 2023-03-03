@@ -1,6 +1,5 @@
 package com.okei.visitingschedule.services;
 
-import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.entity.schedule.Status;
@@ -46,7 +45,7 @@ public class ScheduleServices {
     }
 
     public List<Schedule> findAllByStatus(Status status){
-        return scheduleRepo.findAllByStatus(status,Sort.by(Sort.Direction.ASC, "visitingWeek"));
+        return scheduleRepo.findAllByStatus(status.name());
     }
     public List<Schedule> findAllByStatus(Status status,User user){
         return scheduleRepo.findAllByStatusAndUser(status.name(),user.getId());
@@ -57,7 +56,7 @@ public class ScheduleServices {
         Calendar date= new GregorianCalendar();
         int week = date.get(Calendar.WEEK_OF_YEAR);
         int year = date.get(Calendar.YEAR);
-        List<Schedule> scheduleList = scheduleRepo.findAllByStatus(Status.PLANNED,Sort.by(Sort.Direction.DESC, "visitingWeek"));
+        List<Schedule> scheduleList = scheduleRepo.findAllByStatus(Status.PLANNED.name());
         Set<Status> statusSet = new HashSet<>();
         statusSet.add(Status.OVERDUE);
         for (Schedule schedule:scheduleList) {
