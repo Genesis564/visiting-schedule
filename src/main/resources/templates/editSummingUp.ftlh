@@ -28,6 +28,7 @@
                 мероприятие
             </button>
         </div>
+        <form id="submitForm">
         <div id="events">
             <#list events as event>
             <div class="input-group-sm mb-3">
@@ -36,12 +37,12 @@
                             <button type="button" class="btn btn-outline-secondary btn-xs"
                                     onclick="deleteEvent(this,${event.id})">Удалить</button>
                         </span>
+                <input type="hidden" id="event-id" value="${event.id}">
                 <textarea class="form-control" id="eventName" style="height: 15vh">${event.eventName}</textarea>
             </div>
             </#list>
         </div>
         <div>
-            <form id="submitForm">
                 <div class="mb-3">
                     <button type="submit" class="btn btn-outline-secondary btn-xs">
                         Подвести итоги
@@ -49,8 +50,8 @@
                     <input type="hidden" name="_csrf"
                            value="${_csrf.token}">
                 </div>
-            </form>
         </div>
+        </form>
     </div>
     <script>
         function addEvent() {
@@ -98,25 +99,48 @@
 
         submitForm.onsubmit = async (e) => {
             e.preventDefault();
-            let eventRequestDTO = new FormData(submitForm);
-            let eventList = document.querySelectorAll('#eventName');
-            let eventNames = [];
-            eventList.forEach((elem) => {
-                eventNames.push(elem.value);
+            let conclusionRequestDTO = new FormData(submitForm);
+            let eventNamesList = document.querySelectorAll('#eventName');
+
+            let eventArray = [];
+            eventNamesList.forEach((elem) => {
+                if (elem.parentElement.childNodes.length == 7){
+                    let event = {
+                        eventId: elem.parentElement.childNodes[3].value,
+                        eventName: ((elem.value == '') ? "" : elem.value)
+                    }
+                    eventArray.push(event)
+                }else{
+                    let event = {
+                        eventId: null,
+                        eventName: ((elem.value == '') ? "" : elem.value)
+                    }
+                    eventArray.push(event)
+                }
+            })
+            let eventRequestDTO = {
+                events : eventArray
+            }
+            let response = await fetch('/schedule/summing-up/edit/event/'+${visiting.conclusion.id}+"?_csrf=${_csrf.token}",{
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(eventRequestDTO)
             })
 
-            eventRequestDTO.append("eventNames",eventNames);
-            eventRequestDTO.append("virtuesOfOccupation",document.getElementById("virtuesOfOccupation").value);
-            eventRequestDTO.append("problems",document.getElementById("problems").value);
-            eventRequestDTO.append("scheduleId",${schedule.id});
-            let response = await fetch('/schedule/summing-up/edit/' + ${visiting.id}, {
-                method: 'POST',
-                body: eventRequestDTO
-            }).then((res) => {
-                if (res.ok) {
-                    window.location.href = '/home';
-                }
-            });
+            if (response.ok){
+                conclusionRequestDTO.append("virtuesOfOccupation",document.getElementById("virtuesOfOccupation").value);
+                conclusionRequestDTO.append("problems",document.getElementById("problems").value);
+                await fetch('/schedule/summing-up/edit/' + ${visiting.conclusion.id}, {
+                    method: 'POST',
+                    body: conclusionRequestDTO
+                }).then((res) => {
+                    if (res.ok) {
+                        window.location.href = '/home';
+                    }
+                });
+            }
         }
     </script>
 </@c.page>

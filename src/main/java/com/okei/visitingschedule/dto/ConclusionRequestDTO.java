@@ -11,12 +11,10 @@ public class ConclusionRequestDTO implements Serializable{
 
     private final String virtuesOfOccupation;
     private final String problems;
-    private final List<Long> eventsid;
 
-    public ConclusionRequestDTO(String virtuesOfOccupation, String problems, List<Long> eventsid) {
+    public ConclusionRequestDTO(String virtuesOfOccupation, String problems) {
         this.virtuesOfOccupation = virtuesOfOccupation;
         this.problems = problems;
-        this.eventsid = eventsid;
     }
 
     public String getVirtuesOfOccupation() {
@@ -27,21 +25,18 @@ public class ConclusionRequestDTO implements Serializable{
         return problems;
     }
 
-    public List<Long> getEventsid() {
-        return eventsid;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConclusionRequestDTO that = (ConclusionRequestDTO) o;
-        return Objects.equals(virtuesOfOccupation, that.virtuesOfOccupation) && Objects.equals(problems, that.problems) && Objects.equals(eventsid, that.eventsid);
+        return Objects.equals(virtuesOfOccupation, that.virtuesOfOccupation) && Objects.equals(problems, that.problems) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(virtuesOfOccupation, problems, eventsid);
+        return Objects.hash(virtuesOfOccupation, problems);
     }
 
     @Override
@@ -49,7 +44,6 @@ public class ConclusionRequestDTO implements Serializable{
         return "ConcolusionRequestDTO{" +
                 "virtuesOfOccupation='" + virtuesOfOccupation + '\'' +
                 ", problems='" + problems + '\'' +
-                ", eventsid=" + eventsid +
                 '}';
     }
 }

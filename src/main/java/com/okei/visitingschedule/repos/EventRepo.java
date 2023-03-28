@@ -9,5 +9,4 @@ import java.util.List;
 public interface EventRepo extends JpaRepository<Event, Long> {
 
     public List<Event> findAllByConclusion(Conclusion conclusion);
-    public Event findByEventName(String eventName);
 }

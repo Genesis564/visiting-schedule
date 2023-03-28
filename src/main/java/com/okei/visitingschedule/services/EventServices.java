@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,8 +25,10 @@ public class EventServices {
     }
 
 
-    public void addEvent(String eventName, Conclusion conclusion){
-        eventRepo.save(new Event(eventName,conclusion));
+    public Event addEvent(String eventName, Conclusion conclusion){
+        Event event = new Event(eventName,conclusion);
+        eventRepo.save(event);
+        return event;
     }
 
     public List<Event> findAll(){
@@ -35,19 +38,25 @@ public class EventServices {
         return (List<Event>) eventRepo.findAllByConclusion(conclusion);
     }
 
-    public Set<Event> eventsNameToEventsList(List<String> eventNames,Conclusion conclusion){
-        Set<Event> events = new HashSet<>();
-        for (String eventName : eventNames) {
-            Event eventFromDB = eventRepo.findByEventName(eventName);
-            if (eventFromDB !=null){
-                events.add(eventFromDB);
-            }else {
-                Event event = new Event(eventName, conclusion);
-                events.add(event);
-                eventRepo.save(event);
-            }
-        }
-        return events;
+//    public Set<Event> eventsToEventsSet(List<String> eventNames, Conclusion conclusion){
+//        Set<Event> events = new HashSet<>();
+//        for (String eventName : eventNames) {
+//            Event eventFromDB = eventRepo.findByEventName(eventName);
+//            if (eventFromDB !=null){
+//                events.add(eventFromDB);
+//            }else {
+//                Event event = new Event(eventName, conclusion);
+//                events.add(event);
+//                eventRepo.save(event);
+//            }
+//        }
+//        return events;
+//    }
+
+    public Event editEvent(Long id,String eventName){
+        Event event = eventRepo.findById(id).get();
+        event.setEventName(eventName);
+        return event;
     }
 
     public void delete(Event event){

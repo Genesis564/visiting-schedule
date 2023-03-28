@@ -114,13 +114,13 @@
         <#if visiting.conclusion??>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" readonly id="virtuesOfOccupation" style="height: 15vh">${visiting.conclusion.virtuesOfOccupation}</textarea>
+                    <textarea class="form-control" readonly id="virtuesOfOccupation" style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
                     <label for="virtuesOfOccupation">Достоинства занятия</label>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" readonly id="problems" style="height: 15vh">${visiting.conclusion.problems}</textarea>
+                    <textarea class="form-control" readonly id="problems" style="height: 15vh">${conclusion.problems}</textarea>
                     <label for="problems">Проблемы, замечания</label>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                 <label class="mb-3">План устранения замечаний:</label>
             </div>
             <div id="events">
-                <#list visiting.conclusion.events as event>
+                <#list events as event>
                     <div class="input-group-sm mb-3">
                         <span class="input-group-text d-flex justify-content-between">
                                 Мероприятие
