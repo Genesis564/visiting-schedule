@@ -79,7 +79,8 @@ public class UserScheduleController {
         List<CriteriaScore> sortedCriteriaScore = criteriaScoreServices.sortCriteria(criteriaScore);
         boolean access = false;
         if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
-                && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)) {
+                && (schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)
+                ||schedule.getStatus().contains(Status.WAITING_TO_CONFIRM_EVENT))) {
             access = true;
         }
 
@@ -96,14 +97,14 @@ public class UserScheduleController {
         }
 
         boolean subjectToCompletionEvent = false;
-        int size = 0;
+        int notConfirmedEventSize = 0;
         for (Event event:thisVisiting.getConclusion().getEvents()) {
             if (!event.isCompletionMark()){
-                ++size;
+                ++notConfirmedEventSize;
             }
         }
         if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
-                && size>0
+                && notConfirmedEventSize>0
                 && schedule.getStatus().contains(Status.CONFIRMED)){
             subjectToCompletionEvent=true;
         }

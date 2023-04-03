@@ -35,9 +35,9 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToSummingUpVisiting[i] == true>
@@ -101,13 +101,13 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToConfirmEvent[i] == true>
-                                                <form <#--action="/schedule/view/${schedule.id}" method="get"-->>
+                                                <form action="/schedule/view/${schedule.id}" method="get">
                                                     <button type="submit"
                                                             class="btn btn-outline-secondary btn-xs"
                                                             style="width: 100%; height: 100%">
@@ -118,9 +118,8 @@
                                                            value="${_csrf.token}">
                                                 </form>
                                             <#else>
-                                                <form <#--action="/schedule/view/${schedule.id}"--> method="get">
-                                                    <label class="col-form-label">В ожидании подтверждения мероприятия</label>
-                                                </form>
+                                                <label class="col-form-label">В ожидании подтверждения
+                                                    мероприятия</label>
                                             </#if>
                                         </div>
                                     </div>
@@ -138,9 +137,9 @@
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToConfirmVisiting[i] == true>
@@ -210,9 +209,9 @@
                                         <div class="card-header bg-transparent">${schedule.visitingWeek}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToCreateVisiting[i] == true>
@@ -265,15 +264,22 @@
                 <div class="collapse show multi-collapse" id="scheduleConfirmedCards">
                     <div class="card-body">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
+                            <#assign
+                                i = 0
+                            >
                             <#list schedulesConfirmed as schedule>
                                 <div class="col">
                                     <div class="card text-center my-3 h-100">
                                         <div class="card-header bg-transparent">${schedule.visiting.date}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <#if notConfirmedEventSize[i] gt 0>
+                                                <h5 class="card-title">
+                                                    Колличество неподтвержденных мероприятий: ${notConfirmedEventSize[i]}</h5>
+                                            </#if>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <form action="/schedule/view/${schedule.id}" method="get">
@@ -288,6 +294,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <#assign i++>
                             </#list>
                         </div>
                     </div>
@@ -324,9 +331,9 @@
                                         <div class="card-header bg-transparent schedule-overdue">${schedule.visitingWeek}</div>
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
-                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                                занятие: ${schedule.visitorUser.lastname} ${schedule.visitorUser.firstname} ${schedule.visitorUser.middlename!""}</h5>
                                             <h5 class="card-title">
-                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                                Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                     </div>
                                 </div>

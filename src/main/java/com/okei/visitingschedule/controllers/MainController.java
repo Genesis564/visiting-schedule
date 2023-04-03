@@ -2,18 +2,14 @@ package com.okei.visitingschedule.controllers;
 
 import com.okei.visitingschedule.entity.Role;
 import com.okei.visitingschedule.entity.User;
+import com.okei.visitingschedule.entity.schedule.Event;
 import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.entity.schedule.Status;
 import com.okei.visitingschedule.services.ScheduleServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
 import java.util.*;
@@ -79,9 +75,10 @@ public class MainController {
         i = 0;
         for (Schedule schedule : schedulesWaitingToConfirmEvent) {
             if ((schedule.getVisitorUser().equals(user) || user.isAdmin())) {
-                accessToConfirmVisiting[i] = true;
+                accessToConfirmEvent[i] = true;
+                badgeCount++;
             } else {
-                accessToConfirmVisiting[i] = false;
+                accessToConfirmEvent[i] = false;
             }
             i++;
         }
@@ -114,11 +111,26 @@ public class MainController {
             i++;
         }
 
+        int[] notConfirmedEventSize = new int[schedulesConfirmed.size()];
+        int size = 0;
+        i=0;
+        for (Schedule schedule:schedulesConfirmed) {
+            for (Event event:schedule.getVisiting().getConclusion().getEvents()) {
+                if (!event.isCompletionMark()){
+                    ++size;
+                }
+            }
+            notConfirmedEventSize[i] = size;
+            size = 0;
+            i++;
+        }
+
         boolean[] isEmpty = new boolean[]{schedulesSummingUp.isEmpty(), schedulesWaitingToConfirm.isEmpty(), schedulesPlanned.isEmpty(), schedulesConfirmed.isEmpty(), schedulesOverdue.isEmpty()};
 
 
         model.put("schedulesWaitingToConfirm", schedulesWaitingToConfirm);
         model.put("schedulesWaitingToConfirmEvent", schedulesWaitingToConfirmEvent);
+        model.put("notConfirmedEventSize", notConfirmedEventSize);
         model.put("schedulesPlanned", schedulesPlanned);
         model.put("schedulesConfirmed", schedulesConfirmed);
         model.put("schedulesOverdue", schedulesOverdue);
