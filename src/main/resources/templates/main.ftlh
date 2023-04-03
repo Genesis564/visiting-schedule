@@ -14,8 +14,10 @@
                             <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleSummingUp" aria-expanded="true"
                                     aria-controls="scheduleSummingUp" onclick="collapseButtonClick(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                                 </svg>
                             </button>
                         </div>
@@ -34,7 +36,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
                                                 занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToSummingUpVisiting[i] == true>
@@ -74,11 +77,14 @@
                             <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleWaitingToConfirmCards" aria-expanded="true"
                                     aria-controls="scheduleWaitingToConfirmCards" onclick="collapseButtonClick(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                                 </svg>
                             </button>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="scheduleBadge">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  id="scheduleBadge">
                                 </span>
                         </div>
                     </div>
@@ -89,6 +95,43 @@
                             <#assign
                             i = 0
                             >
+                            <#list schedulesWaitingToConfirmEvent as schedule>
+                                <div class="col">
+                                    <div class="card text-center my-3 h-100">
+                                        <div class="card-header bg-transparent">${schedule.visiting.date}</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Посещающий
+                                                занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <#if accessToConfirmEvent[i] == true>
+                                                <form <#--action="/schedule/view/${schedule.id}" method="get"-->>
+                                                    <button type="submit"
+                                                            class="btn btn-outline-secondary btn-xs"
+                                                            style="width: 100%; height: 100%">
+                                                        Подтвердить
+                                                        мероприятие
+                                                    </button>
+                                                    <input type="hidden" name="_csrf"
+                                                           value="${_csrf.token}">
+                                                </form>
+                                            <#else>
+                                                <form <#--action="/schedule/view/${schedule.id}"--> method="get">
+                                                    <label class="col-form-label">В ожидании подтверждения мероприятия</label>
+                                                </form>
+                                            </#if>
+                                        </div>
+                                    </div>
+                                </div>
+                                <#assign
+                                i = i+1
+                                >
+                            </#list>
+                            <#assign
+                            i = 0
+                            >
                             <#list schedulesWaitingToConfirm as schedule>
                                 <div class="col">
                                     <div class="card text-center my-3 h-100">
@@ -96,7 +139,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
                                                 занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToConfirmVisiting[i] == true>
@@ -145,8 +189,10 @@
                             <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#schedulePlannedCards" aria-expanded="true"
                                     aria-controls="schedulePlannedCards" onclick="collapseButtonClick(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                                 </svg>
                             </button>
                         </div>
@@ -165,7 +211,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
                                                 занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <#if accessToCreateVisiting[i] == true>
@@ -200,14 +247,16 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-10 align-self-center">
-                            <label  class="me-2">Прошедшие посещения</label>
+                            <label class="me-2">Прошедшие посещения</label>
                         </div>
                         <div class="col-auto align-self-center">
                             <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleConfirmedCards" aria-expanded="true"
                                     aria-controls="scheduleConfirmedCards" onclick="collapseButtonClick(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                                 </svg>
                             </button>
                         </div>
@@ -223,7 +272,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
                                                 занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                         <div class="card-footer text-muted">
                                             <form action="/schedule/view/${schedule.id}" method="get">
@@ -256,8 +306,10 @@
                             <button class="btn d-flex btn-sm" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#scheduleOverdueCards" aria-expanded="true"
                                     aria-controls="scheduleOverdueCards" onclick="collapseButtonClick(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi flex-fill bi-chevron-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                                 </svg>
                             </button>
                         </div>
@@ -273,7 +325,8 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Посещающий
                                                 занятие: ${schedule.visitorUser.lastname!"Потом починю"} ${schedule.visitorUser.firstname!"Потом починю"} ${schedule.visitorUser.middlename!""}</h5>
-                                            <h5 class="card-title">Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
+                                            <h5 class="card-title">
+                                                Преподаватель: ${schedule.visitedUser.lastname!"Потом починю"}  ${schedule.visitedUser.firstname!"Потом починю"}  ${schedule.visitedUser.middlename!""}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -293,10 +346,10 @@
                 if (str.split('-W').length === 2) {
                     let splitDate = str.split('-W');
                     let week = splitDate[1]
-                    if (week[0] == '0'){
+                    if (week[0] == '0') {
                         week = week.split("0")
                         curr = new Date(getDateOfWeek(splitDate[0], week[1]));
-                    }else{
+                    } else {
                         curr = new Date(getDateOfWeek(splitDate[0], week));
                     }
 
@@ -318,9 +371,9 @@
             })
             <#if isEmpty[1]>
             <#else>
-            if (${badgeCount} == 0){
+            if (${badgeCount} == 0) {
                 document.getElementById("scheduleBadge").hidden = true;
-            }else {
+            } else {
                 document.getElementById("scheduleBadge").innerHTML = ${badgeCount};
             }
             </#if>

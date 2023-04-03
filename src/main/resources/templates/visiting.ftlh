@@ -4,9 +4,11 @@
 <@c.page>
     <div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Цель посещения занятия</span>
-            <input type="text" class="form-control" value="${visiting.purposeOfTheVisit}" readonly
-                   name="purposeOfTheVisit" id="purposeOfTheVisit">
+            <div class="form-floating">
+                    <textarea class="form-control" readonly name="purposeOfTheVisit" id="purposeOfTheVisit"
+                              style="height: 15vh">${visiting.purposeOfTheVisit}</textarea>
+                <label for="purposeOfTheVisit">Цель посещения занятия</label>
+            </div>
         </div>
 
         <div class="input-group mb-3">
@@ -22,29 +24,33 @@
 
 
         <div class="input-group mb-3">
-            <span class="input-group-text" >Количество обучающихся</span>
-            <input type="text" class="form-control" value="${visiting.numberOfStudents}" readonly>
+            <span class="input-group-text">Количество обучающихся</span>
+            <input type="number" class="form-control" value="${visiting.numberOfStudents}" readonly>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" >Должность посетившего занятия</span>
+            <span class="input-group-text">Должность посетившего занятия</span>
             <input type="text" class="form-control" value="${visiting.position.positionName}" readonly>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" >Учебная дисциплина</span>
+            <span class="input-group-text">Учебная дисциплина</span>
             <input type="text" class="form-control" value="${visiting.academicDiscipline.disciplineName}" readonly>
         </div>
 
         <div class="input-group mb-3">
-            <span class="input-group-text" >Тема занятия</span>
-            <input type="text" class="form-control" value="${visiting.lessonTopic}" readonly name="lessonTopic"
-                   id="lessonTopic">
+            <div class="form-floating">
+                <textarea class="form-control" readonly name="lessonTopic" id="lessonTopic"
+                          style="height: 15vh">${visiting.lessonTopic}</textarea>
+                <label for="lessonTopic">Тема занятия</label>
+            </div>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Цель занятия</span>
-            <input type="text" class="form-control" value="${visiting.purposeOfTheLesson}" readonly name="purposeOfTheLesson"
-                   id="purposeOfTheLesson">
+            <div class="form-floating">
+                    <textarea class="form-control" readonly name="purposeOfTheLesson" id="purposeOfTheLesson"
+                              style="height: 15vh">${visiting.purposeOfTheLesson}</textarea>
+                <label for="purposeOfTheLesson">Цель занятия</label>
+            </div>
         </div>
 
 
@@ -114,13 +120,15 @@
         <#if visiting.conclusion??>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" readonly id="virtuesOfOccupation" style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
+                    <textarea class="form-control" readonly id="virtuesOfOccupation"
+                              style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
                     <label for="virtuesOfOccupation">Достоинства занятия</label>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" readonly id="problems" style="height: 15vh">${conclusion.problems}</textarea>
+                    <textarea class="form-control" readonly id="problems"
+                              style="height: 15vh">${conclusion.problems}</textarea>
                     <label for="problems">Проблемы, замечания</label>
                 </div>
             </div>
@@ -136,10 +144,23 @@
                                 <label class="form-check-label me-1" for="completionMark">
                                  Отметка о выполнении
                                 </label>
-                                <input class="form-check-input align-self-center" type="checkbox" disabled id="completionMark">
+                                <input class="form-check-input align-self-center" type="checkbox"
+                                       <#if !subjectToCompletionEvent>
+                                           disabled
+                                           <#if event.completionMark>
+                                               checked
+                                           </#if>
+                                       <#else>
+                                           <#if event.completionMark>
+                                               disabled
+                                               checked
+                                           </#if>
+                                       </#if>
+                                       id="completionMark">
                             </div>
                         </span>
-                        <textarea class="form-control" readonly id="eventName" style="height: 15vh">${event.eventName}</textarea>
+                        <textarea class="form-control" readonly id="eventName"
+                                  style="height: 15vh">${event.eventName}</textarea>
                     </div>
                 </#list>
             </div>
@@ -150,29 +171,35 @@
             <form action="/home" method="get">
                 <div class="mb-3 me-3">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button class="btn btn-outline-secondary btn-lg mb-6" type="submit">Назад</button>
+                    <button class="btn btn-outline-secondary mb-6" type="submit">Назад</button>
                 </div>
             </form>
+            <#if subjectToCompletionEvent>
+                <div class="mb-3 me-3">
+                    <button class="btn btn-primary mb-6" onclick="editCompletionMark()" type="button">Изменить отметку о выполнении мероприятия
+                    </button>
+                </div>
+            </#if>
             <#if access>
                 <form action="/schedule/view/${schedule.id}" method="post">
                     <div class="mb-3 me-3">
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <button class="btn btn-primary btn-lg mb-6" type="submit">Подтвердить</button>
+                        <button class="btn btn-primary mb-6" type="submit">Подтвердить</button>
                     </div>
                 </form>
             </#if>
             <#if subjectToEditing>
-            <form action="/schedule/edit/${schedule.id}" method="get">
-                <div class="mb-3 me-3">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать посещение</button>
-                </div>
-            </form>
+                <form action="/schedule/edit/${schedule.id}" method="get">
+                    <div class="mb-3 me-3">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <button class="btn btn-primary mb-6" id="editBtn" type="submit">Редактировать посещение</button>
+                    </div>
+                </form>
                 <#if summingUpSubjectToEditing>
                     <form action="/schedule/edit/summing-up/${schedule.id}" method="get">
                         <div class="mb-3 me-3">
                             <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <button class="btn btn-primary btn-lg mb-6" id="editBtn" type="submit">Редактировать итоги</button>
+                            <button class="btn btn-primary mb-6" id="editBtn" type="submit">Редактировать итоги</button>
                         </div>
                     </form>
                 </#if>
@@ -200,5 +227,24 @@
             i++;
             </#list>
         })
+
+        async function editCompletionMark(){
+            let completionMarks = []
+            document.querySelectorAll("#completionMark").forEach((elem) => {
+                completionMarks.push(elem.checked)
+            })
+            await fetch('/schedule/edit/event/completion-mark/${visiting.schedule.id}' + '?_csrf=${_csrf.token}',{
+                method:"POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(completionMarks)
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.href ="/home";
+                }
+            })
+        }
+
     </script>
 </@c.page>

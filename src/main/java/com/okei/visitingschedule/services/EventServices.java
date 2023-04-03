@@ -1,5 +1,6 @@
 package com.okei.visitingschedule.services;
 
+import com.okei.visitingschedule.dto.event.ListEventRequestDTO;
 import com.okei.visitingschedule.entity.schedule.Conclusion;
 import com.okei.visitingschedule.entity.schedule.Event;
 import com.okei.visitingschedule.repos.EventRepo;
@@ -38,20 +39,6 @@ public class EventServices {
         return (List<Event>) eventRepo.findAllByConclusion(conclusion);
     }
 
-//    public Set<Event> eventsToEventsSet(List<String> eventNames, Conclusion conclusion){
-//        Set<Event> events = new HashSet<>();
-//        for (String eventName : eventNames) {
-//            Event eventFromDB = eventRepo.findByEventName(eventName);
-//            if (eventFromDB !=null){
-//                events.add(eventFromDB);
-//            }else {
-//                Event event = new Event(eventName, conclusion);
-//                events.add(event);
-//                eventRepo.save(event);
-//            }
-//        }
-//        return events;
-//    }
 
     public Event editEvent(Long id,String eventName){
         Event event = eventRepo.findById(id).get();

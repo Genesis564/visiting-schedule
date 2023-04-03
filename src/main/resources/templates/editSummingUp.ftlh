@@ -10,39 +10,41 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="input-group mb-3">
-            <div class="form-floating">
-                <textarea class="form-control" id="virtuesOfOccupation" style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
-                <label for="virtuesOfOccupation">Достоинства занятия</label>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <div class="form-floating">
-                <textarea class="form-control" id="problems" style="height: 15vh">${conclusion.problems}</textarea>
-                <label for="problems">Проблемы, замечания</label>
-            </div>
-        </div>
-        <div class="text-center mb-3">
-            <label class="mb-3">План устранения замечаний:</label>
-            <button type="button" class="btn btn-outline-secondary btn-xs" onclick="addEvent()">Добавить
-                мероприятие
-            </button>
-        </div>
         <form id="submitForm">
-        <div id="events">
-            <#list events as event>
-            <div class="input-group-sm mb-3">
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                <textarea class="form-control" required id="virtuesOfOccupation"
+                          style="height: 15vh">${conclusion.virtuesOfOccupation}</textarea>
+                    <label for="virtuesOfOccupation">Достоинства занятия</label>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" required id="problems" style="height: 15vh">${conclusion.problems}</textarea>
+                    <label for="problems">Проблемы, замечания</label>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <label class="mb-3">План устранения замечаний:</label>
+                <button type="button" class="btn btn-outline-secondary btn-xs" onclick="addEvent()">Добавить
+                    мероприятие
+                </button>
+            </div>
+
+            <div id="events">
+                <#list events as event>
+                    <div class="input-group-sm mb-3">
                         <span class="input-group-text d-flex justify-content-between">
                                 Мероприятие
                             <button type="button" class="btn btn-outline-secondary btn-xs"
                                     onclick="deleteEvent(this,${event.id})">Удалить</button>
                         </span>
-                <input type="hidden" id="event-id" value="${event.id}">
-                <textarea class="form-control" id="eventName" style="height: 15vh">${event.eventName}</textarea>
+                        <input type="hidden" id="event-id" value="${event.id}">
+                        <textarea class="form-control" id="eventName" required style="height: 15vh">${event.eventName}</textarea>
+                    </div>
+                </#list>
             </div>
-            </#list>
-        </div>
-        <div>
+            <div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-outline-secondary btn-xs">
                         Подвести итоги
@@ -50,7 +52,7 @@
                     <input type="hidden" name="_csrf"
                            value="${_csrf.token}">
                 </div>
-        </div>
+            </div>
         </form>
     </div>
     <script>
@@ -59,7 +61,7 @@
             let innerHtmlEvents = eventsDiv.innerHTML;
             let textAreas = document.querySelectorAll("#eventName");
             let textAreasValue = [];
-            textAreas.forEach((elem)=>{
+            textAreas.forEach((elem) => {
                 textAreasValue.push(elem.value);
             })
             let newEventBlock =
@@ -68,24 +70,24 @@
                 '\n                                Мероприятие' +
                 '\n                            <button type="button" class="btn btn-outline-secondary btn-xs" onclick="deleteEvent(this)">Удалить</button>' +
                 '\n                        </span>' +
-                '\n                    <textarea class="form-control" id="eventName" style="height: 15vh"></textarea>' +
+                '\n                    <textarea class="form-control" required id="eventName" style="height: 15vh"></textarea>' +
                 '\n                </div>' +
                 '\n            '
             eventsDiv.innerHTML = innerHtmlEvents + newEventBlock;
             textAreas = document.querySelectorAll("#eventName");
-            let i =0;
-            textAreasValue.forEach((elem)=>{
+            let i = 0;
+            textAreasValue.forEach((elem) => {
                 textAreas[i].value = elem;
                 i++;
             })
         }
 
-        async function deleteEvent(elem,id) {
+        async function deleteEvent(elem, id) {
             let deleteEventDiv = elem.parentElement.parentElement
             deleteEventDiv.remove();
 
             let requestDTO = new FormData();
-            requestDTO.append("_csrf","${_csrf.token}")
+            requestDTO.append("_csrf", "${_csrf.token}")
 
             await fetch('/schedule/summing-up/delete/' + id, {
                 method: 'DELETE',
@@ -104,13 +106,13 @@
 
             let eventArray = [];
             eventNamesList.forEach((elem) => {
-                if (elem.parentElement.childNodes.length == 7){
+                if (elem.parentElement.childNodes.length == 7) {
                     let event = {
                         eventId: elem.parentElement.childNodes[3].value,
                         eventName: ((elem.value == '') ? "" : elem.value)
                     }
                     eventArray.push(event)
-                }else{
+                } else {
                     let event = {
                         eventId: null,
                         eventName: ((elem.value == '') ? "" : elem.value)
@@ -119,9 +121,9 @@
                 }
             })
             let eventRequestDTO = {
-                events : eventArray
+                events: eventArray
             }
-            let response = await fetch('/schedule/summing-up/edit/event/'+${visiting.conclusion.id}+"?_csrf=${_csrf.token}",{
+            let response = await fetch('/schedule/summing-up/edit/event/' + ${visiting.conclusion.id} + "?_csrf=${_csrf.token}", {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -129,9 +131,9 @@
                 body: JSON.stringify(eventRequestDTO)
             })
 
-            if (response.ok){
-                conclusionRequestDTO.append("virtuesOfOccupation",document.getElementById("virtuesOfOccupation").value);
-                conclusionRequestDTO.append("problems",document.getElementById("problems").value);
+            if (response.ok) {
+                conclusionRequestDTO.append("virtuesOfOccupation", document.getElementById("virtuesOfOccupation").value);
+                conclusionRequestDTO.append("problems", document.getElementById("problems").value);
                 await fetch('/schedule/summing-up/edit/' + ${visiting.conclusion.id}, {
                     method: 'POST',
                     body: conclusionRequestDTO
@@ -143,4 +145,4 @@
             }
         }
     </script>
-</@c.page>
+    </@c.page>

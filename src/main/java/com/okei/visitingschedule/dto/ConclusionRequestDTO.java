@@ -1,5 +1,7 @@
 package com.okei.visitingschedule.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +9,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.okei.visitingschedule.entity.schedule.Conclusion} entity
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConclusionRequestDTO implements Serializable{
 
     private final String virtuesOfOccupation;

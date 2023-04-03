@@ -23,6 +23,10 @@ public class ConclusionServices {
         conclusionRepo.save(conclusion);
     }
 
+    public Conclusion findById(Long id){
+        return conclusionRepo.findById(id).get();
+    }
+
 
     public void addConclusion(String virtuesOfOccupation, String problems, Visiting visiting){
         conclusionRepo.save(new Conclusion(virtuesOfOccupation,problems,visiting));

@@ -4,12 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListEventRequestDTO implements Serializable{
+public class ListEventRequestDTO implements Serializable {
 
-   private EventRequestDTO[] events;
+    private EventRequestDTO[] events;
+    private Long conclusionId;
+
+    public ListEventRequestDTO(EventRequestDTO[] events, Long conclusionId) {
+        this.events = events;
+        this.conclusionId = conclusionId;
+    }
 
     public ListEventRequestDTO(EventRequestDTO[] events) {
         this.events = events;
@@ -24,6 +29,14 @@ public class ListEventRequestDTO implements Serializable{
 
     public void setEvents(EventRequestDTO[] events) {
         this.events = events;
+    }
+
+    public Long getConclusionId() {
+        return conclusionId;
+    }
+
+    public void setConclusionId(Long conclusionId) {
+        this.conclusionId = conclusionId;
     }
 
     @Override

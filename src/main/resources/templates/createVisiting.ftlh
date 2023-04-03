@@ -27,13 +27,12 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Количество обучающихся</span>
-                <input type="text" class="form-control" required name="numberOfStudents" id="numberOfStudents">
+                <input type="number" class="form-control" required name="numberOfStudents" id="numberOfStudents">
             </div>
 
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" name="position" id="position"
-                              readonly>${position.positionName}</textarea>
+                    <input type="text" class="form-control" name="position" id="position" value="${position.positionName}" readonly>
                     <label for="position">Должность</label>
                 </div>
             </div>
@@ -233,6 +232,22 @@
             }
             </#list>
             document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл ${maxScore})";
+        }
+
+        let studentNumberInput = document.getElementById('numberOfStudents')
+        studentNumberInput.addEventListener('keydown',(ev) => studentNumberInputKeyDown(ev))
+        function studentNumberInputKeyDown(event){
+            if (event.key === 'e'
+                || event.key === '.'
+                || event.key === ','
+                || event.key === '+'
+                || event.key === '-'){
+                event.preventDefault()
+            }
+            if(studentNumberInput.value.length >= 2 && !(event.key =="Backspace" || event.key =="Delete")){
+                event.preventDefault()
+            }
+
         }
 
         function getDateOfWeek(year, week) {

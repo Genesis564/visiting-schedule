@@ -6,6 +6,5 @@ import com.okei.visitingschedule.entity.schedule.Visiting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ConclusionRepo extends JpaRepository<Conclusion, Long> {
-
     public Conclusion findByVisiting(Visiting visiting);
 }

@@ -5,6 +5,8 @@ import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.entity.schedule.Status;
 import com.okei.visitingschedule.repos.ScheduleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
