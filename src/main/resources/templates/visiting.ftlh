@@ -132,9 +132,11 @@
                     <label for="problems">Проблемы, замечания</label>
                 </div>
             </div>
-            <div class="text-center mb-3">
-                <label class="mb-3">План устранения замечаний:</label>
-            </div>
+            <#if events?size != 0>
+                <div class="text-center mb-3">
+                    <label class="mb-3">План устранения замечаний:</label>
+                </div>
+            </#if>
             <div id="events">
                 <#list events as event>
                     <div class="input-group-sm mb-3">

@@ -78,9 +78,8 @@ public class UserScheduleController {
 
         List<CriteriaScore> sortedCriteriaScore = criteriaScoreServices.sortCriteria(criteriaScore);
         boolean access = false;
-        if ((schedule.getVisitedUser().equals(user) || user.isAdmin())
-                && (schedule.getStatus().contains(Status.WAITING_TO_CONFIRM)
-                ||schedule.getStatus().contains(Status.WAITING_TO_CONFIRM_EVENT))) {
+        if (((schedule.getVisitedUser().equals(user) || user.isAdmin()) && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM))
+                || ((schedule.getVisitorUser().equals(user) || user.isAdmin()) && schedule.getStatus().contains(Status.WAITING_TO_CONFIRM_EVENT))) {
             access = true;
         }
 
