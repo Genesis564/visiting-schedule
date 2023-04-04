@@ -235,7 +235,7 @@ public class UserScheduleController {
     }
 
     @PostMapping("edit/{schedule}")
-    public String saveEditedVisiting(@RequestParam("studyGroupId") StudyGroup studyGroup,
+    public ResponseEntity saveEditedVisiting(@RequestParam("studyGroupId") StudyGroup studyGroup,
                                      @RequestParam("academicDisciplineId") AcademicDiscipline academicDiscipline,
                                      @RequestParam("positionId") Position position,
                                      @RequestParam("visitingId") Visiting visiting,
@@ -260,7 +260,7 @@ public class UserScheduleController {
         visiting.setPosition(position);
         visiting.setAcademicDiscipline(academicDiscipline);
         visitingServices.save(visiting);
-        return "redirect:/schedule/view/" + visiting.getSchedule().getId();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping(value = "edit/event/completion-mark/{schedule}",consumes = MediaType.APPLICATION_JSON_VALUE)

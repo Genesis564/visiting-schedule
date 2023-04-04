@@ -112,6 +112,7 @@ public class MainController {
         }
 
         int[] notConfirmedEventSize = new int[schedulesConfirmed.size()];
+        boolean[] accessToEditEventStatus = new boolean[schedulesConfirmed.size()];
         int size = 0;
         i=0;
         for (Schedule schedule:schedulesConfirmed) {
@@ -120,16 +121,22 @@ public class MainController {
                     ++size;
                 }
             }
+            if ((schedule.getVisitedUser().equals(user) || user.isAdmin())) {
+                accessToEditEventStatus[i] = true;
+            } else {
+                accessToEditEventStatus[i] = false;
+            }
             notConfirmedEventSize[i] = size;
             size = 0;
             i++;
         }
 
-        boolean[] isEmpty = new boolean[]{schedulesSummingUp.isEmpty(), schedulesWaitingToConfirm.isEmpty(), schedulesPlanned.isEmpty(), schedulesConfirmed.isEmpty(), schedulesOverdue.isEmpty()};
+        boolean[] isEmpty = new boolean[]{schedulesSummingUp.isEmpty(), (schedulesWaitingToConfirm.isEmpty()&&schedulesWaitingToConfirmEvent.isEmpty()), schedulesPlanned.isEmpty(), schedulesConfirmed.isEmpty(), schedulesOverdue.isEmpty()};
 
 
         model.put("schedulesWaitingToConfirm", schedulesWaitingToConfirm);
         model.put("schedulesWaitingToConfirmEvent", schedulesWaitingToConfirmEvent);
+        model.put("accessToEditEventStatus", accessToEditEventStatus);
         model.put("notConfirmedEventSize", notConfirmedEventSize);
         model.put("schedulesPlanned", schedulesPlanned);
         model.put("schedulesConfirmed", schedulesConfirmed);

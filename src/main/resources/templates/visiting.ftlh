@@ -52,9 +52,15 @@
                 <label for="purposeOfTheLesson">Цель занятия</label>
             </div>
         </div>
-
-
         <div class="mb-3">
+            <#assign
+            maxScore = 0
+            >
+            <#list criteries as criteria>
+                <#assign
+                maxScore = (maxScore!0) + 3
+                >
+            </#list>
             <div class="container text-left">
                 <table class="table table-sm table-borderless">
                     <caption>
@@ -178,7 +184,8 @@
             </form>
             <#if subjectToCompletionEvent>
                 <div class="mb-3 me-3">
-                    <button class="btn btn-primary mb-6" onclick="editCompletionMark()" type="button">Изменить отметку о выполнении мероприятия
+                    <button class="btn btn-primary mb-6" onclick="editCompletionMark()" type="button">Изменить отметку о
+                        выполнении мероприятия
                     </button>
                 </div>
             </#if>
@@ -212,7 +219,7 @@
 
     <script>
 
-        let currentScore;
+        let currentScore=0;
         let criteriaScore = [];
         <#list criteriaScore as score>
         criteriaScore.push(${score.score});
@@ -228,22 +235,26 @@
             })
             i++;
             </#list>
+            criteriaScore.forEach((elem)=>{
+                currentScore = currentScore + elem;
+            })
+            document.getElementById("scoreInfo").innerHTML = 'Общий балл: '+currentScore+'(Максимальный балл ${maxScore})';
         })
 
-        async function editCompletionMark(){
+        async function editCompletionMark() {
             let completionMarks = []
             document.querySelectorAll("#completionMark").forEach((elem) => {
                 completionMarks.push(elem.checked)
             })
-            await fetch('/schedule/edit/event/completion-mark/${visiting.schedule.id}' + '?_csrf=${_csrf.token}',{
-                method:"POST",
+            await fetch('/schedule/edit/event/completion-mark/${visiting.schedule.id}' + '?_csrf=${_csrf.token}', {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(completionMarks)
-            }).then((res)=>{
-                if (res.ok){
-                    window.location.href ="/home";
+            }).then((res) => {
+                if (res.ok) {
+                    window.location.href = "/home";
                 }
             })
         }

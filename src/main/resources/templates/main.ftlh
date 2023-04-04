@@ -265,7 +265,7 @@
                     <div class="card-body">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 mb-3">
                             <#assign
-                                i = 0
+                            i = 0
                             >
                             <#list schedulesConfirmed as schedule>
                                 <div class="col">
@@ -278,7 +278,8 @@
                                                 Преподаватель: ${schedule.visitedUser.lastname}  ${schedule.visitedUser.firstname}  ${schedule.visitedUser.middlename!""}</h5>
                                             <#if notConfirmedEventSize[i] gt 0>
                                                 <h5 class="card-title">
-                                                    Колличество неподтвержденных мероприятий: ${notConfirmedEventSize[i]}</h5>
+                                                    Колличество неподтвержденных
+                                                    мероприятий: ${notConfirmedEventSize[i]}</h5>
                                             </#if>
                                         </div>
                                         <div class="card-footer text-muted">
@@ -286,7 +287,11 @@
                                                 <button type="submit"
                                                         class="btn btn-outline-secondary btn-xs"
                                                         style="width: 100%; height: 100%">
-                                                    Просмотреть посещение
+                                                    <#if (accessToEditEventStatus[i] == true)&&(notConfirmedEventSize[i] gt 0)>
+                                                        Подтвердить выполнение мероприятия
+                                                    <#else>
+                                                        Просмотреть посещение
+                                                    </#if>
                                                 </button>
                                                 <input type="hidden" name="_csrf"
                                                        value="${_csrf.token}">

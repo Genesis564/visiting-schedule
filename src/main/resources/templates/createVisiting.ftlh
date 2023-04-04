@@ -61,7 +61,6 @@
             </div>
             <div class="mb-3">
                 <#assign
-                currentScore = 0
                 maxScore = 0
                 >
                 <#list criteries as criteria>

@@ -13,7 +13,7 @@
                 <select class="form-select" required name="visitorUser" id="visitorUser" aria-label="Default select example" onchange="updateListUsers(this)">
                     <option selected disabled hidden value="">Посещающий занятие</option>
                     <#list usersVisitor as visitor>
-                        <option value="${visitor.id}">${visitor.username}</option>
+                        <option value="${visitor.id}">${visitor.lastname} ${visitor.firstname} ${visitor.middlename}</option>
                     </#list>
                 </select>
             </div>
@@ -21,7 +21,7 @@
                 <select class="form-select" required name="visitedUser" id="visitedUser" aria-label="Default select example" onchange="updateListUsers(this)">
                     <option selected disabled hidden value="">Преподаватель</option>
                     <#list usersVisited as visited>
-                        <option value="${visited.id}">${visited.username}</option>
+                        <option value="${visited.id}">${visited.lastname} ${visited.firstname} ${visited.middlename}</option>
                     </#list>
                 </select>
             </div>

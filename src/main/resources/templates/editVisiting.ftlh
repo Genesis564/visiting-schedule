@@ -7,8 +7,8 @@
         <form id="submitForm">
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" required name="purposeOfTheVisit" id="purposeOfTheVisit"
-                              style="height: 15vh">${visiting.purposeOfTheLesson}</textarea>
+                    <textarea class="form-control" required id="purposeOfTheVisit"
+                              style="height: 15vh">${visiting.purposeOfTheVisit}</textarea>
                     <label for="purposeOfTheVisit">Цель посещения занятия</label>
                 </div>
             </div>
@@ -54,14 +54,14 @@
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" required name="lessonTopic" id="lessonTopic" style="height: 15vh">${visiting.purposeOfTheLesson}</textarea>
+                    <textarea class="form-control" required id="lessonTopic" style="height: 15vh">${visiting.lessonTopic}</textarea>
                     <label for="lessonTopic">Тема занятия</label>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" required name="purposeOfTheLesson" id="purposeOfTheLesson"
-                              style="height: 15vh">${visiting.lessonTopic}</textarea>
+                    <textarea class="form-control" required id="purposeOfTheLesson"
+                              style="height: 15vh">${visiting.purposeOfTheLesson}</textarea>
                     <label for="purposeOfTheLesson">Цель занятия</label>
                 </div>
             </div>
@@ -221,12 +221,12 @@
         }
 
         submitForm.onsubmit = async (e) => {
+            e.preventDefault();
             groupId = document.querySelector("#studyGroupsSelect option:checked").value;
             positionId = document.querySelector("#positionsSelect option:checked").value;
             disciplineId = document.querySelector("#academicDisciplinsSelect option:checked").value;
             let criteriaScore = [];
             let criteria = [];
-            e.preventDefault();
             let visitingRequestDTO = new FormData(submitForm);
             <#list criteries as criteria>
             criteriaScore.push(document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
@@ -247,6 +247,10 @@
             let response = await fetch('/schedule/edit/${visiting.schedule.id}', {
                 method: 'POST',
                 body: visitingRequestDTO
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.href = "/schedule/view/${visiting.schedule.id}"
+                }
             });
         }
 
