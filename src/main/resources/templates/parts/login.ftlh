@@ -1,34 +1,45 @@
 <#macro login path, buttonName,isRegistration>
     <form id="loginForm">
+
+        <div class="form-group row">
+            <div class="col-sm-7">
+                <div id="alertPlaceholder"></div>
+            </div>
+        </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Имя пользователя: </label>
             <div class="col-sm-5">
-                <input type="text" autocomplete="off" name="username" class="form-control" required placeholder="Имя пользователя">
+                <input type="text" autocomplete="off" name="username" class="form-control" required
+                       placeholder="Имя пользователя">
             </div>
         </div>
         <div class="form-group row mt-2">
             <label class="col-sm-2 col-form-label">Пароль: </label>
             <div class="col-sm-5">
-                <input type="password" autocomplete="off" name="password" required class="form-control" placeholder="Пароль">
+                <input type="password" autocomplete="off" name="password" required class="form-control"
+                       placeholder="Пароль">
             </div>
         </div>
         <#if isRegistration>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Фамилия : </label>
                 <div class="col-sm-5">
-                    <input type="text" autocomplete="off" name="lastname" required class="form-control" placeholder="Фамилия">
+                    <input type="text" autocomplete="off" name="lastname" required class="form-control"
+                           placeholder="Фамилия">
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Имя : </label>
                 <div class="col-sm-5">
-                    <input type="text" autocomplete="off" name="firstname" required class="form-control" placeholder="Имя">
+                    <input type="text" autocomplete="off" name="firstname" required class="form-control"
+                           placeholder="Имя">
                 </div>
             </div>
             <div class="form-group row mt-2">
                 <label class="col-sm-2 col-form-label">Отчество : </label>
                 <div class="col-sm-5">
-                    <input type="text" autocomplete="off" name="middlename" required class="form-control" placeholder="Отчество" id="middlenameId">
+                    <input type="text" autocomplete="off" name="middlename" required class="form-control"
+                           placeholder="Отчество" id="middlenameId">
                     <div class="form-check form-switch mt-2">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
                                onchange="hideMiddlename(this)">
@@ -51,7 +62,8 @@
             <div class="form-group row mt-2" id="posDiv" hidden>
                 <label class="col-sm-2 col-form-label">Должность : </label>
                 <div class="col-sm-5">
-                    <input type="text" autocomplete="off" class="form-control" placeholder="Должность" id="positionName">
+                    <input type="text" autocomplete="off" class="form-control" placeholder="Должность"
+                           id="positionName">
                 </div>
             </div>
             <script>
@@ -98,8 +110,8 @@
 
         loginForm.onsubmit = async (e) => {
             e.preventDefault();
-            let positionRequestDto = new FormData(loginForm);
             <#if isRegistration>
+            let positionRequestDto = new FormData(loginForm);
             positionRequestDto.append("positionName", document.getElementById("positionName").value);
             let response = await fetch('/admin/add/create-position', {
                 method: 'POST',
@@ -116,12 +128,21 @@
                 body: userRequestDTO
             }).then((res) => {
                 if (res.ok) {
-                    <#if isRegistration>
-                    window.location.href = '/admin/registration';
-                    <#else>
-                    window.location.href = '/home';
-                    </#if>
+                    if (res.url.includes('failed=true')){
+                        const alertPlaceholder = document.getElementById('alertPlaceholder')
 
+                        alertPlaceholder.innerHTML = [
+                            '<div class="alert alert-danger alert-dismissible" role="alert">',
+                            '   <div>Неверный логин или пароль, попробуйте заново.</div>',
+                            '</div>'
+                        ].join('')
+                    }else{
+                        <#if isRegistration>
+                        window.location.href = '/admin/registration';
+                        <#else>
+                        window.location.href = '/home';
+                        </#if>
+                    }
                 }
             });
         }

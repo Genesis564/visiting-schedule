@@ -89,7 +89,7 @@
                                         <td>
                                             <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
-                                                   id="${criteria.criteriaName}"
+                                                   id="criteriaScoreRadio"
                                                    value="1" disabled onchange="selectValueOfCriteria();">
                                         </td>
                                     </tr>
@@ -99,7 +99,7 @@
                                         <td>
                                             <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
-                                                   id="${criteria.criteriaName}"
+                                                   id="criteriaScoreRadio"
                                                    value="2" disabled onchange="selectValueOfCriteria();">
                                         </td>
                                     </tr>
@@ -109,7 +109,7 @@
                                         <td>
                                             <input class="form-check-input" type="radio"
                                                    name="${criteria.criteriaName}"
-                                                   id="${criteria.criteriaName}"
+                                                   id="criteriaScoreRadio"
                                                    value="3" disabled onchange="selectValueOfCriteria();">
                                         </td>
                                     </tr>
@@ -219,26 +219,26 @@
 
     <script>
 
-        let currentScore=0;
-        let criteriaScore = [];
-        <#list criteriaScore as score>
-        criteriaScore.push(${score.score});
-        </#list>
+        let currentScore = 0;
+        let criteriaScore = [<#list criteriaScore as score>${score.score},</#list>];
+
 
         document.addEventListener("DOMContentLoaded", () => {
             let i = 0;
-            <#list criteries as criteria>
-            document.querySelectorAll('input[name="${criteria.criteriaName}"]').forEach((elem) => {
+            let count = 0;
+            document.querySelectorAll('#criteriaScoreRadio').forEach((elem) => {
+                if (((count % 3) === 0)&&count!=0) {
+                    ++i
+                }
                 if (elem.value == criteriaScore[i]) {
                     elem.checked = true;
                 }
+                count++
             })
-            i++;
-            </#list>
-            criteriaScore.forEach((elem)=>{
+            criteriaScore.forEach((elem) => {
                 currentScore = currentScore + elem;
             })
-            document.getElementById("scoreInfo").innerHTML = 'Общий балл: '+currentScore+'(Максимальный балл ${maxScore})';
+            document.getElementById("scoreInfo").innerHTML = 'Общий балл: ' + currentScore + '(Максимальный балл ${maxScore})';
         })
 
         async function editCompletionMark() {

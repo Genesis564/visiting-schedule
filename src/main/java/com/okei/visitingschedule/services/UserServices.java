@@ -57,12 +57,15 @@ public class UserServices implements UserDetailsService {
     }
 
     public User findByUsername(String username){
-        return usersRepo.findByUsername(username);
+        return usersRepo.findByUsername(username).get();
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usersRepo.findByUsername(username);
+        User user = usersRepo.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User Not Found"));
+
+        return user;
     }
 }

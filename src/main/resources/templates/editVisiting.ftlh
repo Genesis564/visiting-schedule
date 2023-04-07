@@ -54,7 +54,8 @@
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" required id="lessonTopic" style="height: 15vh">${visiting.lessonTopic}</textarea>
+                    <textarea class="form-control" required id="lessonTopic"
+                              style="height: 15vh">${visiting.lessonTopic}</textarea>
                     <label for="lessonTopic">Тема занятия</label>
                 </div>
             </div>
@@ -104,7 +105,7 @@
                                             <td>
                                                 <input class="form-check-input" type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="1" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -114,7 +115,7 @@
                                             <td>
                                                 <input class="form-check-input" type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="2" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -124,7 +125,7 @@
                                             <td>
                                                 <input class="form-check-input" type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="3" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -151,10 +152,7 @@
         let disciplineId;
         let status;
         let curr;
-        let criteriaScore = [];
-        <#list criteriaScore as score>
-        criteriaScore.push(${score.score});
-        </#list>
+        let criteriaScore = [<#list criteriaScore as score>${score.score},</#list>];
         let str = "${schedule.visitingWeek}";
         let splitDate = str.split('-W');
         let week = splitDate[1].split("0")
@@ -172,38 +170,42 @@
             inputData.min = inputData.valueAsDate.getFullYear() + ((month < 10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate() < 10) ? "-0" : "-") + inputData.valueAsDate.getDate();
             inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth() < 10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate() < 10) ? "-0" : "-") + lastDayOfWeek.getDate();
             let i = 0;
-            <#list criteries as criteria>
-            document.querySelectorAll('input[name="${criteria.criteriaName}"]').forEach((elem) => {
+            let count = 0;
+            document.querySelectorAll('#criteriaScoreRadio').forEach((elem) => {
+                if (((count % 3) === 0)&&count!=0) {
+                    ++i
+                }
                 if (elem.value == criteriaScore[i]) {
                     elem.checked = true;
                 }
+                count++
             })
-            i++;
-            </#list>
             selectValueOfCriteria();
         })
 
         function selectValueOfCriteria() {
             currentScore = 0
-            <#list criteries as criteria>
-            if (document.querySelector('input[name="${criteria.criteriaName}"]:checked') != null) {
-                currentScore = (+currentScore) + (+document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
-            }
-            </#list>
+
+            document.querySelectorAll('#criteriaScoreRadio').forEach((elem) => {
+                if (elem.checked) {
+                    currentScore = (+currentScore) + (+elem.value)
+                }
+            })
             document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл ${maxScore})";
         }
 
         let studentNumberInput = document.getElementById('numberOfStudents')
-        studentNumberInput.addEventListener('keydown',(ev) => studentNumberInputKeyDown(ev))
-        function studentNumberInputKeyDown(event){
+        studentNumberInput.addEventListener('keydown', (ev) => studentNumberInputKeyDown(ev))
+
+        function studentNumberInputKeyDown(event) {
             if (event.key === 'e'
                 || event.key === '.'
                 || event.key === ','
                 || event.key === '+'
-                || event.key === '-'){
+                || event.key === '-') {
                 event.preventDefault()
             }
-            if(studentNumberInput.value.length >= 2 && !(event.key =="Backspace" || event.key =="Delete")){
+            if (studentNumberInput.value.length >= 2 && !(event.key == "Backspace" || event.key == "Delete")) {
                 event.preventDefault()
             }
 
@@ -225,13 +227,8 @@
             groupId = document.querySelector("#studyGroupsSelect option:checked").value;
             positionId = document.querySelector("#positionsSelect option:checked").value;
             disciplineId = document.querySelector("#academicDisciplinsSelect option:checked").value;
-            let criteriaScore = [];
-            let criteria = [];
+            let criteria = [<#list criteries as criteria>${criteria.id},</#list>]
             let visitingRequestDTO = new FormData(submitForm);
-            <#list criteries as criteria>
-            criteriaScore.push(document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
-            criteria.push(${criteria.id});
-            </#list>
             visitingRequestDTO.append("studyGroupId", groupId)
             visitingRequestDTO.append("purposeOfTheVisit", document.getElementById('purposeOfTheVisit').value)
             visitingRequestDTO.append("numberOfStudents", document.getElementById('numberOfStudents').value)
@@ -247,8 +244,8 @@
             let response = await fetch('/schedule/edit/${visiting.schedule.id}', {
                 method: 'POST',
                 body: visitingRequestDTO
-            }).then((res)=>{
-                if (res.ok){
+            }).then((res) => {
+                if (res.ok) {
                     window.location.href = "/schedule/view/${visiting.schedule.id}"
                 }
             });

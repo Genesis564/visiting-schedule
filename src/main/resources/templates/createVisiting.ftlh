@@ -96,7 +96,7 @@
                                             <td>
                                                 <input class="form-check-input" checked type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="1" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -106,7 +106,7 @@
                                             <td>
                                                 <input class="form-check-input" type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="2" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -116,7 +116,7 @@
                                             <td>
                                                 <input class="form-check-input" type="radio"
                                                        name="${criteria.criteriaName}"
-                                                       id="${criteria.criteriaName}"
+                                                       id="criteriaScoreRadio"
                                                        value="3" onchange="selectValueOfCriteria();">
                                             </td>
                                         </tr>
@@ -225,11 +225,12 @@
 
         function selectValueOfCriteria() {
             currentScore = 0
-            <#list criteries as criteria>
-            if (document.querySelector('input[name="${criteria.criteriaName}"]:checked') != null) {
-                currentScore = (+currentScore) + (+document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
-            }
-            </#list>
+
+            document.querySelectorAll('#criteriaScoreRadio').forEach((elem) => {
+                if (elem.checked) {
+                    currentScore = (+currentScore) + (+elem.value)
+                }
+            })
             document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл ${maxScore})";
         }
 
@@ -274,14 +275,13 @@
         }
 
         submitForm.onsubmit = async (e) => {
-            let criteriaScore = [];
-            let criteria = [];
             e.preventDefault();
+            let criteriaScore = [];
+            let criteria = [<#list criteries as criteria>${criteria.id},</#list>]
             let visitingRequestDTO = new FormData();
-            <#list criteries as criteria>
-            criteriaScore.push(document.querySelector('input[name="${criteria.criteriaName}"]:checked').value);
-            criteria.push(${criteria.id});
-            </#list>
+            document.querySelectorAll('#criteriaScoreRadio:checked').forEach((elem)=>{
+                criteriaScore.push(elem.value)
+            })
             visitingRequestDTO.append("studyGroupId", groupId)
             visitingRequestDTO.append("purposeOfTheVisit", document.getElementById('purposeOfTheVisit').value)
             visitingRequestDTO.append("numberOfStudents", document.getElementById('numberOfStudents').value)
