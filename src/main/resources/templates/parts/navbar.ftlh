@@ -21,7 +21,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/">Редактировать справочники</a>
                     </li>
-                    <li class="nav-item dropdown me-3">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             Создать
@@ -30,6 +30,9 @@
                             <li><a class="dropdown-item" href="/admin/registration">Добавить пользователя</a></li>
                             <li><a class="dropdown-item" href="/admin/schedule/add/">Запланировать посещение</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="/admin/report/">Отчет</a>
                     </li>
                 </#if>
             </ul>

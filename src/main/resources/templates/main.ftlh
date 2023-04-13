@@ -43,7 +43,7 @@
                                             <#if accessToSummingUpVisiting[i] == true>
                                                 <form action="/schedule/summing-up/${schedule.id}" method="get">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs"
+                                                            class="btn btn-outline-danger btn-xs"
                                                             style="width: 100%; height: 100%">
                                                         Подвести итоги
                                                     </button>
@@ -109,7 +109,7 @@
                                             <#if accessToConfirmEvent[i] == true>
                                                 <form action="/schedule/view/${schedule.id}" method="get">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs"
+                                                            class="btn btn-outline-danger btn-xs"
                                                             style="width: 100%; height: 100%">
                                                         Подтвердить
                                                         мероприятие
@@ -145,7 +145,7 @@
                                             <#if accessToConfirmVisiting[i] == true>
                                                 <form action="/schedule/view/${schedule.id}" method="get">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs"
+                                                            class="btn btn-outline-danger btn-xs"
                                                             style="width: 100%; height: 100%">
                                                         Подтвердить
                                                         посещение
@@ -156,7 +156,7 @@
                                             <#else>
                                                 <form action="/schedule/view/${schedule.id}" method="get">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs"
+                                                            class="btn btn-outline-warning btn-xs"
                                                             style="width: 100%; height: 100%">
                                                         Редактировать посещение
                                                     </button>
@@ -218,7 +218,7 @@
                                                 <form class="me-3" action="/schedule/add/${schedule.id}"
                                                       method="get">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary btn-xs"
+                                                            class="btn btn-outline-warning btn-xs"
                                                             style="width: 100%; height: 100%">
                                                         Начать
                                                         посещение
@@ -285,7 +285,7 @@
                                         <div class="card-footer text-muted">
                                             <form action="/schedule/view/${schedule.id}" method="get">
                                                 <button type="submit"
-                                                        class="btn btn-outline-secondary btn-xs"
+                                                        class="btn btn-outline-info btn-xs"
                                                         style="width: 100%; height: 100%">
                                                     <#if (accessToEditEventStatus[i] == true)&&(notConfirmedEventSize[i] gt 0)>
                                                         Подтвердить выполнение мероприятия

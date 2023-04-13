@@ -43,7 +43,7 @@ public class ScheduleServices {
         return schedules;
     }
     public List<Schedule> findAll(){
-        return scheduleRepo.findAll(Sort.by(Sort.Direction.DESC, "status"));
+        return scheduleRepo.findAll(Sort.by(Sort.Direction.DESC, "status").and(Sort.by("visitingWeek")));
     }
 
     public List<Schedule> findAllByStatus(Status status){
