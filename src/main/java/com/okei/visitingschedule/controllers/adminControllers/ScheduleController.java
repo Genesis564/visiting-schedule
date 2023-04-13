@@ -6,7 +6,6 @@ import com.okei.visitingschedule.entity.User;
 import com.okei.visitingschedule.entity.schedule.Schedule;
 import com.okei.visitingschedule.services.ScheduleServices;
 import com.okei.visitingschedule.services.UserServices;
-import com.okei.visitingschedule.services.VisitingServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

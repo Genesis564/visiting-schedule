@@ -1,6 +1,5 @@
 package com.okei.visitingschedule.dto;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**

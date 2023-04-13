@@ -3,7 +3,6 @@ package com.okei.visitingschedule.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**

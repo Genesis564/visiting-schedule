@@ -1,10 +1,8 @@
 package com.okei.visitingschedule.services;
 
 import com.okei.visitingschedule.entity.schedule.Conclusion;
-import com.okei.visitingschedule.entity.schedule.Event;
 import com.okei.visitingschedule.entity.schedule.Visiting;
 import com.okei.visitingschedule.repos.ConclusionRepo;
-import com.okei.visitingschedule.repos.EventRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

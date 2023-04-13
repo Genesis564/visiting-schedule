@@ -1,11 +1,6 @@
 package com.okei.visitingschedule.dto;
 
 import com.okei.visitingschedule.entity.User;
-import com.okei.visitingschedule.entity.schedule.Status;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.Set;
 
 
 public class ScheduleRequestDto{
