@@ -238,7 +238,7 @@
             criteriaScore.forEach((elem) => {
                 currentScore = currentScore + elem;
             })
-            document.getElementById("scoreInfo").innerHTML = 'Общий балл: ' + currentScore + '(Максимальный балл ${maxScore})';
+            document.getElementById("scoreInfo").innerHTML = 'Общий балл: ' + currentScore + ' (Максимальный балл ${maxScore})';
         })
 
         async function editCompletionMark() {

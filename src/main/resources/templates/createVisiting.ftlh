@@ -32,7 +32,8 @@
 
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control" name="position" id="position" value="${position.positionName}" readonly>
+                    <input type="text" class="form-control" name="position" id="position"
+                           value="${position.positionName}" readonly>
                     <label for="position">Должность</label>
                 </div>
             </div>
@@ -48,7 +49,8 @@
             </div>
             <div class="input-group mb-3">
                 <div class="form-floating">
-                    <textarea class="form-control" required name="lessonTopic" id="lessonTopic" style="height: 15vh"></textarea>
+                    <textarea class="form-control" required name="lessonTopic" id="lessonTopic"
+                              style="height: 15vh"></textarea>
                     <label for="lessonTopic">Тема занятия</label>
                 </div>
             </div>
@@ -59,15 +61,15 @@
                     <label for="purposeOfTheLesson">Цель занятия</label>
                 </div>
             </div>
+            <div class="input-group mb-3">
+                <select class="form-select" required id="criteriaType" onchange="changeCriteriaType(this)">
+                    <option value="" selected disabled hidden>Тип критериев</option>
+                    <#list criteriaTypes as type>
+                        <option value="${type.name()!"No value"}">${type.typeName!"No value"}</option>
+                    </#list>
+                </select>
+            </div>
             <div class="mb-3">
-                <#assign
-                maxScore = 0
-                >
-                <#list criteries as criteria>
-                    <#assign
-                    maxScore = (maxScore!0) + 3
-                    >
-                </#list>
                 <div class="container text-left">
                     <table class="table table-sm table-borderless">
                         <caption>
@@ -85,42 +87,8 @@
                         <tr>
                             <td colspan="4">
                                 <table class="table table-bordered table-sm">
-                                    <tbody>
-                                    <#list criteries as criteria>
-                                        <tr>
-                                            <td colspan="3"><b>${criteria.criteriaName}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>${criteria.valueOfOnePoint}</td>
-                                            <td>
-                                                <input class="form-check-input" checked type="radio"
-                                                       name="${criteria.criteriaName}"
-                                                       id="criteriaScoreRadio"
-                                                       value="1" onchange="selectValueOfCriteria();">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>${criteria.valueOfTwoPoint}</td>
-                                            <td>
-                                                <input class="form-check-input" type="radio"
-                                                       name="${criteria.criteriaName}"
-                                                       id="criteriaScoreRadio"
-                                                       value="2" onchange="selectValueOfCriteria();">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>${criteria.valueOfThreePoint}</td>
-                                            <td>
-                                                <input class="form-check-input" type="radio"
-                                                       name="${criteria.criteriaName}"
-                                                       id="criteriaScoreRadio"
-                                                       value="3" onchange="selectValueOfCriteria();">
-                                            </td>
-                                        </tr>
-                                    </#list>
+                                    <tbody id="criteria">
+
                                     </tbody>
                                 </table>
                             </td>
@@ -157,25 +125,41 @@
                                     <div class="form-group row mt-2">
                                         <label class="col-sm-3 col-form-label">Название критерия: </label>
                                         <div class="col-sm-8 d-flex">
-                                            <textarea class="form-control flex-fill" required name="critariaName"></textarea>
+                                            <textarea class="form-control flex-fill" required
+                                                      name="critariaName"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-2">
                                         <label class="col-sm-3 col-form-label">Значение для 1 балла: </label>
                                         <div class="col-sm-8 d-flex">
-                                            <textarea class="form-control flex-fill" required type="text" name="valueOfOnePoint"></textarea>
+                                            <textarea class="form-control flex-fill" required type="text"
+                                                      name="valueOfOnePoint"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-2">
                                         <label class="col-sm-3 col-form-label">Значение для 2 балла:</label>
                                         <div class="col-sm-8 d-flex">
-                                            <textarea class="form-control flex-fill" required type="text" name="valueOfTwoPoint"></textarea>
+                                            <textarea class="form-control flex-fill" required type="text"
+                                                      name="valueOfTwoPoint"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-2">
                                         <label class="col-sm-3 col-form-label">Значение для 3 балла: </label>
                                         <div class="col-sm-8 d-flex">
-                                            <textarea class="form-control flex-fill" required type="text" name="valueOfThreePoint"></textarea>
+                                            <textarea class="form-control flex-fill" required type="text"
+                                                      name="valueOfThreePoint"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-2">
+                                        <label class="col-sm-3 col-form-label">Тип критерия: </label>
+                                        <div class="col-sm-8 d-flex">
+                                            <select name="criteriaType" class="form-select" required>
+                                                <option value="" disabled hidden selected>Откройте это меню выбора
+                                                </option>
+                                                <#list criteriaTypes as type>
+                                                    <option value="${type.name()}">${type.typeName}</option>
+                                                </#list>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +179,7 @@
         </#if>
     </div>
     <script>
-
+        let maxScore
         let currentScore;
         let groupId;
         let positionId = ${position.id};
@@ -212,7 +196,6 @@
         }
         document.addEventListener("DOMContentLoaded", () => {
 
-            document.getElementById("scoreInfo").innerHTML = 'Общий балл: 0 (Максимальный балл ${maxScore})';
             let inputData = document.getElementById("visitingDate");
             inputData.valueAsDate = new Date(curr);
             let month = inputData.valueAsDate.getMonth() + 1
@@ -220,7 +203,6 @@
             lastDayOfWeek.setDate(inputData.valueAsDate.getDate() + 6);
             inputData.min = inputData.valueAsDate.getFullYear() + ((month < 10) ? "-0" : "-") + month + ((inputData.valueAsDate.getDate() < 10) ? "-0" : "-") + inputData.valueAsDate.getDate();
             inputData.max = lastDayOfWeek.getFullYear() + ((lastDayOfWeek.getMonth() < 10) ? "-0" : "-") + (lastDayOfWeek.getMonth() + 1) + ((lastDayOfWeek.getDate() < 10) ? "-0" : "-") + lastDayOfWeek.getDate();
-            selectValueOfCriteria();
         })
 
         function selectValueOfCriteria() {
@@ -231,20 +213,21 @@
                     currentScore = (+currentScore) + (+elem.value)
                 }
             })
-            document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл ${maxScore})";
+            document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл "+maxScore+")";
         }
 
         let studentNumberInput = document.getElementById('numberOfStudents')
-        studentNumberInput.addEventListener('keydown',(ev) => studentNumberInputKeyDown(ev))
-        function studentNumberInputKeyDown(event){
+        studentNumberInput.addEventListener('keydown', (ev) => studentNumberInputKeyDown(ev))
+
+        function studentNumberInputKeyDown(event) {
             if (event.key === 'e'
                 || event.key === '.'
                 || event.key === ','
                 || event.key === '+'
-                || event.key === '-'){
+                || event.key === '-') {
                 event.preventDefault()
             }
-            if(studentNumberInput.value.length >= 2 && !(event.key =="Backspace" || event.key =="Delete")){
+            if (studentNumberInput.value.length >= 2 && !(event.key == "Backspace" || event.key == "Delete")) {
                 event.preventDefault()
             }
 
@@ -274,12 +257,62 @@
             disciplineId = sel.value;
         }
 
+        async function changeCriteriaType(sel) {
+            let requestDTO = new FormData();
+            let criteriaTbody = document.getElementById("criteria");
+            criteriaTbody.innerHTML = '';
+            requestDTO.append("criteriaType", sel.value);
+            requestDTO.append("_csrf", "${_csrf.token}");
+            let res = await fetch('select-criteria-type', {
+                method: "POST",
+                body: requestDTO
+            })
+            if (res.ok){
+                let resJson = await res.json();
+                let count = 0;
+                resJson.forEach((elem)=>{
+                    let wrapperHead = document.createElement('tr');
+                    let wrapperValueOfOnePoint = document.createElement('tr');
+                    let wrapperValueOfTwoPoint = document.createElement('tr');
+                    let wrapperValueOfThreePoint = document.createElement('tr');
+                    wrapperHead.innerHTML = [
+                        '<td colspan="3"><b>'+elem.critariaName+'</b></td>'
+                    ]
+                    wrapperValueOfOnePoint.innerHTML = [
+                        '<th scope="row">1</th>'+
+                            '<td>'+elem.valueOfOnePoint+'</td>'+
+                               '<td><input class="form-check-input" checked type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                            '</td>'
+                    ]
+                    wrapperValueOfTwoPoint.innerHTML = [
+                        '<th scope="row">2</th>'+
+                        '    <td>'+elem.valueOfTwoPoint+'</td>'+
+                        '        <td><input class="form-check-input"  type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                        '    </td>'
+                    ]
+                    wrapperValueOfThreePoint.innerHTML = [
+                        '<th scope="row">3</th>'+
+                        '    <td>'+elem.valueOfThreePoint+'</td>'+
+                        '        <td><input class="form-check-input"  type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                        '    </td>'
+                    ]
+                    criteriaTbody.appendChild(wrapperHead);
+                    criteriaTbody.appendChild(wrapperValueOfOnePoint);
+                    criteriaTbody.appendChild(wrapperValueOfTwoPoint);
+                    criteriaTbody.appendChild(wrapperValueOfThreePoint);
+                    count++;
+                })
+                maxScore =count*3;
+                selectValueOfCriteria();
+            }
+        }
+
         submitForm.onsubmit = async (e) => {
             e.preventDefault();
             let criteriaScore = [];
-            let criteria = [<#list criteries as criteria>${criteria.id},</#list>]
+            let criteria = [<#list criteries as criteria>${criteria.id}, </#list>]
             let visitingRequestDTO = new FormData();
-            document.querySelectorAll('#criteriaScoreRadio:checked').forEach((elem)=>{
+            document.querySelectorAll('#criteriaScoreRadio:checked').forEach((elem) => {
                 criteriaScore.push(elem.value)
             })
             visitingRequestDTO.append("studyGroupId", groupId)
@@ -293,7 +326,7 @@
             visitingRequestDTO.append("date", document.getElementById('visitingDate').value)
             visitingRequestDTO.append("criterionIds", criteria)
             visitingRequestDTO.append("scheduleId", ${schedule.id})
-            visitingRequestDTO.append("_csrf","${_csrf.token}");
+            visitingRequestDTO.append("_csrf", "${_csrf.token}");
 
             await fetch('/schedule/add/visiting', {
                 method: 'POST',

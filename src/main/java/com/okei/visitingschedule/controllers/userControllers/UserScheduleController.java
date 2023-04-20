@@ -1,6 +1,7 @@
 package com.okei.visitingschedule.controllers.userControllers;
 
 import com.okei.visitingschedule.dto.ConclusionRequestDTO;
+import com.okei.visitingschedule.dto.VisitingCriteriaResponseDTO;
 import com.okei.visitingschedule.dto.VisitingRequestDTO;
 import com.okei.visitingschedule.dto.event.EventRequestDTO;
 import com.okei.visitingschedule.dto.event.ListEventRequestDTO;
@@ -58,15 +59,25 @@ public class UserScheduleController {
         Position position = user.getPosition();
         Iterable<StudyGroup> studyGroups = studyGroupServices.findAll();
         Iterable<AcademicDiscipline> academicDisciplines = academicDisciplineServices.findAll();
-        Iterable<VisitingCriteria> visitingCriteria = visitingCriteriaService.findAll();
+        List<CriteriaType> criteriaTypes = new ArrayList<>(EnumSet.allOf(CriteriaType.class));
 
         model.put("schedule", schedule);
         model.put("statuses", Status.values());
         model.put("studyGroups", studyGroups);
         model.put("academicDisciplins", academicDisciplines);
-        model.put("criteries", visitingCriteria);
         model.put("position", position);
+        model.put("criteriaTypes", criteriaTypes);
         return "createVisiting";
+    }
+
+    @PostMapping("add/select-criteria-type")
+    public ResponseEntity<List<VisitingCriteriaResponseDTO>> selectCriteriaType(@RequestParam String criteriaType, Map<String,Object> model){
+        List<VisitingCriteria> visitingCriteria = visitingCriteriaService.findAllByCriteriaType(CriteriaType.valueOf(criteriaType));
+        List<VisitingCriteriaResponseDTO> responseDTOList = new ArrayList<>();
+        for (VisitingCriteria criteria:visitingCriteria) {
+            responseDTOList.add(new VisitingCriteriaResponseDTO(criteria.getCriteriaName(),criteria.getValueOfOnePoint(),criteria.getValueOfTwoPoint(),criteria.getValueOfThreePoint()));
+        }
+        return new ResponseEntity<>(responseDTOList,HttpStatus.OK);
     }
 
     @GetMapping("view/{schedule}")
@@ -147,7 +158,6 @@ public class UserScheduleController {
         model.put("studyGroups", studyGroups);
         model.put("positions", positions);
         model.put("academicDisciplins", academicDisciplines);
-        model.put("criteries", visitingCriteria);
         return "editVisiting";
     }
 

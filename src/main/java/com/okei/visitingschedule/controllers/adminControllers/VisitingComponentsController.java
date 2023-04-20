@@ -4,10 +4,7 @@ import com.okei.visitingschedule.dto.AcademicDisciplineRequestDto;
 import com.okei.visitingschedule.dto.PositionRequestDto;
 import com.okei.visitingschedule.dto.StudyGroupRequestDto;
 import com.okei.visitingschedule.dto.VisitingCriteriaRequestDTO;
-import com.okei.visitingschedule.entity.schedule.AcademicDiscipline;
-import com.okei.visitingschedule.entity.schedule.Position;
-import com.okei.visitingschedule.entity.schedule.StudyGroup;
-import com.okei.visitingschedule.entity.schedule.VisitingCriteria;
+import com.okei.visitingschedule.entity.schedule.*;
 import com.okei.visitingschedule.services.AcademicDisciplineServices;
 import com.okei.visitingschedule.services.PositionServices;
 import com.okei.visitingschedule.services.StudyGroupServices;
@@ -19,7 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -88,6 +87,21 @@ public class VisitingComponentsController {
     @PostMapping("add/create-visiting-criteria")
     public ResponseEntity createCriteria(@RequestParam("scheduleId") long scheduleId, VisitingCriteriaRequestDTO visitingCriteriaRequestDTO, Map<String, Object> model) {
         VisitingCriteria visitingCriteriaFromDb = visitingCriteriaService.findByCriteriaName(visitingCriteriaRequestDTO.getCritariaName());
+        Set<CriteriaType> criteriaTypes = new HashSet<>();
+        switch (visitingCriteriaRequestDTO.getCriteriaType()){
+            case "THEORY":
+                criteriaTypes.add(CriteriaType.THEORY);
+                break;
+            case "PRACTICE":
+                criteriaTypes.add(CriteriaType.PRACTICE);
+                break;
+            case "PHYSICAL_CULTURE":
+                criteriaTypes.add(CriteriaType.PHYSICAL_CULTURE);
+                break;
+            default:
+                break;
+        }
+
         if (visitingCriteriaFromDb != null) {
 //            model.put("message","Discipline exists!");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
@@ -95,7 +109,8 @@ public class VisitingComponentsController {
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
                 visitingCriteriaRequestDTO.getValueOfOnePoint(),
                 visitingCriteriaRequestDTO.getValueOfTwoPoint(),
-                visitingCriteriaRequestDTO.getValueOfThreePoint());
+                visitingCriteriaRequestDTO.getValueOfThreePoint(),
+                criteriaTypes);
         return new ResponseEntity(HttpStatus.OK);
     }
 
