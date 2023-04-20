@@ -24,22 +24,19 @@ public class VisitingCriteria{
     @Column(length = 9999)
     private String valueOfThreePoint;
 
+    @ElementCollection(targetClass = CriteriaType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "criteria_type", joinColumns = @JoinColumn(name = "criteria_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<CriteriaType> criteriaTypes;
     @OneToMany(mappedBy = "visitingCriteria")
     Set<CriteriaScore> criteriaScore;
 
-    public VisitingCriteria(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint, Set<CriteriaScore> criteriaScore) {
+    public VisitingCriteria(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint,Set<CriteriaType> types) {
         this.criteriaName = criteriaName;
         this.valueOfOnePoint = valueOfOnePoint;
         this.valueOfTwoPoint = valueOfTwoPoint;
         this.valueOfThreePoint = valueOfThreePoint;
-        this.criteriaScore = criteriaScore;
-    }
-
-    public VisitingCriteria(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
-        this.criteriaName = criteriaName;
-        this.valueOfOnePoint = valueOfOnePoint;
-        this.valueOfTwoPoint = valueOfTwoPoint;
-        this.valueOfThreePoint = valueOfThreePoint;
+        this.criteriaTypes = types;
     }
 
     public VisitingCriteria() {
@@ -91,6 +88,14 @@ public class VisitingCriteria{
 
     public void setCriteriaScore(Set<CriteriaScore> criteriaScore) {
         this.criteriaScore = criteriaScore;
+    }
+
+    public Set<CriteriaType> getCriteriaTypes() {
+        return criteriaTypes;
+    }
+
+    public void setCriteriaTypes(Set<CriteriaType> criteriaTypes) {
+        this.criteriaTypes = criteriaTypes;
     }
 
     @Override

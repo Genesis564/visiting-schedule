@@ -12,6 +12,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -20,8 +22,8 @@ public class ExcelGenerator {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    public ExcelGenerator(List<Schedule> studentList) {
-        this.scheduleList = studentList;
+    public ExcelGenerator(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
         this.workbook = new XSSFWorkbook();
     }
 

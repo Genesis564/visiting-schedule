@@ -46,8 +46,8 @@ public class ReportController {
         String headerValue = "attachment; filename=schedule" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List <Schedule> listOfStudents = scheduleServices.findAll();
-        ExcelGenerator generator = new ExcelGenerator(listOfStudents);
+        List <Schedule> ScheduleList = scheduleServices.findAll();
+        ExcelGenerator generator = new ExcelGenerator(ScheduleList);
         generator.generateExcelFile(response);
     }
 }

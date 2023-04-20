@@ -6,23 +6,21 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.okei.visitingschedule.entity.schedule.VisitingCriteria} entity
  */
-public class VisitingCriteriaRequestDTO implements Serializable {
-    private final String critariaName;
+public class VisitingCriteriaResponseDTO implements Serializable {
+    private final String criteriaName;
     private final String valueOfOnePoint;
     private final String valueOfTwoPoint;
     private final String valueOfThreePoint;
 
-    private final String criteriaType;
-    public VisitingCriteriaRequestDTO(String critariaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint,String criteriaType) {
-        this.critariaName = critariaName;
+    public VisitingCriteriaResponseDTO(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
+        this.criteriaName = criteriaName;
         this.valueOfOnePoint = valueOfOnePoint;
         this.valueOfTwoPoint = valueOfTwoPoint;
         this.valueOfThreePoint = valueOfThreePoint;
-        this.criteriaType = criteriaType;
     }
 
-    public String getCritariaName() {
-        return critariaName;
+    public String getCriteriaName() {
+        return criteriaName;
     }
 
     public String getValueOfOnePoint() {
@@ -37,16 +35,13 @@ public class VisitingCriteriaRequestDTO implements Serializable {
         return valueOfThreePoint;
     }
 
-    public String getCriteriaType() {
-        return criteriaType;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VisitingCriteriaRequestDTO entity = (VisitingCriteriaRequestDTO) o;
-        return Objects.equals(this.critariaName, entity.critariaName) &&
+        VisitingCriteriaResponseDTO entity = (VisitingCriteriaResponseDTO) o;
+        return Objects.equals(this.criteriaName, entity.criteriaName) &&
                 Objects.equals(this.valueOfOnePoint, entity.valueOfOnePoint) &&
                 Objects.equals(this.valueOfTwoPoint, entity.valueOfTwoPoint) &&
                 Objects.equals(this.valueOfThreePoint, entity.valueOfThreePoint);
@@ -54,13 +49,13 @@ public class VisitingCriteriaRequestDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(critariaName, valueOfOnePoint, valueOfTwoPoint, valueOfThreePoint);
+        return Objects.hash(criteriaName, valueOfOnePoint, valueOfTwoPoint, valueOfThreePoint);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "critariaName = " + critariaName + ", " +
+                "criteriaName = " + criteriaName + ", " +
                 "valueOfOnePoint = " + valueOfOnePoint + ", " +
                 "valueOfTwoPoint = " + valueOfTwoPoint + ", " +
                 "valueOfThreePoint = " + valueOfThreePoint + ")";
