@@ -7,16 +7,24 @@ import java.util.Objects;
  * A DTO for the {@link com.okei.visitingschedule.entity.schedule.VisitingCriteria} entity
  */
 public class VisitingCriteriaResponseDTO implements Serializable {
+    private final Long criteriaId;
     private final String criteriaName;
     private final String valueOfOnePoint;
     private final String valueOfTwoPoint;
     private final String valueOfThreePoint;
 
-    public VisitingCriteriaResponseDTO(String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
+
+
+    public VisitingCriteriaResponseDTO(Long criteriaId, String criteriaName, String valueOfOnePoint, String valueOfTwoPoint, String valueOfThreePoint) {
+        this.criteriaId = criteriaId;
         this.criteriaName = criteriaName;
         this.valueOfOnePoint = valueOfOnePoint;
         this.valueOfTwoPoint = valueOfTwoPoint;
         this.valueOfThreePoint = valueOfThreePoint;
+    }
+
+    public Long getCriteriaId() {
+        return criteriaId;
     }
 
     public String getCriteriaName() {

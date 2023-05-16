@@ -75,7 +75,7 @@ public class UserScheduleController {
         List<VisitingCriteria> visitingCriteria = visitingCriteriaService.findAllByCriteriaType(CriteriaType.valueOf(criteriaType));
         List<VisitingCriteriaResponseDTO> responseDTOList = new ArrayList<>();
         for (VisitingCriteria criteria:visitingCriteria) {
-            responseDTOList.add(new VisitingCriteriaResponseDTO(criteria.getCriteriaName(),criteria.getValueOfOnePoint(),criteria.getValueOfTwoPoint(),criteria.getValueOfThreePoint()));
+            responseDTOList.add(new VisitingCriteriaResponseDTO(criteria.getId(), criteria.getCriteriaName(),criteria.getValueOfOnePoint(),criteria.getValueOfTwoPoint(),criteria.getValueOfThreePoint()));
         }
         return new ResponseEntity<>(responseDTOList,HttpStatus.OK);
     }

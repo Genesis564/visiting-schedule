@@ -120,7 +120,7 @@
                                     aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="/admin/add/create-visiting-criteria" method="post">
+                            <form id="createVisitingCriteriaForm">
                                 <div class="mb-3">
                                     <div class="form-group row mt-2">
                                         <label class="col-sm-3 col-form-label">Название критерия: </label>
@@ -180,6 +180,7 @@
     </div>
     <script>
         let maxScore
+        let criteria =[];
         let currentScore;
         let groupId;
         let positionId = ${position.id};
@@ -215,6 +216,8 @@
             })
             document.getElementById("scoreInfo").innerHTML = "Общий балл: " + currentScore + "   (Максимальный балл "+maxScore+")";
         }
+
+
 
         let studentNumberInput = document.getElementById('numberOfStudents')
         studentNumberInput.addEventListener('keydown', (ev) => studentNumberInputKeyDown(ev))
@@ -260,7 +263,6 @@
         async function changeCriteriaType(sel) {
             let requestDTO = new FormData();
             let criteriaTbody = document.getElementById("criteria");
-            criteriaTbody.innerHTML = '';
             requestDTO.append("criteriaType", sel.value);
             requestDTO.append("_csrf", "${_csrf.token}");
             let res = await fetch('select-criteria-type', {
@@ -268,32 +270,34 @@
                 body: requestDTO
             })
             if (res.ok){
+                criteriaTbody.innerHTML = '';
                 let resJson = await res.json();
                 let count = 0;
                 resJson.forEach((elem)=>{
+                    criteria.push(elem.criteriaId);
                     let wrapperHead = document.createElement('tr');
                     let wrapperValueOfOnePoint = document.createElement('tr');
                     let wrapperValueOfTwoPoint = document.createElement('tr');
                     let wrapperValueOfThreePoint = document.createElement('tr');
                     wrapperHead.innerHTML = [
-                        '<td colspan="3"><b>'+elem.critariaName+'</b></td>'
+                        '<td colspan="3"><b>'+elem.criteriaName+'</b></td>'
                     ]
                     wrapperValueOfOnePoint.innerHTML = [
                         '<th scope="row">1</th>'+
                             '<td>'+elem.valueOfOnePoint+'</td>'+
-                               '<td><input class="form-check-input" checked type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                               '<td><input class="form-check-input" checked type="radio" name="'+elem.criteriaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
                             '</td>'
                     ]
                     wrapperValueOfTwoPoint.innerHTML = [
                         '<th scope="row">2</th>'+
                         '    <td>'+elem.valueOfTwoPoint+'</td>'+
-                        '        <td><input class="form-check-input"  type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                        '        <td><input class="form-check-input"  type="radio" name="'+elem.criteriaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
                         '    </td>'
                     ]
                     wrapperValueOfThreePoint.innerHTML = [
                         '<th scope="row">3</th>'+
                         '    <td>'+elem.valueOfThreePoint+'</td>'+
-                        '        <td><input class="form-check-input"  type="radio" name="'+elem.critariaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
+                        '        <td><input class="form-check-input"  type="radio" name="'+elem.criteriaName+'" id="criteriaScoreRadio" value="1" onchange="selectValueOfCriteria();">'+
                         '    </td>'
                     ]
                     criteriaTbody.appendChild(wrapperHead);
@@ -304,13 +308,28 @@
                 })
                 maxScore =count*3;
                 selectValueOfCriteria();
+            }else{
+                criteriaTbody.innerHTML = '';
             }
+        }
+
+        createVisitingCriteriaForm.onsubmit = async (e) =>{
+            e.preventDefault();
+            let criteriaRequestDTO = new FormData(createVisitingCriteriaForm);
+            await fetch('/admin/add/create-visiting-criteria', {
+                method: 'POST',
+                body: criteriaRequestDTO,
+                redirect: "manual"
+            }).then((res) => {
+                if (res.ok) {
+                    window.location.href = '/schedule/add/${schedule.id}';
+                }
+            });
         }
 
         submitForm.onsubmit = async (e) => {
             e.preventDefault();
             let criteriaScore = [];
-            let criteria = [<#list criteries as criteria>${criteria.id}, </#list>]
             let visitingRequestDTO = new FormData();
             document.querySelectorAll('#criteriaScoreRadio:checked').forEach((elem) => {
                 criteriaScore.push(elem.value)

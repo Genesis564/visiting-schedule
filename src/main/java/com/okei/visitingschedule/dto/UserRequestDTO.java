@@ -10,15 +10,13 @@ public class UserRequestDTO implements Serializable{
     private String lastname;
     private String firstname;
     private String middlename;
-    private Long positionId;
-
-    public UserRequestDTO(String username, String password, String lastname, String firstname, String middlename,Long positionId) {
+    public UserRequestDTO(String username, String password, String lastname, String firstname, String middlename) {
         this.username = username;
         this.password = password;
         this.lastname = lastname;
         this.firstname = firstname;
         this.middlename = middlename;
-        this.positionId = positionId;
+
     }
 
     public UserRequestDTO(String username, String lastname, String firstname, String middlename) {
@@ -28,18 +26,11 @@ public class UserRequestDTO implements Serializable{
         this.middlename = middlename;
     }
 
-    public UserRequestDTO(String username, String password, String lastname, String firstname, Long positionId) {
-        this.username = username;
-        this.password = password;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.positionId = positionId;
-    }
 
-    public UserRequestDTO(String username, String password,Long positionId) {
+    public UserRequestDTO(String username, String password) {
         this.username = username;
         this.password = password;
-        this.positionId = positionId;
+
     }
 
     public UserRequestDTO() {
@@ -85,9 +76,7 @@ public class UserRequestDTO implements Serializable{
         this.password = password;
     }
 
-    public Long getPositionId() {
-        return positionId;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -110,7 +99,6 @@ public class UserRequestDTO implements Serializable{
                 ", lastname='" + lastname + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", middlename='" + middlename + '\'' +
-                ", positionId=" + positionId +
                 '}';
     }
 }

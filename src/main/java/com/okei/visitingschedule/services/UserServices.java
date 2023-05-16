@@ -56,7 +56,11 @@ public class UserServices implements UserDetailsService {
     }
 
     public User findByUsername(String username){
-        return usersRepo.findByUsername(username).get();
+        try{
+            return usersRepo.findByUsername(username).get();
+        }catch (Exception e){
+            return null;
+        }
     }
 
 

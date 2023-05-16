@@ -52,9 +52,7 @@ public class VisitingComponentsController {
     @PostMapping("add/create-study-group")
     public ResponseEntity createStudyGroup(StudyGroupRequestDto studyGroupRequestDto, Map<String, Object> model) {
         StudyGroup studyGroupFromDb = studyGroupServices.findByGroupName(studyGroupRequestDto.getGroupName());
-        if (studyGroupFromDb != null) {
-//            model.put("message","Study group exists!");
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        if (studyGroupFromDb != null) {return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         studyGroupServices.addStudyGroup(studyGroupRequestDto.getGroupName());
         return new ResponseEntity(HttpStatus.OK);
@@ -103,7 +101,6 @@ public class VisitingComponentsController {
         }
 
         if (visitingCriteriaFromDb != null) {
-//            model.put("message","Discipline exists!");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         visitingCriteriaService.addCriteria(visitingCriteriaRequestDTO.getCritariaName(),
