@@ -28,23 +28,26 @@ public class UserServices implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void addUser(String username, String password, Position position, Set<Role> roles){
+    public boolean addUser(String username, String password, Position position, Set<Role> roles){
         User user = new User(username,passwordEncoder.encode(password),true,position,roles);
         usersRepo.save(user);
+        return true;
     }
 
-    public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname){
+    public boolean addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname){
         User user = new User(username,passwordEncoder.encode(password),true,position,roles,lastname,firstname);
         usersRepo.save(user);
+        return true;
     }
-    public void addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname,String middlename){
+    public boolean addUser(String username, String password,Position position, Set<Role> roles,String lastname,String firstname,String middlename){
         User user = new User(username,passwordEncoder.encode(password),true,position,roles,lastname,firstname,middlename);
         usersRepo.save(user);
+        return true;
     }
 
-    public void save(User user){
+    public User save(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usersRepo.save(user);
+        return usersRepo.save(user);
     }
 
     public List<User> findAll(){
