@@ -13,12 +13,10 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-
     @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "schedule_status", joinColumns = @JoinColumn(name = "schedule_id"))
     @Enumerated(EnumType.STRING)
     private Set<Status> status;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visiter_user_id")
     private User visitorUser;
@@ -29,54 +27,41 @@ public class Schedule {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visiting_id")
     private Visiting visiting;
-
-
     public Schedule(Set<Status> status, User visitorUser, User visitedUser, String visitingWeek) {
         this.status = status;
         this.visitorUser = visitorUser;
         this.visitedUser = visitedUser;
         this.visitingWeek = visitingWeek;
     }
-
     public Schedule() {
     }
-
     public String getVisitingWeek() {
         return visitingWeek;
     }
-
     public void setVisitingWeek(String visitingWeek) {
         this.visitingWeek = visitingWeek;
     }
-
     public User getVisitorUser() {
         return visitorUser;
     }
-
     public void setVisitorUser(User visiterUser) {
         this.visitorUser = visiterUser;
     }
-
     public User getVisitedUser() {
         return visitedUser;
     }
-
     public void setVisitedUser(User visitedUser) {
         this.visitedUser = visitedUser;
     }
-
     public Set<Status> getStatus() {
         return status;
     }
-
     public void setStatus(Set<Status> status) {
         this.status = status;
     }
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }

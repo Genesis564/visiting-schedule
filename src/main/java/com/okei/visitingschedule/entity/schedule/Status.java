@@ -8,18 +8,18 @@ public enum Status {
     CONFIRMED("Подтверждено"),
     OVERDUE("Просрочено");
 
-    private String name;
+    private String statusName;
     Status(String name) {
-        this.name = name;
+        this.statusName = name;
     }
 
     public String getName() {
-        return name;
+        return statusName;
     }
 
     @Override
     public String toString() {
-        return name;
+        return statusName;
     }
 
 

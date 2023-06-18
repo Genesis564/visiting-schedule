@@ -341,5 +341,4 @@ public class UserScheduleController {
         }
         return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
     }
-
 }

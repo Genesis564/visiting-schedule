@@ -9,6 +9,7 @@ import com.okei.visitingschedule.services.AcademicDisciplineServices;
 import com.okei.visitingschedule.services.PositionServices;
 import com.okei.visitingschedule.services.StudyGroupServices;
 import com.okei.visitingschedule.services.VisitingCriteriaService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
+@Api(value = "RestController", produces = "application/json")
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin/")
 public class VisitingComponentsController {
